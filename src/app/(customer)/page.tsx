@@ -1,0 +1,387 @@
+import * as React from "react";
+import Link from "next/link";
+import {
+  GraduationCap,
+  HeartPulse,
+  Users,
+  Sprout,
+  ArrowRight,
+  ShieldCheck,
+  Award,
+  Calendar,
+  Sparkles,
+} from "lucide-react";
+import { Container } from "@/components/shared/container";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+const focusAreas = [
+  {
+    icon: GraduationCap,
+    title: "Education & Literacy",
+    description:
+      "Supporting underprivileged children with learning materials, scholarship assistance, and foundational digital education programs.",
+    href: "/programs#education",
+  },
+  {
+    icon: HeartPulse,
+    title: "Healthcare Access",
+    description:
+      "Organizing preventive medical checkups, eye-care screenings, and community health camps for underserved rural populations.",
+    href: "/programs#health",
+  },
+  {
+    icon: Users,
+    title: "Skill Development",
+    description:
+      "Conducting vocational training and livelihood workshops designed to empower youth and women towards financial independence.",
+    href: "/programs#skills",
+  },
+  {
+    icon: Sprout,
+    title: "Community Welfare",
+    description:
+      "Delivering relief resources, hygiene initiatives, and sustainable village welfare projects in times of need.",
+    href: "/programs#community",
+  },
+];
+
+const impactHighlights = [
+  {
+    number: "1,500+",
+    label: "Children Supported",
+    description: "Through educational assistance & mentorship initiatives",
+  },
+  {
+    number: "45+",
+    label: "Health Camps Conducted",
+    description: "Delivering free primary consultations and checkups",
+  },
+  {
+    number: "30+",
+    label: "Communities Reached",
+    description: "Across urban settlements and rural clusters",
+  },
+  {
+    number: "100%",
+    label: "Dedicated Commitment",
+    description: "Ensuring transparent, accountable nonprofit operations",
+  },
+];
+
+const recentArticles = [
+  {
+    id: "1",
+    title:
+      "Annual Education Drive: Distributing Learning Kits to Rural Students",
+    category: "Education",
+    date: "October 2026",
+    excerpt:
+      "A look back at our recent outreach drive empowering hundreds of primary students with essential stationery, books, and school supplies.",
+  },
+  {
+    id: "2",
+    title: "Community Preventive Health Camp Highlights & Impact",
+    category: "Healthcare",
+    date: "September 2026",
+    excerpt:
+      "Over 350 rural families benefited from comprehensive health consultations, blood pressure screenings, and preventive medicine advice.",
+  },
+  {
+    id: "3",
+    title: "Empowering Rural Women Through Sustainable Handicraft Training",
+    category: "Empowerment",
+    date: "August 2026",
+    excerpt:
+      "Discover the stories of local women who completed our three-month vocational skill enhancement program in Bengaluru rural.",
+  },
+];
+
+export default function HomePage() {
+  return (
+    <div className="flex flex-col">
+      {/* Hero Section with crisp white background and subtle warm glow */}
+      <section className="relative overflow-hidden bg-white py-16 sm:py-24 lg:py-28 border-b border-[#EADCCB]">
+        {/* Subtle decorative warm glow */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FFD21C]/15 via-[#FF8A00]/10 to-transparent blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-72 h-72 bg-gradient-to-tr from-[#F52232]/5 to-transparent blur-2xl rounded-full pointer-events-none" />
+
+        <Container className="relative z-10">
+          <div className="max-w-3xl space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#FFF5E6] border border-[#EADCCB] px-3.5 py-1 text-xs font-semibold tracking-wide text-[#F52232] shadow-2xs">
+              <Sparkles className="h-3.5 w-3.5 text-[#FF8A00]" />
+              <span>
+                Registered Public Charitable Trust • We Believe In Abilities
+              </span>
+            </div>
+
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-[#492A22] leading-[1.15]">
+              Empowering Abilities. <br />
+              <span className="text-brand-gradient">Transforming Lives.</span>
+            </h1>
+
+            <p className="text-base text-[#78685D] sm:text-lg lg:text-xl leading-relaxed max-w-2xl">
+              Samartha Trust works relentlessly at the grassroots to provide
+              accessible education, preventative healthcare, and sustainable
+              livelihood support to empower individuals and families towards
+              self-reliance.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <Button asChild size="lg">
+                <Link href="/programs" className="gap-2">
+                  <span>Explore Our Programs</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/about">About Samartha Trust</Link>
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Focus Areas Section - Crisp White Background */}
+      <section className="py-16 sm:py-24 bg-white border-b border-[#EADCCB]">
+        <Container>
+          <SectionHeading
+            badge="What We Do"
+            title="Our Core Focus"
+            highlight="Areas"
+            description="We channel compassionate resources and dedicated volunteers into four foundational pillars of social impact."
+          />
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {focusAreas.map((area) => {
+              const Icon = area.icon;
+              return (
+                <Card
+                  key={area.title}
+                  className="group relative border border-[#EADCCB] bg-white transition-all hover:border-[#FF8A00]/60 hover:shadow-md"
+                >
+                  <CardContent className="p-6 space-y-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF5E6] text-[#F52232] border border-[#EADCCB]/60 group-hover:scale-105 group-hover:bg-[#F52232] group-hover:text-white transition-all">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-bold text-[#492A22]">
+                      {area.title}
+                    </h3>
+                    <p className="text-sm text-[#78685D] leading-relaxed">
+                      {area.description}
+                    </p>
+                    <div className="pt-2">
+                      <Link
+                        href={area.href}
+                        className="inline-flex items-center text-xs font-semibold text-[#F52232] hover:text-[#FF8A00] gap-1 transition-colors"
+                      >
+                        <span>Learn more</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* Impact Indicators Section - Light Cream Alternate Section (~15%) */}
+      <section className="py-16 bg-[#FFFCF5] border-b border-[#EADCCB]">
+        <Container>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 text-center">
+            {impactHighlights.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-xl border border-[#EADCCB] bg-white p-6 space-y-2 shadow-2xs"
+              >
+                <div className="text-3xl font-extrabold text-[#F52232] sm:text-4xl">
+                  {stat.number}
+                </div>
+                <div className="text-base font-bold text-[#492A22]">
+                  {stat.label}
+                </div>
+                <p className="text-xs text-[#78685D] leading-relaxed">
+                  {stat.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Trust & Transparency Mission Section - Crisp White Background */}
+      <section className="py-16 sm:py-24 bg-white border-b border-[#EADCCB]">
+        <Container>
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+            <div className="space-y-6">
+              <Badge variant="warm">Grassroots Impact</Badge>
+              <h2 className="text-3xl font-bold tracking-tight text-[#492A22] sm:text-4xl leading-tight">
+                Built on Trust, Compassion, and Direct Social Service
+              </h2>
+              <p className="text-[#78685D] leading-relaxed">
+                Samartha Trust was founded with the singular objective of
+                bridging the gap between marginalized communities and
+                sustainable developmental resources. We believe that every
+                individual has unique abilities and deserves dignity, access to
+                quality learning, and basic preventive healthcare.
+              </p>
+
+              <div className="space-y-3.5 pt-2">
+                <div className="flex items-start gap-3">
+                  <div className="h-6 w-6 rounded-full bg-[#FFF5E6] flex items-center justify-center shrink-0 mt-0.5 border border-[#EADCCB]">
+                    <ShieldCheck className="h-4 w-4 text-[#F52232]" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-[#492A22]">
+                      Complete Governance & Transparency
+                    </h4>
+                    <p className="text-xs text-[#78685D] mt-0.5">
+                      Every initiative is tracked with meticulous accountability
+                      and volunteer engagement.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="h-6 w-6 rounded-full bg-[#FFF5E6] flex items-center justify-center shrink-0 mt-0.5 border border-[#EADCCB]">
+                    <Award className="h-4 w-4 text-[#FF8A00]" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-[#492A22]">
+                      Direct Community Ownership
+                    </h4>
+                    <p className="text-xs text-[#78685D] mt-0.5">
+                      We collaborate with local leaders to ensure
+                      self-sustaining long-term change.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <Button asChild variant="outline">
+                  <Link href="/about">Read Our Story & Governance</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative rounded-2xl border border-[#EADCCB] bg-[#FFFCF5] p-8 sm:p-10 shadow-2xs">
+              <div className="space-y-6">
+                <div className="border-l-4 border-[#F52232] pl-4">
+                  <h3 className="text-lg font-bold text-[#492A22]">
+                    Our Core Mission
+                  </h3>
+                  <p className="mt-2 text-sm text-[#78685D] leading-relaxed">
+                    To catalyze holistic human development by facilitating
+                    accessible learning, health awareness, and socioeconomic
+                    empowerment for underprivileged and differently-abled
+                    individuals.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-[#FF8A00] pl-4">
+                  <h3 className="text-lg font-bold text-[#492A22]">
+                    Our Shared Vision
+                  </h3>
+                  <p className="mt-2 text-sm text-[#78685D] leading-relaxed">
+                    An inclusive society where abilities are celebrated, no
+                    child is deprived of education, no family lacks basic health
+                    dignity, and every community has the capacity to thrive
+                    independently.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Latest Updates & News Section - Crisp White Background */}
+      <section className="py-16 sm:py-24 bg-white">
+        <Container>
+          <SectionHeading
+            badge="Updates"
+            title="Latest News & Field"
+            highlight="Stories"
+            description="Stay informed on our recent activities, field reports, and community outreach milestones."
+          />
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {recentArticles.map((article) => (
+              <Card
+                key={article.id}
+                className="flex flex-col justify-between border border-[#EADCCB] bg-white hover:border-[#FF8A00]/50 hover:shadow-md transition-all"
+              >
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center justify-between text-xs text-[#78685D]">
+                    <Badge variant="secondary">{article.category}</Badge>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3 text-[#FF8A00]" />
+                      <span>{article.date}</span>
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-bold leading-snug text-[#492A22] hover:text-[#F52232] transition-colors">
+                    <Link href="/blog">{article.title}</Link>
+                  </h3>
+                  <p className="text-sm text-[#78685D] leading-relaxed">
+                    {article.excerpt}
+                  </p>
+                </CardContent>
+                <div className="border-t border-[#EADCCB]/70 p-4 px-6 bg-[#FFFCF5]">
+                  <Link
+                    href="/blog"
+                    className="inline-flex items-center text-xs font-semibold text-[#F52232] hover:text-[#FF8A00] gap-1 transition-colors"
+                  >
+                    <span>Read full article</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Button asChild variant="outline">
+              <Link href="/blog">View All Articles & Stories</Link>
+            </Button>
+          </div>
+        </Container>
+      </section>
+
+      {/* Call to Action Banner in Brand Gradient */}
+      <section className="py-16 sm:py-20 bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFAA00] text-white">
+        <Container className="text-center max-w-3xl space-y-6">
+          <h2 className="text-3xl font-extrabold sm:text-4xl text-white tracking-tight">
+            Join Us in Making a Real Difference
+          </h2>
+          <p className="text-base text-white/95 sm:text-lg leading-relaxed max-w-2xl mx-auto">
+            Whether you wish to volunteer your time, sponsor an educational kit,
+            or partner on a healthcare initiative, your support brings hope and
+            empowerment to hundreds of lives.
+          </p>
+          <div className="pt-2 flex flex-wrap justify-center gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="bg-white text-[#492A22] hover:bg-[#FFF5E6] shadow-md border-0"
+            >
+              <Link href="/contact">Get in Touch with Us</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+            >
+              <Link href="/programs">View All Initiatives</Link>
+            </Button>
+          </div>
+        </Container>
+      </section>
+    </div>
+  );
+}
