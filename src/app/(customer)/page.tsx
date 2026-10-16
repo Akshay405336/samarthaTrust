@@ -9,13 +9,13 @@ import {
   ShieldCheck,
   Award,
   Calendar,
-  Sparkles,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { HeroSection } from "@/components/customer/hero-section";
 
 const focusAreas = [
   {
@@ -102,47 +102,8 @@ const recentArticles = [
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* Hero Section with crisp white background and subtle warm glow */}
-      <section className="relative overflow-hidden bg-white py-16 sm:py-24 lg:py-28 border-b border-[#EADCCB]">
-        {/* Subtle decorative warm glow */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FFD21C]/15 via-[#FF8A00]/10 to-transparent blur-3xl rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-72 h-72 bg-gradient-to-tr from-[#F52232]/5 to-transparent blur-2xl rounded-full pointer-events-none" />
-
-        <Container className="relative z-10">
-          <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#FFF5E6] border border-[#EADCCB] px-3.5 py-1 text-xs font-semibold tracking-wide text-[#F52232] shadow-2xs">
-              <Sparkles className="h-3.5 w-3.5 text-[#FF8A00]" />
-              <span>
-                Registered Public Charitable Trust • We Believe In Abilities
-              </span>
-            </div>
-
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-[#492A22] leading-[1.15]">
-              Empowering Abilities. <br />
-              <span className="text-brand-gradient">Transforming Lives.</span>
-            </h1>
-
-            <p className="text-base text-[#78685D] sm:text-lg lg:text-xl leading-relaxed max-w-2xl">
-              Samartha Trust works relentlessly at the grassroots to provide
-              accessible education, preventative healthcare, and sustainable
-              livelihood support to empower individuals and families towards
-              self-reliance.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Button asChild size="lg">
-                <Link href="/programs" className="gap-2">
-                  <span>Explore Our Programs</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/about">About Samartha Trust</Link>
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
+      {/* Recreated Hero Section matching supplied reference */}
+      <HeroSection />
 
       {/* Focus Areas Section - Crisp White Background */}
       <section className="py-16 sm:py-24 bg-white border-b border-[#EADCCB]">
