@@ -3,9 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Lock, Mail, ArrowRight, AlertCircle, Info } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
+import { getSafeRedirectUrl } from "@/lib/auth/redirect";
+import { onClientLogout } from "@/lib/auth/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,14 +19,47 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
-export default function AdminLoginPage() {
+const initialFormData: LoginInput = {
+  email: "",
+  password: "",
+};
+
+function AdminLoginForm() {
   const router = useRouter();
-  const [formData, setFormData] = React.useState<LoginInput>({
-    email: "admin@samarthatrust.org",
-    password: "",
-  });
+  const searchParams = useSearchParams();
+
+  const [formData, setFormData] = React.useState<LoginInput>(initialFormData);
+  const [showPassword, setShowPassword] = React.useState(false);
   const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [generalError, setGeneralError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
+
+  const resetForm = React.useCallback(() => {
+    setFormData({ email: "", password: "" });
+    setShowPassword(false);
+    setErrors({});
+    setGeneralError(null);
+    setLoading(false);
+  }, []);
+
+  React.useEffect(() => {
+    const unsubscribe = onClientLogout(() => {
+      resetForm();
+    });
+
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        resetForm();
+      }
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, [resetForm]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,11 +71,16 @@ export default function AdminLoginPage() {
         return next;
       });
     }
+    if (generalError) {
+      setGeneralError(null);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    if (loading) return;
+
+    setGeneralError(null);
 
     const result = loginSchema.safeParse(formData);
     if (!result.success) {
@@ -51,16 +91,47 @@ export default function AdminLoginPage() {
         }
       });
       setErrors(fieldErrors);
-      setLoading(false);
       return;
     }
 
     setErrors({});
-    // In this foundation phase, navigate to the admin dashboard prototype
-    setTimeout(() => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/admin/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setGeneralError(data?.error || "Invalid email or password.");
+        return;
+      }
+
+      // Immediately clear credentials from state before redirecting
+      resetForm();
+
+      // Safe redirect after successful authentication confirmed by server
+      const fromParam = searchParams.get("from");
+      const safeDestination = getSafeRedirectUrl(fromParam, "/admin");
+
+      router.push(safeDestination);
+      router.refresh();
+    } catch {
+      setGeneralError(
+        "Network connection error. Please verify your connection and try again."
+      );
+    } finally {
       setLoading(false);
-      router.push("/admin");
-    }, 400);
+    }
   };
 
   return (
@@ -74,6 +145,7 @@ export default function AdminLoginPage() {
               width={48}
               height={48}
               className="h-full w-full object-contain"
+              priority
             />
           </div>
           <CardTitle className="text-2xl font-bold text-[#492A22] tracking-tight">
@@ -85,17 +157,23 @@ export default function AdminLoginPage() {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {/* Foundation note banner */}
-          <div className="rounded-lg border border-[#EADCCB] bg-[#FFF5E6] p-3 text-xs text-[#492A22] flex items-start gap-2.5">
-            <Info className="h-4 w-4 shrink-0 mt-0.5 text-[#FF8A00]" />
-            <p className="text-[#78685D] leading-relaxed">
-              <strong className="text-[#492A22]">Foundation Stage:</strong>{" "}
-              Server-side authentication and database password verification will
-              be connected in subsequent steps.
-            </p>
-          </div>
+          {/* General error message banner */}
+          {generalError && (
+            <div
+              role="alert"
+              className="rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 flex items-start gap-2.5"
+            >
+              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-600" />
+              <p className="font-medium leading-relaxed">{generalError}</p>
+            </div>
+          )}
 
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+            noValidate
+            autoComplete="off"
+          >
             <div>
               <Label
                 htmlFor="email"
@@ -109,11 +187,13 @@ export default function AdminLoginPage() {
                   id="email"
                   name="email"
                   type="email"
+                  autoComplete="off"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="admin@samarthatrust.org"
                   className="pl-9 bg-white border-[#EADCCB] text-[#492A22] placeholder:text-[#78685D]/60 focus-visible:ring-[#F52232]"
                   aria-invalid={!!errors.email}
+                  disabled={loading}
                 />
               </div>
               {errors.email && (
@@ -132,22 +212,35 @@ export default function AdminLoginPage() {
                 >
                   Password
                 </Label>
-                <span className="text-[11px] text-[#F52232] font-medium">
-                  Super Admin Seeded
-                </span>
               </div>
               <div className="relative mt-1.5">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-[#78685D]" />
                 <Input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="new-password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="pl-9 bg-white border-[#EADCCB] text-[#492A22] placeholder:text-[#78685D]/60 focus-visible:ring-[#F52232]"
+                  className="pl-9 pr-10 bg-white border-[#EADCCB] text-[#492A22] placeholder:text-[#78685D]/60 focus-visible:ring-[#F52232]"
                   aria-invalid={!!errors.password}
+                  disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-2.5 p-0.5 text-[#78685D] hover:text-[#F52232] transition-colors cursor-pointer rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F52232]"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  title={showPassword ? "Hide password" : "Show password"}
+                  tabIndex={0}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
               </div>
               {errors.password && (
                 <p className="mt-1 text-xs text-[#F52232] flex items-center gap-1 font-medium">
@@ -157,7 +250,11 @@ export default function AdminLoginPage() {
               )}
             </div>
 
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full cursor-pointer"
+            >
               <span className="flex items-center justify-center gap-2">
                 <span>
                   {loading ? "Signing in..." : "Enter Admin Dashboard"}
@@ -178,5 +275,25 @@ export default function AdminLoginPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function AdminLoginContent() {
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from") || "";
+  return <AdminLoginForm key={from} />;
+}
+
+export default function AdminLoginPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="w-full max-w-md h-96 flex items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#F52232] border-t-transparent" />
+        </div>
+      }
+    >
+      <AdminLoginContent />
+    </React.Suspense>
   );
 }

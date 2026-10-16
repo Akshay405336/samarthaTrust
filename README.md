@@ -14,9 +14,31 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Admin Authentication & Management
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Samartha Trust features a production-grade Super Admin authentication system using PostgreSQL, Prisma ORM, bcrypt password hashing, and HttpOnly cookie sessions.
+
+- **Admin Login**: `http://localhost:3000/admin/login`
+- **Protected Console**: `http://localhost:3000/admin`
+- **Documentation**: See [`docs/AUTHENTICATION.md`](./docs/AUTHENTICATION.md) for full architecture and operations details.
+
+### Database & Authentication Commands
+
+```bash
+# Apply Prisma migrations
+pnpm db:migrate
+
+# Seed the initial Super Admin account
+pnpm db:seed
+
+# Run the complete automated test suite
+pnpm test
+
+# Run type check, linting, and production build
+pnpm type-check
+pnpm lint
+pnpm build
+```
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

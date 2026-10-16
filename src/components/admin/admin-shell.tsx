@@ -4,12 +4,14 @@ import * as React from "react";
 import { AdminHeader } from "./admin-header";
 import { AdminSidebar } from "./admin-sidebar";
 import { AdminFooter } from "./admin-footer";
+import { AdminSessionMonitor } from "./admin-session-monitor";
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   return (
     <div className="flex min-h-screen bg-[#FFFCF5]">
+      <AdminSessionMonitor />
       {/* Sidebar */}
       <AdminSidebar
         mobileOpen={sidebarOpen}

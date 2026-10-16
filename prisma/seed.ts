@@ -1,48 +1,33 @@
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { synchronizeSuperAdmin } from "../src/lib/auth/seed-service";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Starting Samartha Trust database seed foundation...");
-
-  const superAdminEmail =
-    process.env.SUPER_ADMIN_EMAIL || "admin@samarthatrust.org";
-  const superAdminName =
-    process.env.SUPER_ADMIN_NAME || "Samartha Trust Super Admin";
-
-  // Password hashing will be wired with bcryptjs/argon2 in the upcoming authentication step
-  const placeholderHash =
-    "$2a$12$e8x/kZ66Wz65p89mP/Q11.EXAMPLE_HASH_PREPARED_FOR_AUTH";
-
-  console.log(`Checking existing super admin user (${superAdminEmail})...`);
+  console.log("🌱 Starting Samartha Trust Super Admin synchronization...");
 
   try {
-    const existingAdmin = await prisma.user.findUnique({
-      where: { email: superAdminEmail },
-    });
-
-    if (!existingAdmin) {
-      const admin = await prisma.user.create({
-        data: {
-          email: superAdminEmail,
-          name: superAdminName,
-          passwordHash: placeholderHash,
-          role: Role.SUPER_ADMIN,
-          isActive: true,
-        },
-      });
-      console.log(`✅ Super Admin created with ID: ${admin.id}`);
-    } else {
-      console.log(`ℹ️ Super Admin already exists with ID: ${existingAdmin.id}`);
-    }
-
-    console.log("🌱 Seed foundation completed successfully.");
-  } catch (error) {
-    console.error("❌ Unable to connect to PostgreSQL during seed execution.");
-    console.error(
-      "Please verify that PostgreSQL is running and DATABASE_URL in .env is correctly configured."
+    const result = await synchronizeSuperAdmin(
+      {
+        email: process.env.SUPER_ADMIN_EMAIL,
+        password: process.env.SUPER_ADMIN_PASSWORD,
+        name: process.env.SUPER_ADMIN_NAME,
+      },
+      prisma
     );
-    console.error(error);
+
+    console.log(`✅ Super Admin ${result.action} successfully!`);
+    console.log(`   User ID: ${result.userId}`);
+    console.log(`   Email:   ${result.email}`);
+    console.log(`   Role:    ${result.role}`);
+    console.log(`   Status:  ${result.message}`);
+    console.log("🌱 Super Admin seed synchronization completed successfully.");
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Unknown error during seed execution.";
+    console.error("❌ " + message);
     process.exit(1);
   } finally {
     await prisma.$disconnect();
@@ -50,7 +35,7 @@ async function main() {
 }
 
 main().catch(async (e) => {
-  console.error(e);
+  console.error("❌ Fatal error in seed:", e);
   await prisma.$disconnect();
   process.exit(1);
 });
