@@ -3,10 +3,11 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, Users, Sprout } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { getAssetUrl } from "@/lib/utils/asset-version";
 
 export function HeroSection() {
   return (
-    <section className="relative m-0 w-full overflow-hidden border-b border-[#EADCCB] bg-white p-0">
+    <section className="relative m-0 w-full overflow-hidden bg-white p-0">
       <div className="grid w-full grid-cols-1 items-stretch gap-0 lg:grid-cols-[47%_53%]">
         {/* Left content */}
         <div className="relative z-10 flex min-w-0 flex-col justify-center gap-5 bg-white px-6 py-5 sm:px-10 sm:py-6 lg:py-5 lg:pl-[max(3rem,calc((100vw-1400px)/2))] lg:pr-7 xl:gap-6">
@@ -127,7 +128,7 @@ export function HeroSection() {
         <div className="relative m-0 min-w-0 w-full self-stretch overflow-hidden bg-white p-0">
           <div className="relative h-full min-h-[320px] w-full lg:min-h-[460px]">
             <Image
-              src="/images/samartha-hero.png"
+              src={getAssetUrl("/images/samartha-hero.png")}
               alt="A smiling schoolgirl holding books alongside other children and a tree-planting scene"
               width={1920}
               height={768}

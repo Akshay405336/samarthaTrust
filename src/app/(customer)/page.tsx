@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { HeroSection } from "@/components/customer/hero-section";
+import { ImpactSection } from "@/components/customer/ImpactSection";
+import { AboutSection } from "@/components/customer/about-section";
 
 const focusAreas = [
   {
@@ -104,6 +106,12 @@ export default function HomePage() {
     <div className="flex flex-col">
       {/* Recreated Hero Section matching supplied reference */}
       <HeroSection />
+
+      {/* Recreated Impact Section matching supplied reference */}
+      <ImpactSection />
+
+      {/* About Us Section matching supplied reference */}
+      <AboutSection />
 
       {/* Focus Areas Section - Crisp White Background */}
       <section className="py-16 sm:py-24 bg-white border-b border-[#EADCCB]">
