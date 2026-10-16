@@ -137,10 +137,10 @@ export function AdminSidebar({
         </div>
 
         {/* Public site link and footer */}
-        <div className="border-t border-[#EADCCB] p-4 bg-[#FFFCF5]">
+        <div className="border-t border-[#EADCCB] p-4 bg-white">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[#78685D] transition-colors hover:bg-white hover:text-[#F52232]"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[#78685D] transition-colors hover:bg-[#FFF5E6] hover:text-[#F52232]"
           >
             <Globe className="h-4 w-4 text-[#F52232]" />
             <span>Return to Public Website</span>

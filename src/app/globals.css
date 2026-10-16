@@ -96,7 +96,7 @@
   --ring: #f52232;
   --radius: 0.625rem;
 
-  --sidebar: #fffcf5;
+  --sidebar: #ffffff;
   --sidebar-foreground: #492a22;
   --sidebar-primary: #f52232;
   --sidebar-primary-foreground: #ffffff;
@@ -142,9 +142,11 @@
   body {
     @apply bg-background text-foreground;
     color: #492a22;
+    background-color: #ffffff;
   }
   html {
     @apply font-sans;
+    background-color: #ffffff;
   }
 }
 

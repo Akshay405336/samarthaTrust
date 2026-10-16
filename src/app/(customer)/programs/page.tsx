@@ -90,7 +90,7 @@ const programs = [
 
 export default function ProgramsPage() {
   return (
-    <div>
+    <div className="bg-white">
       <PageHeader
         badge="Grassroots Action"
         title="Our Programs &"

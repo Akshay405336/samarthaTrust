@@ -17,7 +17,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { HeroSection } from "@/components/customer/hero-section";
 import { ImpactSection } from "@/components/customer/ImpactSection";
-import { AboutSection } from "@/components/customer/about-section";
+import { HowYouCanHelpSection } from "@/components/customer/HowYouCanHelpSection";
+import { LifeTransformedSection } from "@/components/customer/life-transformed-section";
+import { TransparencySection } from "@/components/customer/transparency-section";
 
 const focusAreas = [
   {
@@ -103,15 +105,22 @@ const recentArticles = [
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-white">
       {/* Recreated Hero Section matching supplied reference */}
       <HeroSection />
 
       {/* Recreated Impact Section matching supplied reference */}
       <ImpactSection />
 
-      {/* About Us Section matching supplied reference */}
-      <AboutSection />
+      {/* Recreated How You Can Help Section matching supplied reference */}
+      <HowYouCanHelpSection />
+      
+      {/* Life Transformed Section */}
+      <LifeTransformedSection />
+
+      {/* Transparency & Governance Section */}
+      <TransparencySection />
+    
 
       {/* Focus Areas Section - Crisp White Background */}
       <section className="py-16 sm:py-24 bg-white border-b border-[#EADCCB]">

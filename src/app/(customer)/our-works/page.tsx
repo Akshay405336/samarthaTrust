@@ -90,7 +90,7 @@ const works = [
 
 export default function OurWorksPage() {
   return (
-    <div>
+    <div className="bg-white">
       <PageHeader
         badge="Grassroots Action"
         title="Our"

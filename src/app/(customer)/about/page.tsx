@@ -50,7 +50,7 @@ const coreValues = [
 
 export default function AboutPage() {
   return (
-    <div>
+    <div className="bg-white">
       <PageHeader
         badge="Who We Are"
         title="About Samartha"

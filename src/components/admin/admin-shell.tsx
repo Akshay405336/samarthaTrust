@@ -10,7 +10,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#FFFCF5]">
+    <div className="flex min-h-screen bg-white">
       <AdminSessionMonitor />
       {/* Sidebar */}
       <AdminSidebar
@@ -19,9 +19,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       />
 
       {/* Main Column */}
-      <div className="flex flex-1 flex-col min-w-0">
+      <div className="flex flex-1 flex-col min-w-0 bg-white">
         <AdminHeader onMenuToggle={() => setSidebarOpen(true)} />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-white">{children}</main>
         <AdminFooter />
       </div>
     </div>

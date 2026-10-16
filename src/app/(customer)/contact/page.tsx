@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div>
+    <div className="bg-white">
       <PageHeader
         badge="Get In Touch"
         title="Contact Samartha"

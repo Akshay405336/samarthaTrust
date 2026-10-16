@@ -1,10 +1,4 @@
-
-import {
-  Heart,
-  GraduationCap,
-  Utensils,
-  Sprout,
-} from "lucide-react";
+import { Heart, GraduationCap, Utensils, Sprout } from "lucide-react";
 import { Container } from "@/components/shared/container";
 
 const impactStats = [
@@ -72,8 +66,7 @@ export function ImpactSection() {
             id="impact-heading"
             className="text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#492A22]"
           >
-            Our Impact,{" "}
-            <span className="text-[#F4510B]">Our Promise</span>
+            Our Impact, <span className="text-[#F4510B]">Our Promise</span>
           </h2>
 
           <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#78685D] sm:text-base lg:text-[17px]">
@@ -138,7 +131,6 @@ export function ImpactSection() {
             className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C] px-6 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
           >
             Support Our Work
-
             <Heart
               className="h-4 w-4 transition-transform duration-200 group-hover:scale-110"
               aria-hidden="true"

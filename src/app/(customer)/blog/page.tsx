@@ -70,7 +70,7 @@ const blogPosts = [
 
 export default function BlogPage() {
   return (
-    <div>
+    <div className="bg-white">
       <PageHeader
         badge="Field Reports & Stories"
         title="Blog & Community"

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function OurTrusteesPage() {
   return (
-    <div>
+    <div className="bg-white">
       <PageHeader
         badge="Leadership & Governance"
         title="Our"
