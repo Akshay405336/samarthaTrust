@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Users, Sprout } from "lucide-react";
@@ -6,12 +7,12 @@ import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden border-b border-[#EADCCB] bg-white">
-      <div className="grid w-full grid-cols-1 items-center lg:grid-cols-[47%_53%]">
+    <section className="relative m-0 w-full overflow-hidden border-b border-[#EADCCB] bg-white p-0">
+      <div className="grid w-full grid-cols-1 items-stretch gap-0 lg:grid-cols-[47%_53%]">
         {/* Left content */}
-        <div className="relative z-10 flex min-w-0 flex-col justify-center gap-5 bg-white px-6 py-4 sm:px-10 sm:py-6 lg:py-0 lg:pl-[max(2.5rem,calc((100vw-1400px)/2))] lg:pr-6 xl:gap-6">
+        <div className="relative z-10 flex min-w-0 flex-col justify-center gap-5 bg-white px-6 py-5 sm:px-10 sm:py-6 lg:py-5 lg:pl-[max(3rem,calc((100vw-1400px)/2))] lg:pr-7 xl:gap-6">
           {/* Eyebrow */}
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#78685D] sm:text-xs sm:tracking-[0.15em]">
+          <p className="text-[11px] font-semibold tracking-[0.12em] text-[#78685D] sm:text-xs sm:tracking-[0.15em]">
             People <span className="px-1">·</span> Education
             <span className="px-1">·</span> Opportunities
             <span className="px-1">·</span> A Brighter Tomorrow
@@ -96,7 +97,6 @@ export function HeroSection() {
           <div className="mt-2 grid max-w-[600px] grid-cols-3 items-center border-t border-[#EADCCB]/70 pt-4 text-[#492A22]">
             <div className="flex items-center gap-2 pr-2 sm:gap-3 sm:pr-4">
               <BookOpen className="h-5 w-5 shrink-0 text-[#F52232] sm:h-7 sm:w-7" />
-
               <span className="text-[11px] font-medium leading-5 sm:text-sm">
                 Education
                 <br />
@@ -106,7 +106,6 @@ export function HeroSection() {
 
             <div className="flex items-center gap-2 border-l border-[#EADCCB] px-2 sm:gap-3 sm:px-4">
               <Users className="h-5 w-5 shrink-0 text-[#FF8A00] sm:h-7 sm:w-7" />
-
               <span className="text-[11px] font-medium leading-5 sm:text-sm">
                 Stronger
                 <br />
@@ -116,7 +115,6 @@ export function HeroSection() {
 
             <div className="flex items-center gap-2 border-l border-[#EADCCB] pl-2 sm:gap-3 sm:pl-4">
               <Sprout className="h-5 w-5 shrink-0 text-[#FF8A00] sm:h-7 sm:w-7" />
-
               <span className="text-[11px] font-medium leading-5 sm:text-sm">
                 Sustainable
                 <br />
@@ -126,20 +124,21 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Right image with a soft white fade on its left edge */}
-        <div className="relative min-w-0 w-full self-center bg-white">
-          <div className="relative w-full">
+        {/* Right image with soft white fade */}
+        <div className="relative m-0 min-w-0 w-full self-stretch overflow-hidden bg-white p-0">
+          <div className="relative h-full min-h-[320px] w-full lg:min-h-[460px]">
             <Image
               src="/images/samartha-hero.png"
               alt="A smiling schoolgirl holding books alongside other children and a tree-planting scene"
               width={1920}
               height={768}
               priority
+              unoptimized
               sizes="(max-width: 1023px) 100vw, 53vw"
-              className="block h-auto w-full select-none object-contain lg:object-right"
+              className="absolute inset-0 block h-full w-full select-none object-cover object-center lg:object-center"
             />
 
-            {/* Blend the photograph into the white text area */}
+            {/* White fade blends the photograph into the left content */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-20 bg-gradient-to-r from-white via-white/70 to-transparent lg:block xl:w-32"
