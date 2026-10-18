@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import Image from "next/image";
 import { Heart, ArrowUpRight, Sparkles } from "lucide-react";
@@ -100,8 +99,8 @@ export function LifeTransformedSection() {
               <p>
                 Today, he attends school regularly, participates in activities
                 with confidence, and dreams of becoming a teacher. With
-                structured care, guidance and emotional support, he now has
-                the stability every child deserves.
+                structured care, guidance and emotional support, he now has the
+                stability every child deserves.
               </p>
             </div>
 

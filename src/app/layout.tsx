@@ -19,6 +19,9 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://samarthatrust.org"
+  ),
   title: {
     default: "Samartha Trust | We Believe In Abilities",
     template: "%s | Samartha Trust",

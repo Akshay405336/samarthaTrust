@@ -16,7 +16,7 @@ model User {
   isActive     Boolean    @default(true)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  blogPosts    BlogPost[]
+  blogs        Blog[]
   sessions     Session[]
 
   @@map("users")
@@ -39,21 +39,39 @@ model Session {
   @@map("sessions")
 }
 
-model BlogPost {
-  id          String    @id @default(cuid())
-  title       String
-  slug        String    @unique
-  excerpt     String?
-  content     String
-  coverImage  String?
-  published   Boolean   @default(false)
-  publishedAt DateTime?
-  authorId    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
 
-  @@map("blog_posts")
+model Blog {
+  id              String      @id @default(cuid())
+  title           String
+  slug            String      @unique
+  excerpt         String?
+  content         String      @db.Text
+  coverImage      String?
+  authorName      String
+  authorId        String?
+  category        String
+  tags            String[]    @default([])
+  status          BlogStatus  @default(DRAFT)
+  isFeatured      Boolean     @default(false)
+  publishedAt     DateTime?
+  metaTitle       String?
+  metaDescription String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  author          User?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([publishedAt])
+  @@index([category])
+  @@index([isFeatured])
+  @@index([slug])
+  @@map("blogs")
 }
 
 enum Role {

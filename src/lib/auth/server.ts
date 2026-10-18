@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import type { NextRequest } from "next/server";
 import { AUTH_COOKIES } from "./constants";
 import { verifyAccessToken, hashOpaqueToken } from "./tokens";
 import { validateActiveSession, type SafeUser } from "./session-service";
@@ -10,9 +11,24 @@ import { Role } from "@prisma/client";
  * Retrieves the current authenticated Super Admin session in Server Components or Route Handlers.
  * Verifies access token signature and checks database session revocation state.
  */
-export async function getAdminSession(): Promise<SafeUser | null> {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get(AUTH_COOKIES.ACCESS_TOKEN)?.value;
+export async function getAdminSession(
+  request?: NextRequest
+): Promise<SafeUser | null> {
+  let accessToken: string | undefined;
+  let refreshToken: string | undefined;
+
+  if (request && "cookies" in request) {
+    accessToken = request.cookies.get(AUTH_COOKIES.ACCESS_TOKEN)?.value;
+    refreshToken = request.cookies.get(AUTH_COOKIES.REFRESH_TOKEN)?.value;
+  } else {
+    try {
+      const cookieStore = await cookies();
+      accessToken = cookieStore.get(AUTH_COOKIES.ACCESS_TOKEN)?.value;
+      refreshToken = cookieStore.get(AUTH_COOKIES.REFRESH_TOKEN)?.value;
+    } catch {
+      return null;
+    }
+  }
 
   if (accessToken) {
     const payload = await verifyAccessToken(accessToken);
@@ -26,7 +42,6 @@ export async function getAdminSession(): Promise<SafeUser | null> {
   }
 
   // If access token is expired or missing, check refresh token
-  const refreshToken = cookieStore.get(AUTH_COOKIES.REFRESH_TOKEN)?.value;
   if (refreshToken) {
     try {
       const tokenHash = hashOpaqueToken(refreshToken);

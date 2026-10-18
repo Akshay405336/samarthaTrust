@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import {
   ShieldCheck,
@@ -114,10 +113,7 @@ export function TransparencySection() {
                 const Icon = item.icon;
 
                 return (
-                  <article
-                    key={item.number}
-                    className="group py-5 sm:py-6"
-                  >
+                  <article key={item.number} className="group py-5 sm:py-6">
                     <div className="flex items-start gap-4">
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#EDE5DB] bg-white text-[#F4510B] transition-colors duration-200 group-hover:border-[#F4510B]/30 group-hover:bg-[#FFF2E7]">
                         <Icon

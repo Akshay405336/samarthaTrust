@@ -1,12 +1,5 @@
-
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  Heart,
-  Handshake,
-  Users,
-  Sparkles,
-} from "lucide-react";
+import { ArrowUpRight, Heart, Handshake, Users, Sparkles } from "lucide-react";
 import { Container } from "@/components/shared/container";
 
 const helpOptions = [
@@ -75,15 +68,13 @@ export function HowYouCanHelpSection() {
               className="text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#492A22]"
             >
               Small Actions.
-              <span className="block text-[#F4510B]">
-                Lasting Impact.
-              </span>
+              <span className="block text-[#F4510B]">Lasting Impact.</span>
             </h2>
           </div>
 
           <p className="max-w-md text-[15px] leading-7 text-[#78685D] sm:text-base lg:pb-1">
-            Every helping hand can open a new door. Find the way you can make
-            a difference in a child's life.
+            Every helping hand can open a new door. Find the way you can make a
+            difference in a child&apos;s life.
           </p>
         </div>
 
@@ -171,7 +162,7 @@ export function HowYouCanHelpSection() {
                 Every act of kindness counts.
               </h3>
               <p className="mt-1 text-sm leading-6 text-[#78685D]">
-                Have another way to help? We'd love to hear from you.
+                Have another way to help? We&apos;d love to hear from you.
               </p>
             </div>
           </div>

@@ -8,7 +8,6 @@ import {
   ArrowRight,
   ShieldCheck,
   Award,
-  Calendar,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
@@ -20,6 +19,7 @@ import { ImpactSection } from "@/components/customer/ImpactSection";
 import { HowYouCanHelpSection } from "@/components/customer/HowYouCanHelpSection";
 import { LifeTransformedSection } from "@/components/customer/life-transformed-section";
 import { TransparencySection } from "@/components/customer/transparency-section";
+import { HomeBlogSection } from "@/components/customer/home-blog-section";
 
 const focusAreas = [
   {
@@ -75,34 +75,6 @@ const impactHighlights = [
   },
 ];
 
-const recentArticles = [
-  {
-    id: "1",
-    title:
-      "Annual Education Drive: Distributing Learning Kits to Rural Students",
-    category: "Education",
-    date: "October 2026",
-    excerpt:
-      "A look back at our recent outreach drive empowering hundreds of primary students with essential stationery, books, and school supplies.",
-  },
-  {
-    id: "2",
-    title: "Community Preventive Health Camp Highlights & Impact",
-    category: "Healthcare",
-    date: "September 2026",
-    excerpt:
-      "Over 350 rural families benefited from comprehensive health consultations, blood pressure screenings, and preventive medicine advice.",
-  },
-  {
-    id: "3",
-    title: "Empowering Rural Women Through Sustainable Handicraft Training",
-    category: "Empowerment",
-    date: "August 2026",
-    excerpt:
-      "Discover the stories of local women who completed our three-month vocational skill enhancement program in Bengaluru rural.",
-  },
-];
-
 export default function HomePage() {
   return (
     <div className="flex flex-col bg-white">
@@ -114,13 +86,17 @@ export default function HomePage() {
 
       {/* Recreated How You Can Help Section matching supplied reference */}
       <HowYouCanHelpSection />
-      
+
       {/* Life Transformed Section */}
       <LifeTransformedSection />
 
       {/* Transparency & Governance Section */}
       <TransparencySection />
-    
+
+      {/* Dynamic Blog / Updates Section */}
+      <React.Suspense fallback={<div className="min-h-48 bg-[#FFFCF5]" />}>
+        <HomeBlogSection />
+      </React.Suspense>
 
       {/* Focus Areas Section - Crisp White Background */}
       <section className="py-16 sm:py-24 bg-white border-b border-[#EADCCB]">
@@ -274,58 +250,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Latest Updates & News Section - Crisp White Background */}
-      <section className="py-16 sm:py-24 bg-white">
-        <Container>
-          <SectionHeading
-            badge="Updates"
-            title="Latest News & Field"
-            highlight="Stories"
-            description="Stay informed on our recent activities, field reports, and community outreach milestones."
-          />
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {recentArticles.map((article) => (
-              <Card
-                key={article.id}
-                className="flex flex-col justify-between border border-[#EADCCB] bg-white hover:border-[#FF8A00]/50 hover:shadow-md transition-all"
-              >
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between text-xs text-[#78685D]">
-                    <Badge variant="secondary">{article.category}</Badge>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3 text-[#FF8A00]" />
-                      <span>{article.date}</span>
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-bold leading-snug text-[#492A22] hover:text-[#F52232] transition-colors">
-                    <Link href="/blog">{article.title}</Link>
-                  </h3>
-                  <p className="text-sm text-[#78685D] leading-relaxed">
-                    {article.excerpt}
-                  </p>
-                </CardContent>
-                <div className="border-t border-[#EADCCB]/70 p-4 px-6 bg-[#FFFCF5]">
-                  <Link
-                    href="/blog"
-                    className="inline-flex items-center text-xs font-semibold text-[#F52232] hover:text-[#FF8A00] gap-1 transition-colors"
-                  >
-                    <span>Read full article</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Button asChild variant="outline">
-              <Link href="/blog">View All Articles & Stories</Link>
-            </Button>
           </div>
         </Container>
       </section>
