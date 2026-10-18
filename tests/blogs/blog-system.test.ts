@@ -359,4 +359,58 @@ describe("Blog Management System", () => {
       createdBlogIds.push(createData.data.id);
     });
   });
+
+  describe("Customer HomeBlogSection Integration", () => {
+    it("renders HomeBlogSection server component with real published blogs from database", async () => {
+      const { HomeBlogSection } =
+        await import("@/components/customer/home-blog-section");
+      const { HomeBlogCarousel } =
+        await import("@/components/customer/home-blog-carousel");
+
+      const element = await HomeBlogSection();
+      expect(element).not.toBeNull();
+      expect(element?.type).toBe(HomeBlogCarousel);
+
+      const blogs = element?.props.blogs;
+      expect(Array.isArray(blogs)).toBe(true);
+      expect(blogs.length).toBeGreaterThan(0);
+
+      const firstBlog = blogs[0];
+      expect(firstBlog).toHaveProperty("id");
+      expect(firstBlog).toHaveProperty("title");
+      expect(firstBlog).toHaveProperty("slug");
+      expect(firstBlog).toHaveProperty("category");
+      expect(firstBlog).toHaveProperty("authorName");
+      expect(firstBlog).toHaveProperty("day");
+      expect(firstBlog).toHaveProperty("month");
+
+      // Verify date formatting: 2-digit day and 3-character short month string
+      expect(firstBlog.day).toMatch(/^\d{2}$/);
+      expect(firstBlog.month).toMatch(/^[A-Z][a-z]{2}$/);
+    });
+
+    it("verifies home-blog-carousel source code contains valid /blog detail links and view-all link, avoiding /blogs", async () => {
+      const fs = await import("fs");
+      const path = await import("path");
+      const carouselCode = fs.readFileSync(
+        path.join(
+          process.cwd(),
+          "src/components/customer/home-blog-carousel.tsx"
+        ),
+        "utf-8"
+      );
+
+      // Detail links must use /blog/${blog.slug}
+      expect(carouselCode).toContain("href={`/blog/${blog.slug}`}");
+      // View all link must use /blog
+      expect(carouselCode).toContain('href="/blog"');
+      // Must NOT contain any /blogs links
+      expect(carouselCode).not.toContain("/blogs");
+      // Typography tokens requested
+      expect(carouselCode).toContain("text-[clamp(2rem,3vw,3rem)]");
+      expect(carouselCode).toContain("text-[#492A22]");
+      expect(carouselCode).toContain("text-[#F4510B]");
+      expect(carouselCode).toContain("border-[#EADCCB]");
+    });
+  });
 });

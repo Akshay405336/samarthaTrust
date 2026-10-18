@@ -79,3 +79,32 @@ enum Role {
   ADMIN
   EDITOR
 }
+
+model TeamMember {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  designation  String
+  category     String   @default("Trustee")
+  profileImage String?
+  bio          String?  @db.Text
+  shortBio     String?
+  email        String?
+  phone        String?
+  linkedinUrl  String?
+  facebookUrl  String?
+  instagramUrl String?
+  websiteUrl   String?
+  displayOrder Int      @default(0)
+  isFeatured   Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([category])
+  @@index([isFeatured])
+  @@index([displayOrder])
+  @@index([slug])
+  @@map("team_members")
+}

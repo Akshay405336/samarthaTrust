@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   FileText,
+  Users,
   Calendar,
   Layers,
   Settings,
@@ -26,6 +27,11 @@ const navigationItems = [
     name: "Blog Management",
     href: "/admin/blogs",
     icon: FileText,
+  },
+  {
+    name: "Team Management",
+    href: "/admin/team",
+    icon: Users,
   },
   {
     name: "Programs (Upcoming)",

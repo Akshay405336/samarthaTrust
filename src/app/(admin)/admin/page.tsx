@@ -2,7 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import {
   FileText,
-  Layers,
+  Users,
   MessageSquare,
   Database,
   ArrowUpRight,
@@ -23,62 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/db/prisma";
 
-export default async function AdminDashboardPage() {
-  const [totalBlogs, publishedBlogs, draftBlogs, recentBlogPosts] =
-    await Promise.all([
-      prisma.blog.count(),
-      prisma.blog.count({ where: { status: "PUBLISHED" } }),
-      prisma.blog.count({ where: { status: "DRAFT" } }),
-      prisma.blog.findMany({
-        take: 5,
-        orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          category: true,
-          status: true,
-          createdAt: true,
-          publishedAt: true,
-        },
-      }),
-    ]);
-
-  const statCards = [
-    {
-      title: "Blog & Field Updates",
-      value: `${totalBlogs} Articles`,
-      subtitle: `${publishedBlogs} Published, ${draftBlogs} In Draft`,
-      icon: FileText,
-      href: "/admin/blogs",
-      color: "text-[#F52232] bg-[#FFF5E6] border border-[#EADCCB]",
-    },
-    {
-      title: "Core Programs",
-      value: "4 Initiatives",
-      subtitle: "Education, Health, Skills, Welfare",
-      icon: Layers,
-      href: "/programs",
-      color: "text-[#FF8A00] bg-[#FFF5E6] border border-[#EADCCB]",
-    },
-    {
-      title: "Contact Inquiries",
-      value: "Active",
-      subtitle: "Zod Schema Validated",
-      icon: MessageSquare,
-      href: "/contact",
-      color: "text-[#E68A00] bg-[#FFF5E6] border border-[#EADCCB]",
-    },
-    {
-      title: "Database Engine",
-      value: "PostgreSQL",
-      subtitle: "Prisma ORM Models Live",
-      icon: Database,
-      href: "#",
-      color: "text-[#492A22] bg-[#FFF5E6] border border-[#EADCCB]",
-    },
-  ];
-
+export default function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}
@@ -120,12 +65,153 @@ export default async function AdminDashboardPage() {
               Production Management System Active:
             </span>{" "}
             Real-time PostgreSQL database connection with Super Admin session
-            protection, dynamic blog content publishing, and media management is
-            running.
+            protection, dynamic blog content publishing, team leadership
+            profiles, and media management is running.
           </div>
         </div>
       </div>
 
+      {/* Dynamic Content wrapped in Suspense for Next.js 16 Partial Prerendering */}
+      <React.Suspense fallback={<AdminDashboardSkeleton />}>
+        <AdminDashboardContent />
+      </React.Suspense>
+    </div>
+  );
+}
+
+function AdminDashboardSkeleton() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      {/* Stat Cards Skeleton */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i} className="border border-[#EADCCB] bg-white shadow-2xs">
+            <CardContent className="p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="h-11 w-11 rounded-xl bg-[#EADCCB]/40" />
+                <div className="h-4 w-4 rounded bg-[#EADCCB]/30" />
+              </div>
+              <div className="space-y-2">
+                <div className="h-7 w-24 rounded bg-[#EADCCB]/40" />
+                <div className="h-4 w-32 rounded bg-[#EADCCB]/30" />
+                <div className="h-3 w-40 rounded bg-[#EADCCB]/20" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Activity & Status Grid Skeleton */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <Card className="lg:col-span-8 border border-[#EADCCB] bg-white shadow-2xs">
+          <CardHeader className="border-b border-[#EADCCB]/70 pb-3">
+            <div className="h-5 w-48 rounded bg-[#EADCCB]/40" />
+            <div className="h-3 w-64 rounded bg-[#EADCCB]/25 mt-1" />
+          </CardHeader>
+          <CardContent className="pt-4 space-y-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between py-2 border-b border-[#EADCCB]/30"
+              >
+                <div className="space-y-2">
+                  <div className="h-4 w-52 rounded bg-[#EADCCB]/40" />
+                  <div className="h-3 w-32 rounded bg-[#EADCCB]/25" />
+                </div>
+                <div className="h-5 w-16 rounded bg-[#EADCCB]/30" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-4 border border-[#EADCCB] bg-white shadow-2xs">
+          <CardHeader className="border-b border-[#EADCCB]/70 pb-3">
+            <div className="h-5 w-40 rounded bg-[#EADCCB]/40" />
+            <div className="h-3 w-48 rounded bg-[#EADCCB]/25 mt-1" />
+          </CardHeader>
+          <CardContent className="space-y-3 pt-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between py-1.5 border-b border-[#EADCCB]/30"
+              >
+                <div className="h-3.5 w-28 rounded bg-[#EADCCB]/30" />
+                <div className="h-3.5 w-16 rounded bg-[#EADCCB]/30" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+async function AdminDashboardContent() {
+  const [
+    totalBlogs,
+    publishedBlogs,
+    draftBlogs,
+    recentBlogPosts,
+    totalTeamMembers,
+    activeTeamMembers,
+  ] = await Promise.all([
+    prisma.blog.count(),
+    prisma.blog.count({ where: { status: "PUBLISHED" } }),
+    prisma.blog.count({ where: { status: "DRAFT" } }),
+    prisma.blog.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        category: true,
+        status: true,
+        createdAt: true,
+        publishedAt: true,
+      },
+    }),
+    prisma.teamMember.count(),
+    prisma.teamMember.count({ where: { isActive: true } }),
+  ]);
+
+  const statCards = [
+    {
+      title: "Blog & Field Updates",
+      value: `${totalBlogs} Articles`,
+      subtitle: `${publishedBlogs} Published, ${draftBlogs} In Draft`,
+      icon: FileText,
+      href: "/admin/blogs",
+      color: "text-[#F52232] bg-[#FFF5E6] border border-[#EADCCB]",
+    },
+    {
+      title: "Team & Trustees",
+      value: `${totalTeamMembers} Profiles`,
+      subtitle: `${activeTeamMembers} Active on Website`,
+      icon: Users,
+      href: "/admin/team",
+      color: "text-[#FF8A00] bg-[#FFF5E6] border border-[#EADCCB]",
+    },
+    {
+      title: "Contact Inquiries",
+      value: "Active",
+      subtitle: "Zod Schema Validated",
+      icon: MessageSquare,
+      href: "/contact",
+      color: "text-[#E68A00] bg-[#FFF5E6] border border-[#EADCCB]",
+    },
+    {
+      title: "Database Engine",
+      value: "PostgreSQL",
+      subtitle: "Prisma ORM Models Live",
+      icon: Database,
+      href: "#",
+      color: "text-[#492A22] bg-[#FFF5E6] border border-[#EADCCB]",
+    },
+  ];
+
+  return (
+    <>
       {/* Stat Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => {
@@ -276,6 +362,13 @@ export default async function AdminDashboardPage() {
               </span>
             </div>
             <div className="flex items-center justify-between border-b border-[#EADCCB]/60 pb-2.5">
+              <span className="text-[#78685D]">Team Management</span>
+              <span className="inline-flex items-center gap-1 font-semibold text-emerald-700">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Active</span>
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-b border-[#EADCCB]/60 pb-2.5">
               <span className="text-[#78685D]">Media Uploads</span>
               <span className="inline-flex items-center gap-1 font-semibold text-emerald-700">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
@@ -292,6 +385,6 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

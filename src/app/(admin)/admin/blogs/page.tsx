@@ -13,8 +13,9 @@ import {
   User,
   Sparkles,
   CheckCircle2,
-  Clock,
+  AlertCircle,
   Archive,
+  ArchiveRestore,
   ArrowUpDown,
   RefreshCw,
   Loader2,
@@ -53,6 +54,11 @@ interface PaginationMeta {
   hasPrevPage: boolean;
 }
 
+interface ToastState {
+  message: string;
+  type: "success" | "error";
+}
+
 export default function AdminBlogsPage() {
   const [blogs, setBlogs] = React.useState<BlogItem[]>([]);
   const [pagination, setPagination] = React.useState<PaginationMeta>({
@@ -64,7 +70,12 @@ export default function AdminBlogsPage() {
     hasPrevPage: false,
   });
 
-  const [loading, setLoading] = React.useState(true);
+  const [initialLoading, setInitialLoading] = React.useState(true);
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [actionLoadingIds, setActionLoadingIds] = React.useState<
+    Record<string, string>
+  >({});
+
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<string>("ALL");
   const [categoryFilter, setCategoryFilter] = React.useState<string>("ALL");
@@ -76,19 +87,17 @@ export default function AdminBlogsPage() {
   const [isDeleting, setIsDeleting] = React.useState(false);
 
   // Notification message
-  const [toastMessage, setToastMessage] = React.useState<string | null>(null);
+  const [toast, setToast] = React.useState<ToastState | null>(null);
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
+  const showToast = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
   };
 
-  const [reloadKey, setReloadKey] = React.useState(0);
-  const reloadBlogs = React.useCallback(() => {
-    setLoading(true);
-    setReloadKey((prev) => prev + 1);
-  }, []);
-
+  // Fetch blogs when filter, search, sort, or page changes
   React.useEffect(() => {
     let active = true;
 
@@ -114,10 +123,12 @@ export default function AdminBlogsPage() {
       } catch (err) {
         if (active) {
           console.error("Failed to fetch blogs:", err);
+          showToast("Failed to load blog posts.", "error");
         }
       } finally {
         if (active) {
-          setLoading(false);
+          setInitialLoading(false);
+          setIsRefreshing(false);
         }
       }
     }
@@ -134,93 +145,227 @@ export default function AdminBlogsPage() {
     statusFilter,
     categoryFilter,
     sortOrder,
-    reloadKey,
   ]);
 
-  // Status counters computed from total items or current view
-  const publishedCount = blogs.filter((b) => b.status === "PUBLISHED").length;
-  const draftCount = blogs.filter((b) => b.status === "DRAFT").length;
-  const archivedCount = blogs.filter((b) => b.status === "ARCHIVED").length;
+  // Manual refresh without disruptive full-table reload or loss of filter settings
+  const handleManualRefresh = async () => {
+    if (isRefreshing) return;
+    setIsRefreshing(true);
 
-  // Toggle publish/unpublish
+    try {
+      const params = new URLSearchParams({
+        page: pagination.page.toString(),
+        limit: pagination.limit.toString(),
+        sort: sortOrder,
+      });
+
+      if (search.trim()) params.set("search", search.trim());
+      if (statusFilter !== "ALL") params.set("status", statusFilter);
+      if (categoryFilter !== "ALL") params.set("category", categoryFilter);
+
+      const res = await fetch(`/api/admin/blogs?${params.toString()}`);
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setBlogs(data.data);
+        setPagination(data.pagination);
+        showToast("Blog records refreshed from database.", "success");
+      } else {
+        showToast(data.error || "Failed to refresh blogs.", "error");
+      }
+    } catch {
+      showToast("Network error refreshing blogs.", "error");
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Toggle publish / unpublish with targeted row update and authoritative database persistence
   const handleTogglePublish = async (blog: BlogItem) => {
-    const endpoint =
-      blog.status === "PUBLISHED"
-        ? `/api/admin/blogs/${blog.id}/unpublish`
-        : `/api/admin/blogs/${blog.id}/publish`;
+    if (actionLoadingIds[blog.id]) return;
+
+    setActionLoadingIds((prev) => ({ ...prev, [blog.id]: "publish" }));
+    const isPublished = blog.status === "PUBLISHED";
+    const endpoint = isPublished
+      ? `/api/admin/blogs/${blog.id}/unpublish`
+      : `/api/admin/blogs/${blog.id}/publish`;
 
     try {
       const res = await fetch(endpoint, { method: "POST" });
       const data = await res.json();
-      if (res.ok) {
+
+      if (res.ok && data.success && data.blog) {
+        const updatedBlog: BlogItem = {
+          ...blog,
+          ...data.blog,
+        };
+
+        // If the updated blog no longer matches the current status filter, remove it smoothly
+        if (statusFilter !== "ALL" && statusFilter !== updatedBlog.status) {
+          setBlogs((prev) => prev.filter((b) => b.id !== blog.id));
+          setPagination((prev) => {
+            const newTotal = Math.max(0, prev.total - 1);
+            return {
+              ...prev,
+              total: newTotal,
+              totalPages: Math.max(1, Math.ceil(newTotal / prev.limit)),
+            };
+          });
+        } else {
+          // Otherwise update row state in-place with authoritative data returned by the server
+          setBlogs((prev) =>
+            prev.map((b) => (b.id === blog.id ? updatedBlog : b))
+          );
+        }
+
         showToast(
-          blog.status === "PUBLISHED"
-            ? "Story unpublished back to draft."
-            : "Story published live to public site!"
+          updatedBlog.status === "PUBLISHED"
+            ? "Story published live to public site!"
+            : "Story unpublished back to draft.",
+          "success"
         );
-        reloadBlogs();
       } else {
-        alert(data.error || "Action failed.");
+        showToast(data.error || "Action failed.", "error");
       }
     } catch {
-      alert("Network error updating publication status.");
+      showToast("Network error updating publication status.", "error");
+    } finally {
+      setActionLoadingIds((prev) => {
+        const next = { ...prev };
+        delete next[blog.id];
+        return next;
+      });
     }
   };
 
-  // Toggle featured
+  // Toggle featured status with targeted row update
   const handleToggleFeature = async (blog: BlogItem) => {
+    if (actionLoadingIds[blog.id]) return;
+
+    setActionLoadingIds((prev) => ({ ...prev, [blog.id]: "feature" }));
+
     try {
       const res = await fetch(`/api/admin/blogs/${blog.id}/feature`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isFeatured: !blog.isFeatured }),
       });
-      if (res.ok) {
-        showToast(
-          !blog.isFeatured
-            ? `"${blog.title}" is now featured on the homepage.`
-            : "Removed from featured stories."
+      const data = await res.json();
+
+      if (res.ok && data.success && data.blog) {
+        setBlogs((prev) =>
+          prev.map((b) =>
+            b.id === blog.id ? { ...b, isFeatured: data.blog.isFeatured } : b
+          )
         );
-        reloadBlogs();
+        showToast(
+          data.blog.isFeatured
+            ? `"${blog.title}" is now featured on the homepage.`
+            : "Removed from featured stories.",
+          "success"
+        );
+      } else {
+        showToast(data.error || "Action failed.", "error");
       }
     } catch {
-      alert("Network error updating featured state.");
-    }
-  };
-
-  // Archive story
-  const handleArchive = async (blog: BlogItem) => {
-    try {
-      const res = await fetch(`/api/admin/blogs/${blog.id}/archive`, {
-        method: "POST",
+      showToast("Network error updating featured state.", "error");
+    } finally {
+      setActionLoadingIds((prev) => {
+        const next = { ...prev };
+        delete next[blog.id];
+        return next;
       });
-      if (res.ok) {
-        showToast(`"${blog.title}" has been moved to archive.`);
-        reloadBlogs();
-      }
-    } catch {
-      alert("Network error archiving story.");
     }
   };
 
-  // Confirm delete
+  // Archive or restore blog with targeted row update
+  const handleArchive = async (blog: BlogItem) => {
+    if (actionLoadingIds[blog.id]) return;
+
+    const isArchived = blog.status === "ARCHIVED";
+    const actionType = isArchived ? "restore" : "archive";
+    setActionLoadingIds((prev) => ({ ...prev, [blog.id]: actionType }));
+
+    // Unpublish endpoint restores archived blogs back to draft; archive endpoint sets to ARCHIVED
+    const endpoint = isArchived
+      ? `/api/admin/blogs/${blog.id}/unpublish`
+      : `/api/admin/blogs/${blog.id}/archive`;
+
+    try {
+      const res = await fetch(endpoint, { method: "POST" });
+      const data = await res.json();
+
+      if (res.ok && data.success && data.blog) {
+        const updatedBlog: BlogItem = {
+          ...blog,
+          ...data.blog,
+        };
+
+        if (statusFilter !== "ALL" && statusFilter !== updatedBlog.status) {
+          setBlogs((prev) => prev.filter((b) => b.id !== blog.id));
+          setPagination((prev) => {
+            const newTotal = Math.max(0, prev.total - 1);
+            return {
+              ...prev,
+              total: newTotal,
+              totalPages: Math.max(1, Math.ceil(newTotal / prev.limit)),
+            };
+          });
+        } else {
+          setBlogs((prev) =>
+            prev.map((b) => (b.id === blog.id ? updatedBlog : b))
+          );
+        }
+
+        showToast(
+          isArchived
+            ? `"${blog.title}" restored from archive to draft.`
+            : `"${blog.title}" has been moved to archive.`,
+          "success"
+        );
+      } else {
+        showToast(data.error || "Action failed.", "error");
+      }
+    } catch {
+      showToast("Network error updating archive status.", "error");
+    } finally {
+      setActionLoadingIds((prev) => {
+        const next = { ...prev };
+        delete next[blog.id];
+        return next;
+      });
+    }
+  };
+
+  // Confirm and execute delete without full-page reload
   const executeDelete = async () => {
-    if (!deletingId) return;
+    if (!deletingId || isDeleting) return;
     setIsDeleting(true);
+
     try {
       const res = await fetch(`/api/admin/blogs/${deletingId}`, {
         method: "DELETE",
       });
-      if (res.ok) {
-        showToast("Article deleted successfully.");
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        showToast("Article deleted successfully.", "success");
+        setBlogs((prev) => prev.filter((b) => b.id !== deletingId));
+        setPagination((prev) => {
+          const newTotal = Math.max(0, prev.total - 1);
+          return {
+            ...prev,
+            total: newTotal,
+            totalPages: Math.max(1, Math.ceil(newTotal / prev.limit)),
+          };
+        });
         setDeletingId(null);
-        reloadBlogs();
+        setDeletingTitle("");
       } else {
-        const data = await res.json();
-        alert(data.error || "Failed to delete article.");
+        showToast(data.error || "Failed to delete article.", "error");
       }
     } catch {
-      alert("Network error deleting article.");
+      showToast("Network error deleting article.", "error");
     } finally {
       setIsDeleting(false);
     }
@@ -265,115 +410,86 @@ export default function AdminBlogsPage() {
       </div>
 
       {/* Feedback Toast */}
-      {toastMessage && (
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3.5 text-xs font-semibold text-emerald-800 shadow-sm flex items-center gap-2 animate-in fade-in duration-200">
-          <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-          <span>{toastMessage}</span>
+      {toast && (
+        <div
+          role="alert"
+          className={`rounded-lg border p-3.5 text-xs font-semibold shadow-sm flex items-center justify-between gap-2 animate-in fade-in duration-200 ${
+            toast.type === "error"
+              ? "border-red-200 bg-red-50 text-red-800"
+              : "border-emerald-200 bg-emerald-50 text-emerald-800"
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            {toast.type === "error" ? (
+              <AlertCircle className="h-4 w-4 text-red-600 shrink-0" />
+            ) : (
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+            )}
+            <span>{toast.message}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="cursor-pointer text-xs font-bold hover:opacity-70 px-1"
+            aria-label="Close notification"
+          >
+            ✕
+          </button>
         </div>
       )}
 
-      {/* Quick Status Metrics */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div
-          onClick={() => setStatusFilter("ALL")}
-          className={`cursor-pointer rounded-xl border p-4 transition-all ${
-            statusFilter === "ALL"
-              ? "border-[#F52232] bg-[#FFF5E6]/60 shadow-xs"
-              : "border-[#EADCCB] bg-white hover:border-[#FF8A00]/50"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#78685D]">
-              Total Posts
-            </span>
-            <FileText className="h-4 w-4 text-[#78685D]" />
-          </div>
-          <div className="mt-2 text-2xl font-extrabold text-[#492A22]">
-            {pagination.total}
-          </div>
-        </div>
+      {/* Main Table Card (Search, Filter, Table, and Pagination) */}
+      <Card className="border border-[#EADCCB] bg-white shadow-2xs overflow-hidden">
+        {/* Subtle progress indicator when background refresh is active */}
+        {isRefreshing && (
+          <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#F52232] to-transparent animate-pulse" />
+        )}
 
-        <div
-          onClick={() => setStatusFilter("PUBLISHED")}
-          className={`cursor-pointer rounded-xl border p-4 transition-all ${
-            statusFilter === "PUBLISHED"
-              ? "border-emerald-500 bg-emerald-50/70 shadow-xs"
-              : "border-[#EADCCB] bg-white hover:border-emerald-300"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-              Published
-            </span>
-            <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-          </div>
-          <div className="mt-2 text-2xl font-extrabold text-[#492A22]">
-            {publishedCount}
-          </div>
-        </div>
-
-        <div
-          onClick={() => setStatusFilter("DRAFT")}
-          className={`cursor-pointer rounded-xl border p-4 transition-all ${
-            statusFilter === "DRAFT"
-              ? "border-amber-400 bg-amber-50/70 shadow-xs"
-              : "border-[#EADCCB] bg-white hover:border-amber-300"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
-              Drafts
-            </span>
-            <Clock className="h-4 w-4 text-amber-600" />
-          </div>
-          <div className="mt-2 text-2xl font-extrabold text-[#492A22]">
-            {draftCount}
-          </div>
-        </div>
-
-        <div
-          onClick={() => setStatusFilter("ARCHIVED")}
-          className={`cursor-pointer rounded-xl border p-4 transition-all ${
-            statusFilter === "ARCHIVED"
-              ? "border-stone-400 bg-stone-100/70 shadow-xs"
-              : "border-[#EADCCB] bg-white hover:border-stone-300"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
-              Archived
-            </span>
-            <Archive className="h-4 w-4 text-stone-500" />
-          </div>
-          <div className="mt-2 text-2xl font-extrabold text-[#492A22]">
-            {archivedCount}
-          </div>
-        </div>
-      </div>
-
-      {/* Main Table Card */}
-      <Card className="border border-[#EADCCB] bg-white shadow-2xs">
-        <CardHeader className="p-4 sm:p-6 pb-3 border-b border-[#EADCCB]/70">
+        <CardHeader className="p-4 sm:p-5 border-b border-[#EADCCB]/70">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             {/* Search Input */}
-            <div className="relative w-full sm:w-80">
+            <div className="relative w-full sm:w-72">
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#78685D]" />
               <Input
                 placeholder="Search by title, excerpt, content..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
                 className="pl-9 h-9 border-[#EADCCB] text-xs focus-visible:ring-[#F52232]"
               />
             </div>
 
             {/* Filter controls */}
             <div className="flex flex-wrap items-center gap-2.5">
+              {/* Status Filter Dropdown */}
+              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
+                <span className="font-semibold text-[#492A22]">Status:</span>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => {
+                    setStatusFilter(e.target.value);
+                    setPagination((prev) => ({ ...prev, page: 1 }));
+                  }}
+                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:ring-1 focus:ring-[#F52232]"
+                >
+                  <option value="ALL">All Statuses</option>
+                  <option value="PUBLISHED">Published</option>
+                  <option value="DRAFT">Draft</option>
+                  <option value="ARCHIVED">Archived</option>
+                </select>
+              </div>
+
               {/* Category Filter */}
               <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
                 <Tag className="h-3.5 w-3.5 text-[#F52232]" />
                 <select
                   value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  onChange={(e) => {
+                    setCategoryFilter(e.target.value);
+                    setPagination((prev) => ({ ...prev, page: 1 }));
+                  }}
                   className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:ring-1 focus:ring-[#F52232]"
                 >
                   {categories.map((c) => (
@@ -399,24 +515,26 @@ export default function AdminBlogsPage() {
                 </select>
               </div>
 
+              {/* Manual Refresh Button */}
               <Button
                 variant="outline"
                 size="sm"
-                onClick={reloadBlogs}
-                className="h-8 gap-1 text-xs"
-                title="Refresh list"
+                onClick={handleManualRefresh}
+                disabled={isRefreshing}
+                className="h-8 gap-1 text-xs cursor-pointer"
+                title="Refresh list from database"
               >
                 <RefreshCw
-                  className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`}
+                  className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin" : ""}`}
                 />
-                <span>Refresh</span>
+                <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
               </Button>
             </div>
           </div>
         </CardHeader>
 
         <CardContent className="p-0">
-          {loading ? (
+          {initialLoading ? (
             <div className="flex flex-col items-center justify-center p-12 space-y-3">
               <Loader2 className="h-8 w-8 animate-spin text-[#F52232]" />
               <p className="text-xs text-[#78685D]">
@@ -480,11 +598,15 @@ export default function AdminBlogsPage() {
                   {blogs.map((blog) => {
                     const isPublished = blog.status === "PUBLISHED";
                     const isDraft = blog.status === "DRAFT";
+                    const isRowBusy = !!actionLoadingIds[blog.id];
+                    const currentAction = actionLoadingIds[blog.id];
 
                     return (
                       <tr
                         key={blog.id}
-                        className="hover:bg-[#FFF5E6]/30 transition-colors group"
+                        className={`hover:bg-[#FFF5E6]/30 transition-colors group ${
+                          isRowBusy ? "opacity-75" : ""
+                        }`}
                       >
                         {/* Article with Thumbnail */}
                         <td className="px-5 py-3.5">
@@ -564,19 +686,24 @@ export default function AdminBlogsPage() {
                         <td className="px-3 py-3.5 text-center">
                           <button
                             type="button"
+                            disabled={isRowBusy}
                             onClick={() => handleToggleFeature(blog)}
-                            className="cursor-pointer p-1 rounded hover:bg-[#FFF5E6] transition-colors"
+                            className="cursor-pointer p-1 rounded hover:bg-[#FFF5E6] transition-colors disabled:cursor-not-allowed disabled:opacity-60"
                             title={
                               blog.isFeatured ? "Unfeature" : "Mark as featured"
                             }
                           >
-                            <Sparkles
-                              className={`h-4 w-4 mx-auto ${
-                                blog.isFeatured
-                                  ? "text-[#FF8A00] fill-[#FF8A00]"
-                                  : "text-[#EADCCB] hover:text-[#FF8A00]"
-                              }`}
-                            />
+                            {currentAction === "feature" ? (
+                              <Loader2 className="h-4 w-4 mx-auto animate-spin text-[#FF8A00]" />
+                            ) : (
+                              <Sparkles
+                                className={`h-4 w-4 mx-auto ${
+                                  blog.isFeatured
+                                    ? "text-[#FF8A00] fill-[#FF8A00]"
+                                    : "text-[#EADCCB] hover:text-[#FF8A00]"
+                                }`}
+                              />
+                            )}
                           </button>
                         </td>
 
@@ -637,41 +764,59 @@ export default function AdminBlogsPage() {
                             <Button
                               variant="ghost"
                               size="icon"
+                              disabled={isRowBusy}
                               onClick={() => handleTogglePublish(blog)}
-                              className="h-8 w-8 text-[#78685D] hover:text-[#10B981]"
+                              className="h-8 w-8 text-[#78685D] hover:text-[#10B981] disabled:cursor-not-allowed disabled:opacity-60"
                               title={
                                 isPublished
                                   ? "Unpublish to draft"
                                   : "Publish article"
                               }
                             >
-                              <CheckCircle2
-                                className={`h-3.5 w-3.5 ${isPublished ? "text-emerald-600" : ""}`}
-                              />
+                              {currentAction === "publish" ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-600" />
+                              ) : (
+                                <CheckCircle2
+                                  className={`h-3.5 w-3.5 ${
+                                    isPublished ? "text-emerald-600" : ""
+                                  }`}
+                                />
+                              )}
                             </Button>
 
-                            {/* Archive */}
-                            {blog.status !== "ARCHIVED" && (
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => handleArchive(blog)}
-                                className="h-8 w-8 text-[#78685D] hover:text-[#78685D]"
-                                title="Move to archive"
-                              >
+                            {/* Archive or Restore Button */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              disabled={isRowBusy}
+                              onClick={() => handleArchive(blog)}
+                              className="h-8 w-8 text-[#78685D] hover:text-[#492A22] disabled:cursor-not-allowed disabled:opacity-60"
+                              title={
+                                blog.status === "ARCHIVED"
+                                  ? "Restore from archive to draft"
+                                  : "Move to archive"
+                              }
+                            >
+                              {currentAction === "archive" ||
+                              currentAction === "restore" ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#78685D]" />
+                              ) : blog.status === "ARCHIVED" ? (
+                                <ArchiveRestore className="h-3.5 w-3.5 text-stone-600" />
+                              ) : (
                                 <Archive className="h-3.5 w-3.5" />
-                              </Button>
-                            )}
+                              )}
+                            </Button>
 
                             {/* Delete */}
                             <Button
                               variant="ghost"
                               size="icon"
+                              disabled={isRowBusy}
                               onClick={() => {
                                 setDeletingId(blog.id);
                                 setDeletingTitle(blog.title);
                               }}
-                              className="h-8 w-8 text-[#78685D] hover:text-red-600"
+                              className="h-8 w-8 text-[#78685D] hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
                               title="Delete permanently"
                             >
                               <Trash2 className="h-3.5 w-3.5" />
@@ -687,7 +832,7 @@ export default function AdminBlogsPage() {
           )}
 
           {/* Pagination Footer */}
-          {!loading && blogs.length > 0 && (
+          {!initialLoading && blogs.length > 0 && (
             <div className="flex flex-col sm:flex-row items-center justify-between border-t border-[#EADCCB]/70 px-6 py-4 text-xs text-[#78685D] gap-3">
               <div>
                 Showing Page{" "}
@@ -705,14 +850,14 @@ export default function AdminBlogsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  disabled={!pagination.hasPrevPage}
+                  disabled={!pagination.hasPrevPage || isRefreshing}
                   onClick={() =>
                     setPagination((prev) => ({
                       ...prev,
                       page: Math.max(1, prev.page - 1),
                     }))
                   }
-                  className="h-8 text-xs"
+                  className="h-8 text-xs cursor-pointer"
                 >
                   Previous
                 </Button>
@@ -724,6 +869,7 @@ export default function AdminBlogsPage() {
                   ).map((p) => (
                     <button
                       key={p}
+                      disabled={isRefreshing}
                       onClick={() =>
                         setPagination((prev) => ({ ...prev, page: p }))
                       }
@@ -741,14 +887,14 @@ export default function AdminBlogsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  disabled={!pagination.hasNextPage}
+                  disabled={!pagination.hasNextPage || isRefreshing}
                   onClick={() =>
                     setPagination((prev) => ({
                       ...prev,
                       page: Math.min(prev.totalPages, prev.page + 1),
                     }))
                   }
-                  className="h-8 text-xs"
+                  className="h-8 text-xs cursor-pointer"
                 >
                   Next
                 </Button>

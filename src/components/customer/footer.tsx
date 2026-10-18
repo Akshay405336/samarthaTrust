@@ -1,21 +1,54 @@
+
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, ExternalLink, Heart } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  ExternalLink,
+  Heart,
+  ArrowUpRight,
+} from "lucide-react";
 import { Container } from "@/components/shared/container";
 
 export function CustomerFooter() {
   const currentYear = 2026;
 
+  const quickLinks = [
+    { label: "Home", href: "/" },
+    { label: "About Samartha Trust", href: "/about" },
+    { label: "Our Programs & Initiatives", href: "/programs" },
+    { label: "Blog & Impact Stories", href: "/blog" },
+    { label: "Contact & Inquiries", href: "/contact" },
+  ];
+
+  const focusAreas = [
+    { label: "Education & Scholarships", href: "/programs#education" },
+    { label: "Healthcare & Medical Camps", href: "/programs#health" },
+    { label: "Livelihoods & Skill Training", href: "/programs#skills" },
+    { label: "Community & Rural Welfare", href: "/programs#community" },
+  ];
+
   return (
-    <footer className="border-t border-[#EADCCB] bg-[#FFFCF5] text-[#492A22]">
-      <div className="py-12 sm:py-16">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#202326] text-white">
+      {/* Subtle background decoration */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#F4510B]/[0.07] blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-40 -left-32 h-80 w-80 rounded-full bg-white/[0.025] blur-3xl"
+      />
+
+      <div className="relative py-12 sm:py-14 lg:py-16">
         <Container>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {/* About column with logo */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="relative h-12 w-12 rounded-lg bg-white p-1 shrink-0 border border-[#EADCCB] shadow-2xs">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {/* Brand column */}
+            <div className="space-y-5">
+              <Link href="/" className="inline-flex items-center gap-3">
+                <div className="relative h-12 w-12 shrink-0 rounded-xl border border-white/10 bg-white p-1 shadow-sm">
                   <Image
                     src="/logo.png"
                     alt="Samartha Trust Logo"
@@ -24,138 +57,117 @@ export function CustomerFooter() {
                     className="h-full w-full object-contain"
                   />
                 </div>
+
                 <div>
-                  <span className="text-lg font-bold text-[#492A22] tracking-tight">
+                  <span className="text-lg font-bold tracking-tight text-white">
                     Samartha Trust
                   </span>
-                  <p className="text-xs font-semibold text-[#F52232]">
+                  <p className="mt-0.5 text-xs font-medium text-[#FF895A]">
                     We Believe In Abilities
                   </p>
                 </div>
-              </div>
-              <p className="text-sm text-[#78685D] leading-relaxed">
-                Dedicated to empowering individuals with abilities and uplifting
-                underprivileged communities through accessible education,
-                healthcare, and sustainable livelihood support.
+              </Link>
+
+              <p className="max-w-sm text-sm leading-7 text-[#B7BABE]">
+                Dedicated to empowering individuals with abilities and
+                uplifting underprivileged communities through accessible
+                education, healthcare, and sustainable livelihood support.
               </p>
-              <div className="pt-1">
-                <span className="inline-block rounded-md bg-[#FFF5E6] px-3 py-1 text-xs font-medium text-[#492A22] border border-[#EADCCB]">
+
+              <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2">
+                <span className="h-2 w-2 rounded-full bg-[#FF7547]" />
+                <span className="text-xs font-medium text-[#D5D6D8]">
                   Registered Public Charitable Trust
                 </span>
               </div>
             </div>
 
-            {/* Quick Links */}
+            {/* Quick links */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#492A22]">
+              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-white">
                 Quick Links
               </h3>
-              <ul className="mt-4 space-y-2.5 text-sm text-[#78685D]">
-                <li>
-                  <Link
-                    href="/"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/about"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    About Samartha Trust
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/programs"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Our Programs & Initiatives
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/blog"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Blog & Impact Stories
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Contact & Inquiries
-                  </Link>
-                </li>
+
+              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#FF8A26] to-[#E73528]" />
+
+              <ul className="mt-5 space-y-3">
+                {quickLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="group inline-flex items-center gap-1.5 text-sm text-[#B7BABE] transition-colors duration-200 hover:text-white"
+                    >
+                      <span>{link.label}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5 -translate-y-0.5 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Core Programs */}
+            {/* Focus areas */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#492A22]">
+              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-white">
                 Focus Areas
               </h3>
-              <ul className="mt-4 space-y-2.5 text-sm text-[#78685D]">
-                <li>
-                  <Link
-                    href="/programs#education"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Education & Scholarships
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/programs#health"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Healthcare & Medical Camps
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/programs#skills"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Livelihoods & Skill Training
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/programs#community"
-                    className="transition-colors hover:text-[#F52232]"
-                  >
-                    Community & Rural Welfare
-                  </Link>
-                </li>
+
+              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#FF8A26] to-[#E73528]" />
+
+              <ul className="mt-5 space-y-3">
+                {focusAreas.map((area) => (
+                  <li key={area.href}>
+                    <Link
+                      href={area.href}
+                      className="group inline-flex items-center gap-1.5 text-sm text-[#B7BABE] transition-colors duration-200 hover:text-white"
+                    >
+                      <span>{area.label}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5 -translate-y-0.5 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Contact details */}
+            {/* Contact information */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#492A22]">
+              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-white">
                 Contact Information
               </h3>
-              <ul className="mt-4 space-y-3 text-sm text-[#78685D]">
+
+              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#FF8A26] to-[#E73528]" />
+
+              <ul className="mt-5 space-y-4 text-sm text-[#B7BABE]">
                 <li className="flex items-start gap-3">
-                  <MapPin className="h-4 w-4 text-[#F52232] shrink-0 mt-0.5" />
-                  <span>
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+                    <MapPin className="h-4 w-4 text-[#FF895A]" />
+                  </div>
+                  <span className="pt-1.5 leading-6">
                     Samartha Trust Office, Bengaluru, Karnataka, India
                   </span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <Mail className="h-4 w-4 text-[#FF8A00] shrink-0" />
-                  <span className="hover:text-[#F52232] transition-colors">
+
+                <li className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+                    <Mail className="h-4 w-4 text-[#FF895A]" />
+                  </div>
+                  <a
+                    href="mailto:info@samarthatrust.org"
+                    className="break-all pt-2 transition-colors hover:text-white"
+                  >
                     info@samarthatrust.org
-                  </span>
+                  </a>
                 </li>
-                <li className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-[#FF8A00] shrink-0" />
-                  <span>+91 (0) 80 2345 6789</span>
+
+                <li className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+                    <Phone className="h-4 w-4 text-[#FF895A]" />
+                  </div>
+                  <a
+                    href="tel:+918023456789"
+                    className="pt-2 transition-colors hover:text-white"
+                  >
+                    +91 (0) 80 2345 6789
+                  </a>
                 </li>
               </ul>
             </div>
@@ -164,25 +176,27 @@ export function CustomerFooter() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-[#EADCCB] bg-white py-5 text-xs text-[#78685D]">
-        <Container className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="flex items-center gap-1.5">
+      <div className="relative border-t border-white/10 bg-[#191B1E]">
+        <Container className="flex flex-col items-center justify-between gap-4 py-5 text-xs text-[#A7AAAE] sm:flex-row">
+          <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center sm:justify-start sm:text-left">
             <span>© {currentYear} Samartha Trust. All rights reserved.</span>
-            <span className="hidden sm:inline">•</span>
-            <span className="hidden sm:inline-flex items-center gap-1">
-              <span>Made with care</span>
-              <Heart className="h-3 w-3 text-[#F52232] fill-[#F52232]" />
+            <span className="hidden text-white/30 sm:inline">•</span>
+            <span className="inline-flex items-center gap-1.5">
+              Made with care
+              <Heart className="h-3 w-3 fill-[#F4510B] text-[#F4510B]" />
             </span>
           </p>
-          <div className="flex items-center gap-6">
-            <span className="text-[#78685D]">
+
+          <div className="flex flex-wrap items-center justify-center gap-5">
+            <span className="text-[#85898E]">
               Inspired by samarthatrust.org
             </span>
+
             <Link
               href="/admin/login"
-              className="inline-flex items-center gap-1 text-[#78685D] hover:text-[#F52232] transition-colors font-medium"
+              className="inline-flex items-center gap-1.5 font-medium text-[#B7BABE] transition-colors hover:text-[#FF895A]"
             >
-              <span>Admin Portal</span>
+              Admin Portal
               <ExternalLink className="h-3 w-3" />
             </Link>
           </div>

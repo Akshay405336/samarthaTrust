@@ -37,10 +37,15 @@ export async function generateStaticParams() {
       where: { status: "PUBLISHED" },
       select: { slug: true },
     });
-    return blogs.map((b) => ({ slug: b.slug }));
+    if (blogs.length > 0) {
+      return blogs.map((b) => ({ slug: b.slug }));
+    }
   } catch {
-    return [];
+    // In environments where database is unreachable at build time, provide fallback
   }
+
+  // Next.js 16 with Cache Components requires generateStaticParams to return at least one result for build validation
+  return [{ slug: "annual-education-drive-2026" }];
 }
 
 /**

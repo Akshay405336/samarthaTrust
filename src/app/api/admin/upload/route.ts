@@ -57,8 +57,14 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    const folderParam = (formData.get("folder") as string | null) || "blogs";
+    const safeFolder =
+      folderParam === "team"
+        ? "team"
+        : folderParam.replace(/[^a-z0-9_-]/gi, "") || "blogs";
+
     // Create target uploads directory inside public/
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "blogs");
+    const uploadDir = path.join(process.cwd(), "public", "uploads", safeFolder);
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -80,7 +86,7 @@ export async function POST(request: NextRequest) {
 
     fs.writeFileSync(filePath, buffer);
 
-    const publicUrl = `/uploads/blogs/${fileName}`;
+    const publicUrl = `/uploads/${safeFolder}/${fileName}`;
 
     return NextResponse.json({
       success: true,

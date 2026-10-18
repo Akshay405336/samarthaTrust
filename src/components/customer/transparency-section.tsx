@@ -1,12 +1,12 @@
-import * as React from "react";
+
 import {
+  ArrowUpRight,
   ShieldCheck,
   FileCheck2,
   HandHeart,
-  ArrowUpRight,
-  CheckCircle2,
-  BadgeCheck,
+  Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 import { Container } from "@/components/shared/container";
 
 const complianceItems = [
@@ -15,7 +15,7 @@ const complianceItems = [
     title: "12A Registration",
     category: "CHARITABLE STATUS",
     description:
-      "Official recognition of our charitable purpose and organizational status.",
+      "Our charitable registration supports the trust's work in accordance with applicable requirements.",
     action: "View Registration",
     href: "#12a-certificate",
     icon: ShieldCheck,
@@ -25,7 +25,7 @@ const complianceItems = [
     title: "80G Certification",
     category: "DONOR TAX BENEFITS",
     description:
-      "Eligible donations may qualify for tax deductions under applicable Section 80G rules.",
+      "Eligible donations may qualify for tax deductions, subject to applicable rules and certificate validity.",
     action: "View Certificate",
     href: "#80g-certificate",
     icon: FileCheck2,
@@ -35,7 +35,7 @@ const complianceItems = [
     title: "CSR-1 Registration",
     category: "CORPORATE PARTNERSHIPS",
     description:
-      "Registration supporting eligibility to undertake qualifying CSR activities.",
+      "Registration relevant to undertaking qualifying corporate social responsibility activities.",
     action: "View Approval",
     href: "#csr-1-approval",
     icon: HandHeart,
@@ -46,128 +46,100 @@ export function TransparencySection() {
   return (
     <section
       aria-labelledby="transparency-heading"
-      className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-20"
+      className="relative isolate overflow-hidden bg-gradient-to-br from-[#FF8126] via-[#F4510B] to-[#E73528] py-10 text-white sm:py-12 lg:py-14"
     >
+      {/* Subtle background decoration */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 -top-28 h-72 w-72 rounded-full border border-white/15"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-32 -left-24 h-72 w-72 rounded-full bg-white/[0.05] blur-3xl"
+      />
+
       <Container>
-        {/* Intro */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        {/* Compact heading */}
+        <div className="relative grid items-center gap-4 lg:grid-cols-[1fr_0.8fr] lg:gap-10">
           <div>
-            <div className="mb-5 flex items-center gap-3">
-              <span className="h-8 w-1 rounded-full bg-[#F4510B]" />
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#78685D]">
-                Our Commitment
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
+                Trust & Transparency
               </span>
             </div>
 
             <h2
               id="transparency-heading"
-              className="max-w-lg text-[clamp(2.3rem,4vw,3.8rem)] font-semibold leading-[1.08] tracking-[-0.045em] text-[#492A22]"
+              className="mt-3 max-w-2xl text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl"
             >
-              Trust is built
-              <br />
-              through <span className="text-[#F4510B]">transparency.</span>
+              Trust is built on{" "}
+              <span className="text-white/80">transparency.</span>
             </h2>
-
-            <p className="mt-5 max-w-md text-[15px] leading-7 text-[#78685D] sm:text-base">
-              Every act of support deserves accountability. We value clear
-              governance, responsible operations, and transparency in our work.
-            </p>
-
-            <div className="mt-7 flex items-center gap-3 border-t border-[#EEE5DC] pt-5">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EFF8F0]">
-                <BadgeCheck
-                  className="h-6 w-6 text-[#24834B]"
-                  aria-hidden="true"
-                />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-[#492A22]">
-                  Accountability comes first
-                </p>
-                <p className="mt-1 text-xs leading-5 text-[#78685D]">
-                  A commitment to responsible charitable service.
-                </p>
-              </div>
-            </div>
           </div>
 
-          {/* Registration document list */}
-          <div className="overflow-hidden rounded-2xl border border-[#EDE5DB] bg-[#FFFCF8]">
-            <div className="flex items-center justify-between border-b border-[#EDE5DB] px-5 py-4 sm:px-7">
-              <div>
-                <p className="text-sm font-semibold text-[#492A22]">
-                  Registrations & Approvals
-                </p>
-                <p className="mt-1 text-xs text-[#78685D]">
-                  Organizational compliance details
-                </p>
-              </div>
+          <p className="max-w-xl text-sm leading-6 text-white/90 sm:text-base sm:leading-7 lg:justify-self-end">
+            We believe in responsible governance, clear communication, and
+            accountability to everyone who supports our mission.
+          </p>
+        </div>
 
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#24834B]">
-                <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-              </div>
-            </div>
+        {/* Compact glass cards */}
+        <div className="relative mt-7 grid grid-cols-1 gap-4 sm:mt-8 md:grid-cols-3">
+          {complianceItems.map((item) => {
+            const Icon = item.icon;
 
-            <div className="divide-y divide-[#EDE5DB] px-5 sm:px-7">
-              {complianceItems.map((item) => {
-                const Icon = item.icon;
+            return (
+              <article
+                key={item.number}
+                className="group relative flex min-h-[260px] flex-col overflow-hidden rounded-xl border border-white/30 bg-white/[0.12] p-5 text-white shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/50 hover:bg-white/[0.18] hover:shadow-lg sm:p-5"
+              >
+                {/* Icon and number */}
+                <div className="relative flex items-center justify-between">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/25 bg-white/[0.15] transition-colors group-hover:bg-white/25">
+                    <Icon
+                      className="h-5 w-5"
+                      strokeWidth={1.7}
+                      aria-hidden="true"
+                    />
+                  </div>
 
-                return (
-                  <article key={item.number} className="group py-5 sm:py-6">
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#EDE5DB] bg-white text-[#F4510B] transition-colors duration-200 group-hover:border-[#F4510B]/30 group-hover:bg-[#FFF2E7]">
-                        <Icon
-                          className="h-6 w-6"
-                          strokeWidth={1.7}
-                          aria-hidden="true"
-                        />
-                      </div>
+                  <span className="text-xs font-semibold tracking-widest text-white/60">
+                    {item.number}
+                  </span>
+                </div>
 
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[10px] font-semibold tracking-[0.14em] text-[#A18B78]">
-                          {item.category}
-                        </p>
+                {/* Card content */}
+                <div className="relative mt-5">
+                  <p className="text-[9px] font-bold tracking-[0.14em] text-white/75">
+                    {item.category}
+                  </p>
 
-                        <h3 className="mt-1 text-lg font-semibold tracking-tight text-[#492A22] sm:text-xl">
-                          {item.title}
-                        </h3>
+                  <h3 className="mt-1.5 text-lg font-semibold tracking-tight">
+                    {item.title}
+                  </h3>
 
-                        <p className="mt-2 text-sm leading-6 text-[#78685D]">
-                          {item.description}
-                        </p>
+                  <p className="mt-2 text-sm leading-5 text-white/85">
+                    {item.description}
+                  </p>
+                </div>
 
-                        <a
-                          href={item.href}
-                          className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#24834B] transition-colors hover:text-[#176738]"
-                        >
-                          {item.action}
-                          <ArrowUpRight
-                            className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                            aria-hidden="true"
-                          />
-                        </a>
-                      </div>
-
-                      <span className="hidden pt-1 text-xs font-medium text-[#C8B9A9] sm:block">
-                        {item.number}
-                      </span>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-
-            <div className="flex items-start gap-3 border-t border-[#EDE5DB] bg-white px-5 py-4 sm:px-7">
-              <CheckCircle2
-                className="mt-0.5 h-4 w-4 shrink-0 text-[#24834B]"
-                aria-hidden="true"
-              />
-              <p className="text-xs leading-5 text-[#78685D]">
-                Please refer to the relevant official documents for the exact
-                scope and validity of each registration.
-              </p>
-            </div>
-          </div>
+                {/* Compact action button */}
+                <div className="relative mt-auto pt-5">
+                  <Link
+                    href={item.href}
+                    className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/[0.14] px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/[0.24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4510B]"
+                  >
+                    {item.action}
+                    <ArrowUpRight
+                      className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </Container>
     </section>
