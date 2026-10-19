@@ -8,6 +8,8 @@ import {
 } from "@/components/customer/home-blog-carousel";
 
 export async function HomeBlogSection() {
+  let formattedBlogs: FormattedHomeBlogItem[] = [];
+
   try {
     const blogs = await prisma.blog.findMany({
       where: { status: BlogStatus.PUBLISHED },
@@ -33,7 +35,7 @@ export async function HomeBlogSection() {
       return null;
     }
 
-    const formattedBlogs: FormattedHomeBlogItem[] = blogs.map((blog) => {
+    formattedBlogs = blogs.map((blog) => {
       const date = blog.publishedAt
         ? new Date(blog.publishedAt)
         : new Date(blog.createdAt);
@@ -54,8 +56,6 @@ export async function HomeBlogSection() {
         month,
       };
     });
-
-    return <HomeBlogCarousel blogs={formattedBlogs} />;
   } catch (error) {
     if (
       error &&
@@ -69,4 +69,6 @@ export async function HomeBlogSection() {
     console.error("Failed to load published blogs for home section:", error);
     return null;
   }
+
+  return <HomeBlogCarousel blogs={formattedBlogs} />;
 }

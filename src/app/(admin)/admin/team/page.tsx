@@ -18,7 +18,6 @@ import {
   AlertTriangle,
   ExternalLink,
   ArrowUpDown,
-  Eye,
   Check,
   X,
   User as UserIcon,
@@ -29,8 +28,8 @@ import {
 import { Breadcrumbs } from "@/components/admin/breadcrumbs";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Pagination } from "@/components/shared/pagination";
 
 interface TeamMemberItem {
   id: string;
@@ -888,47 +887,22 @@ export default function AdminTeamPage() {
         </div>
 
         {/* Pagination controls */}
-        {pagination.totalPages > 1 && (
-          <div className="border-t border-[#EADCCB] bg-[#FFFDF9] px-6 py-3.5 flex items-center justify-between">
-            <span className="text-xs text-[#78685D]">
-              Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-              {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
-              of {pagination.total} members
-            </span>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setPagination((p) => ({
-                    ...p,
-                    page: Math.max(1, p.page - 1),
-                  }))
-                }
-                disabled={!pagination.hasPrevPage}
-                className="h-8 text-xs border-[#EADCCB]"
-              >
-                Previous
-              </Button>
-              <span className="text-xs font-semibold text-[#492A22]">
-                Page {pagination.page} of {pagination.totalPages}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setPagination((p) => ({
-                    ...p,
-                    page: Math.min(p.totalPages, p.page + 1),
-                  }))
-                }
-                disabled={!pagination.hasNextPage}
-                className="h-8 text-xs border-[#EADCCB]"
-              >
-                Next
-              </Button>
-            </div>
+        {!initialLoading && pagination.total > 0 && (
+          <div className="border-t border-[#EADCCB] bg-[#FFFDF9] px-6">
+            <Pagination
+              currentPage={pagination.page}
+              totalPages={pagination.totalPages}
+              totalRecords={pagination.total}
+              limit={pagination.limit}
+              recordLabel="members"
+              disabled={isRefreshing}
+              onPageChange={(page) =>
+                setPagination((p) => ({
+                  ...p,
+                  page: Math.max(1, Math.min(page, p.totalPages)),
+                }))
+              }
+            />
           </div>
         )}
       </Card>

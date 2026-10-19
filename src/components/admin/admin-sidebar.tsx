@@ -9,6 +9,7 @@ import {
   FileText,
   Users,
   Briefcase,
+  HeartHandshake,
   Calendar,
   Layers,
   Settings,
@@ -38,6 +39,11 @@ const navigationItems = [
     name: "Our Works",
     href: "/admin/works",
     icon: Briefcase,
+  },
+  {
+    name: "Donations",
+    href: "/admin/donations",
+    icon: HeartHandshake,
   },
   {
     name: "Programs (Upcoming)",

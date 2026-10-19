@@ -334,6 +334,67 @@ export async function listPublishedWorks(options?: {
 }
 
 /**
+ * Lists published works with database-level pagination, search, and category filter for customer-facing display.
+ */
+export async function listPublishedWorksPaginated(options?: {
+  category?: string;
+  featured?: boolean;
+  page?: number;
+  limit?: number;
+  search?: string;
+}): Promise<PaginatedResult<Work>> {
+  const page = Math.max(1, options?.page || 1);
+  const limit = Math.max(1, options?.limit || 9);
+  const skip = (page - 1) * limit;
+
+  const where: Prisma.WorkWhereInput = {
+    status: WorkStatus.PUBLISHED,
+  };
+
+  if (options?.category && options.category !== "ALL") {
+    where.category = { equals: options.category, mode: "insensitive" };
+  }
+
+  if (options?.featured !== undefined) {
+    where.isFeatured = options.featured;
+  }
+
+  if (options?.search?.trim()) {
+    const q = options.search.trim();
+    where.OR = [
+      { title: { contains: q, mode: "insensitive" } },
+      { description: { contains: q, mode: "insensitive" } },
+      { shortDescription: { contains: q, mode: "insensitive" } },
+      { badge: { contains: q, mode: "insensitive" } },
+    ];
+  }
+
+  const [total, data] = await Promise.all([
+    prisma.work.count({ where }),
+    prisma.work.findMany({
+      where,
+      orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+      skip,
+      take: limit,
+    }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+
+  return {
+    data,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    },
+  };
+}
+
+/**
  * Publishes a work.
  */
 export async function publishWork(id: string): Promise<Work> {

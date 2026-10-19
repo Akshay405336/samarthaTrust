@@ -7,7 +7,7 @@ import {
   WorksListSkeleton,
 } from "@/components/customer/our-work/works-list";
 import { WorksCollaboration } from "@/components/customer/our-work/works-collaboration";
-import { listPublishedWorks } from "@/lib/works/work-service";
+import { listPublishedWorksPaginated } from "@/lib/works/work-service";
 
 export const instant = false;
 
@@ -17,17 +17,52 @@ export const metadata: Metadata = {
     "Explore the grassroots social works, education programs, and healthcare initiatives conducted by Samartha Trust.",
 };
 
-async function OurWorksDirectory() {
-  const works = await listPublishedWorks();
-  return <WorksList works={works} />;
+interface OurWorksPageProps {
+  searchParams: Promise<{
+    page?: string;
+    category?: string;
+    search?: string;
+  }>;
 }
 
-export default function OurWorksPage() {
+async function OurWorksDirectory({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    page?: string;
+    category?: string;
+    search?: string;
+  }>;
+}) {
+  const params = await searchParams;
+  const requestedPage = Number.parseInt(params.page || "1", 10);
+  const page = Number.isFinite(requestedPage) ? Math.max(1, requestedPage) : 1;
+  const category = params.category;
+  const search = params.search;
+
+  const result = await listPublishedWorksPaginated({
+    page,
+    limit: 9,
+    category,
+    search,
+  });
+
+  return (
+    <WorksList
+      works={result.data}
+      pagination={result.pagination}
+      currentCategory={category}
+      search={search}
+    />
+  );
+}
+
+export default function OurWorksPage({ searchParams }: OurWorksPageProps) {
   return (
     <main className="min-h-screen bg-white">
       <OurWorksHero />
       <React.Suspense fallback={<WorksListSkeleton />}>
-        <OurWorksDirectory />
+        <OurWorksDirectory searchParams={searchParams} />
       </React.Suspense>
       <WorksCollaboration />
     </main>

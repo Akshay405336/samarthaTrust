@@ -268,6 +268,7 @@ export async function listAdminTeamMembers(
 export async function listPublicTeamMembers(options?: {
   featured?: boolean;
   limit?: number;
+  page?: number;
 }): Promise<TeamMember[]> {
   const where: Prisma.TeamMemberWhereInput = {
     isActive: true,
@@ -277,9 +278,15 @@ export async function listPublicTeamMembers(options?: {
     where.isFeatured = options.featured;
   }
 
+  const skip =
+    options?.page && options?.limit
+      ? (Math.max(1, options.page) - 1) * options.limit
+      : undefined;
+
   return prisma.teamMember.findMany({
     where,
     orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
+    ...(skip !== undefined ? { skip } : {}),
     ...(options?.limit ? { take: options.limit } : {}),
   });
 }

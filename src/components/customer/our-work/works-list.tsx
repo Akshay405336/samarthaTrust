@@ -3,7 +3,6 @@ import Image from "next/image";
 import {
   ArrowRight,
   Check,
-  Sparkles,
   Layers,
   HeartHandshake,
   Users,
@@ -14,12 +13,44 @@ import type { WorkPublicItem } from "@/lib/validations/work";
 import { Container } from "@/components/shared/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/shared/pagination";
 import { WorkIcon } from "./work-icon";
 
 export type { WorkPublicItem };
 
+export interface WorksPaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
 interface WorksListProps {
   works: WorkPublicItem[];
+  pagination?: WorksPaginationMeta;
+  currentCategory?: string;
+  search?: string;
+}
+
+function buildWorksUrl(options: {
+  page?: number;
+  category?: string;
+  search?: string;
+}) {
+  const params = new URLSearchParams();
+  if (options.category && options.category !== "ALL") {
+    params.set("category", options.category);
+  }
+  if (options.search) {
+    params.set("search", options.search);
+  }
+  if (options.page && options.page > 1) {
+    params.set("page", String(options.page));
+  }
+  const q = params.toString();
+  return q ? `/our-works?${q}` : "/our-works";
 }
 
 export function WorksListSkeleton() {
@@ -62,7 +93,14 @@ export function WorksListSkeleton() {
   );
 }
 
-export function WorksList({ works }: WorksListProps) {
+export function WorksList({
+  works,
+  pagination,
+  currentCategory,
+  search,
+}: WorksListProps) {
+  const totalCount = pagination ? pagination.total : works.length;
+
   if (works.length === 0) {
     return (
       <section className="bg-white px-4 py-16 sm:py-24">
@@ -135,7 +173,7 @@ export function WorksList({ works }: WorksListProps) {
 
             <div>
               <p className="text-xl font-extrabold leading-none text-[#492A22]">
-                {String(works.length).padStart(2, "0")}
+                {String(totalCount).padStart(2, "0")}
               </p>
               <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-[#80685F]">
                 Initiatives
@@ -321,6 +359,26 @@ export function WorksList({ works }: WorksListProps) {
             );
           })}
         </div>
+
+        {/* Pagination */}
+        {pagination && pagination.totalPages > 1 && (
+          <div className="mt-10 border-t border-[#EFE6DD] pt-2">
+            <Pagination
+              currentPage={pagination.page}
+              totalPages={pagination.totalPages}
+              totalRecords={pagination.total}
+              limit={pagination.limit}
+              recordLabel="initiatives"
+              getPageUrl={(page) =>
+                buildWorksUrl({
+                  page,
+                  category: currentCategory,
+                  search,
+                })
+              }
+            />
+          </div>
+        )}
       </Container>
     </section>
   );

@@ -190,15 +190,19 @@ describe("Asset Versioning Utility (getAssetUrl & getAboutBannerBgUrl)", () => {
     expect(jsx).not.toBeNull();
     const children = React.Children.toArray(jsx.props.children);
     const imageChild = children.find(
-      (child: any) => child?.props?.src && typeof child.props.src === "string"
-    ) as any;
+      (
+        child
+      ): child is React.ReactElement<{ src: string; className: string }> =>
+        React.isValidElement(child) &&
+        typeof (child.props as { src?: unknown }).src === "string"
+    );
 
     expect(imageChild).toBeDefined();
-    expect(imageChild.props.src).toMatch(
+    expect(imageChild!.props.src).toMatch(
       /^\/images\/about\/about-banner-bg\.png\?v=[a-z0-9]+$/
     );
-    expect(imageChild.props.className).toContain("object-cover");
-    expect(imageChild.props.className).toContain("object-center");
-    expect(imageChild.props.className).toContain("-z-20");
+    expect(imageChild!.props.className).toContain("object-cover");
+    expect(imageChild!.props.className).toContain("object-center");
+    expect(imageChild!.props.className).toContain("-z-20");
   });
 });

@@ -80,7 +80,7 @@ export function CustomerHeader() {
             asChild
             className="hidden sm:inline-flex group/btn shadow-xs hover:shadow-md hover:brightness-105 active:scale-[0.98] transition-all duration-200 motion-reduce:transition-none motion-reduce:transform-none"
           >
-            <Link href="/contact" className="gap-2">
+            <Link href="/donate" className="gap-2">
               <span>Donations</span>
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1 motion-reduce:transform-none" />
             </Link>
@@ -133,7 +133,7 @@ export function CustomerHeader() {
                 className="w-full group/btn shadow-xs hover:shadow-md hover:brightness-105 active:scale-[0.98] transition-all duration-200 motion-reduce:transition-none motion-reduce:transform-none"
               >
                 <Link
-                  href="/contact"
+                  href="/donate"
                   onClick={() => setMobileMenuOpen(false)}
                   className="gap-2 justify-center"
                 >

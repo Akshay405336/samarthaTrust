@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Briefcase,
   Plus,
@@ -16,10 +15,8 @@ import {
   Loader2,
   AlertTriangle,
   ExternalLink,
-  ArrowUpDown,
   Check,
   X,
-  Layers,
   GraduationCap,
   HeartPulse,
   Users,
@@ -36,6 +33,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Pagination } from "@/components/shared/pagination";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   GraduationCap,
@@ -160,10 +158,49 @@ export default function AdminWorksPage() {
   }, []);
 
   // Fetch Works
-  const fetchWorks = React.useCallback(
-    async (isBackground = false) => {
-      if (!isBackground) setIsRefreshing(true);
+  const fetchWorks = React.useCallback(async () => {
+    try {
+      const query = new URLSearchParams();
+      query.set("page", pagination.page.toString());
+      query.set("limit", pagination.limit.toString());
+      if (debouncedSearch) query.set("search", debouncedSearch);
+      if (statusFilter !== "ALL") query.set("status", statusFilter);
+      if (categoryFilter !== "ALL") query.set("category", categoryFilter);
+      query.set("sort", sortOption);
 
+      const res = await fetch(`/api/admin/works?${query.toString()}`, {
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch works data");
+      }
+
+      const json = await res.json();
+      if (json.success) {
+        setWorks(json.data);
+        setPagination(json.pagination);
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("Error loading works data", "error");
+    } finally {
+      setInitialLoading(false);
+      setIsRefreshing(false);
+    }
+  }, [
+    pagination.page,
+    pagination.limit,
+    debouncedSearch,
+    statusFilter,
+    categoryFilter,
+    sortOption,
+  ]);
+
+  React.useEffect(() => {
+    let active = true;
+
+    async function load() {
       try {
         const query = new URLSearchParams();
         query.set("page", pagination.page.toString());
@@ -182,35 +219,41 @@ export default function AdminWorksPage() {
         }
 
         const json = await res.json();
-        if (json.success) {
+        if (active && json.success) {
           setWorks(json.data);
           setPagination(json.pagination);
         }
       } catch (err) {
-        console.error(err);
-        showToast("Error loading works data", "error");
+        if (active) {
+          console.error(err);
+          showToast("Error loading works data", "error");
+        }
       } finally {
-        setInitialLoading(false);
-        setIsRefreshing(false);
+        if (active) {
+          setInitialLoading(false);
+          setIsRefreshing(false);
+        }
       }
-    },
-    [
-      pagination.page,
-      pagination.limit,
-      debouncedSearch,
-      statusFilter,
-      categoryFilter,
-      sortOption,
-    ]
-  );
+    }
 
-  React.useEffect(() => {
-    fetchWorks();
-  }, [fetchWorks]);
+    void load();
+
+    return () => {
+      active = false;
+    };
+  }, [
+    pagination.page,
+    pagination.limit,
+    debouncedSearch,
+    statusFilter,
+    categoryFilter,
+    sortOption,
+  ]);
 
   // Quick refresh
   const handleRefresh = () => {
-    fetchWorks(false);
+    setIsRefreshing(true);
+    void fetchWorks();
   };
 
   // Toggle publish / unpublish
@@ -234,7 +277,7 @@ export default function AdminWorksPage() {
           ? `"${work.title}" unpublished to Draft`
           : `"${work.title}" published to Live site!`
       );
-      fetchWorks(true);
+      void fetchWorks();
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Failed to toggle status";
@@ -262,7 +305,7 @@ export default function AdminWorksPage() {
           ? `Removed "${work.title}" from featured`
           : `"${work.title}" marked as featured!`
       );
-      fetchWorks(true);
+      void fetchWorks();
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Error updating featured status";
@@ -287,7 +330,7 @@ export default function AdminWorksPage() {
       }
       showToast("Display order updated");
       setEditingOrderId(null);
-      fetchWorks(true);
+      void fetchWorks();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Order update failed";
       showToast(msg, "error");
@@ -313,7 +356,7 @@ export default function AdminWorksPage() {
 
       showToast(`"${workToDelete.title}" deleted successfully`);
       setWorkToDelete(null);
-      fetchWorks(true);
+      void fetchWorks();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Failed to delete work";
       showToast(msg, "error");
@@ -554,7 +597,10 @@ export default function AdminWorksPage() {
               {/* Sort selector */}
               <select
                 value={sortOption}
-                onChange={(e) => setSortOption(e.target.value)}
+                onChange={(e) => {
+                  setSortOption(e.target.value);
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
                 className="h-9 rounded-lg border border-[#EADCCB] bg-white px-3 text-xs font-semibold text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
               >
                 <option value="order_asc">Display Order (1 → 99)</option>
@@ -823,6 +869,26 @@ export default function AdminWorksPage() {
                       {/* Actions */}
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
+                          {/* Featured toggle */}
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleToggleFeatured(work)}
+                            disabled={isActioning}
+                            className={`h-8 w-8 ${
+                              work.isFeatured
+                                ? "text-amber-600 hover:bg-amber-50"
+                                : "text-[#78685D] hover:bg-[#FFF5E6]"
+                            }`}
+                            title={
+                              work.isFeatured
+                                ? "Remove from featured"
+                                : "Mark as featured"
+                            }
+                          >
+                            <Sparkles className="h-3.5 w-3.5" />
+                          </Button>
+
                           {/* Publish/Unpublish toggle */}
                           <Button
                             variant="ghost"
@@ -878,41 +944,22 @@ export default function AdminWorksPage() {
         </div>
 
         {/* Pagination footer */}
-        {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-[#EADCCB] bg-[#FFFDF9] px-6 py-3.5 text-xs text-[#78685D]">
-            <span>
-              Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-              {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
-              of {pagination.total} results
-            </span>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
-                }
-                disabled={!pagination.hasPrevPage}
-                className="h-8 border-[#EADCCB] text-xs text-[#492A22]"
-              >
-                Previous
-              </Button>
-              <span className="font-semibold text-[#492A22]">
-                Page {pagination.page} of {pagination.totalPages}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
-                }
-                disabled={!pagination.hasNextPage}
-                className="h-8 border-[#EADCCB] text-xs text-[#492A22]"
-              >
-                Next
-              </Button>
-            </div>
+        {!initialLoading && pagination.total > 0 && (
+          <div className="border-t border-[#EADCCB] bg-[#FFFDF9] px-6">
+            <Pagination
+              currentPage={pagination.page}
+              totalPages={pagination.totalPages}
+              totalRecords={pagination.total}
+              limit={pagination.limit}
+              recordLabel="initiatives"
+              disabled={isRefreshing}
+              onPageChange={(page) =>
+                setPagination((prev) => ({
+                  ...prev,
+                  page: Math.max(1, Math.min(page, prev.totalPages)),
+                }))
+              }
+            />
           </div>
         )}
       </Card>

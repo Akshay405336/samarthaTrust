@@ -18,6 +18,7 @@ export function CustomerFooter() {
     { label: "Home", href: "/" },
     { label: "About Samartha Trust", href: "/about" },
     { label: "Our Programs & Initiatives", href: "/programs" },
+    { label: "Make a Donation", href: "/donate" },
     { label: "Blog & Impact Stories", href: "/blog" },
     { label: "Contact & Inquiries", href: "/contact" },
   ];

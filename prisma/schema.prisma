@@ -145,3 +145,59 @@ model Work {
   @@index([slug])
   @@map("works")
 }
+
+enum DonationStatus {
+  PENDING
+  ORDER_CREATED
+  PAID
+  FAILED
+  EXPIRED
+}
+
+model Donation {
+  id                String         @id @default(cuid())
+  referenceId       String         @unique
+  amount            Int            // Amount in integer paise (e.g. 200000 = ₹2,000)
+  currency          String         @default("INR")
+  frequency         String         @default("one-time")
+  status            DonationStatus @default(PENDING)
+
+  // Purpose / Cause
+  causeId           String
+  causeTitle        String
+
+  // Donor information
+  donorName         String
+  donorEmail        String
+  donorPhone        String
+  panNumber         String?
+  addressLine1      String?
+  addressLine2      String?
+  city              String?
+  state             String?
+  pincode           String?
+  country           String?        @default("India")
+  message           String?        @db.Text
+  isAnonymous       Boolean        @default(false)
+  consentUpdates    Boolean        @default(true)
+
+  // Razorpay Gateway Details
+  razorpayOrderId   String?        @unique
+  razorpayPaymentId String?        @unique
+  razorpaySignature String?
+  paymentMethod     String?
+
+  // Timestamps
+  capturedAt        DateTime?
+  failedAt          DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@index([referenceId])
+  @@index([donorEmail])
+  @@index([status])
+  @@index([createdAt])
+  @@index([razorpayOrderId])
+  @@index([razorpayPaymentId])
+  @@map("donations")
+}
