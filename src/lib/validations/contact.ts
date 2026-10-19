@@ -10,6 +10,7 @@ export const contactFormSchema = z.object({
     .min(1, "Email address is required")
     .email("Please provide a valid email address"),
   phone: z.string().optional().or(z.literal("")),
+  inquiryType: z.string().optional().or(z.literal("")),
   subject: z
     .string()
     .min(3, "Subject must be at least 3 characters")
