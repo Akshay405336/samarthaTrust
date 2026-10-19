@@ -5,6 +5,8 @@ import { Breadcrumbs } from "@/components/admin/breadcrumbs";
 import { BlogForm } from "@/components/admin/blog-form";
 import { getBlogById } from "@/lib/blogs/blog-service";
 
+export const instant = false;
+
 interface EditBlogPageProps {
   params: Promise<{
     id: string;

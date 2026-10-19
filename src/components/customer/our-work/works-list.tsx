@@ -87,7 +87,10 @@ export function WorksList({ works }: WorksListProps) {
 
             <div className="mt-7 flex justify-center">
               <Button asChild>
-                <Link href="/contact" className="inline-flex items-center gap-2">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2"
+                >
                   Contact Our Team
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -160,9 +163,7 @@ export function WorksList({ works }: WorksListProps) {
                   <div className="min-w-0 p-5 sm:p-7 lg:p-9">
                     {/* Category and status */}
                     <div className="mb-6 flex flex-wrap items-center gap-2.5">
-                      {work.badge && (
-                        <Badge variant="warm">{work.badge}</Badge>
-                      )}
+                      {work.badge && <Badge variant="warm">{work.badge}</Badge>}
 
                       {work.category && (
                         <span className="inline-flex items-center rounded-lg border border-[#EFE2D5] bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.09em] text-[#80685F]">
@@ -262,10 +263,7 @@ export function WorksList({ works }: WorksListProps) {
                         <div className="absolute -right-5 -top-8 h-28 w-28 rounded-full bg-[#FFD21C]/10 blur-2xl" />
 
                         <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-[#F0DFCF] bg-[#FFF6EC] text-[#F4510B]">
-                          <WorkIcon
-                            name={work.iconName}
-                            className="h-7 w-7"
-                          />
+                          <WorkIcon name={work.iconName} className="h-7 w-7" />
                         </div>
                       </div>
                     )}
