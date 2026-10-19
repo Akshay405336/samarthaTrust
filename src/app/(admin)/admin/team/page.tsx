@@ -17,7 +17,6 @@ import {
   Loader2,
   AlertTriangle,
   ExternalLink,
-  Tag,
   ArrowUpDown,
   Eye,
   Check,
@@ -32,14 +31,12 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { TEAM_CATEGORIES } from "@/lib/validations/team";
 
 interface TeamMemberItem {
   id: string;
   name: string;
   slug: string;
   designation: string;
-  category: string;
   profileImage?: string | null;
   bio?: string | null;
   shortBio?: string | null;
@@ -88,7 +85,6 @@ export default function AdminTeamPage() {
   >({});
 
   const [search, setSearch] = React.useState("");
-  const [categoryFilter, setCategoryFilter] = React.useState<string>("ALL");
   const [statusFilter, setStatusFilter] = React.useState<string>("ALL");
   const [featuredFilter, setFeaturedFilter] = React.useState<string>("ALL");
   const [sortOrder, setSortOrder] = React.useState<string>("order_asc");
@@ -128,7 +124,6 @@ export default function AdminTeamPage() {
         });
 
         if (search.trim()) params.set("search", search.trim());
-        if (categoryFilter !== "ALL") params.set("category", categoryFilter);
         if (statusFilter !== "ALL") params.set("status", statusFilter);
         if (featuredFilter !== "ALL") params.set("featured", featuredFilter);
 
@@ -161,7 +156,6 @@ export default function AdminTeamPage() {
     pagination.page,
     pagination.limit,
     search,
-    categoryFilter,
     statusFilter,
     featuredFilter,
     sortOrder,
@@ -178,7 +172,6 @@ export default function AdminTeamPage() {
       });
 
       if (search.trim()) params.set("search", search.trim());
-      if (categoryFilter !== "ALL") params.set("category", categoryFilter);
       if (statusFilter !== "ALL") params.set("status", statusFilter);
       if (featuredFilter !== "ALL") params.set("featured", featuredFilter);
 
@@ -460,26 +453,6 @@ export default function AdminTeamPage() {
 
             {/* Filter controls */}
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
-              {/* Category Filter */}
-              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
-                <Tag className="h-3.5 w-3.5 text-[#FF8A00]" />
-                <select
-                  value={categoryFilter}
-                  onChange={(e) => {
-                    setCategoryFilter(e.target.value);
-                    setPagination((p) => ({ ...p, page: 1 }));
-                  }}
-                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
-                >
-                  <option value="ALL">All Categories</option>
-                  {TEAM_CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/* Status Filter */}
               <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
                 <select
@@ -576,9 +549,6 @@ export default function AdminTeamPage() {
                 <th scope="col" className="px-6 py-3.5">
                   Member
                 </th>
-                <th scope="col" className="px-6 py-3.5">
-                  Category
-                </th>
                 <th scope="col" className="px-6 py-3.5 text-center">
                   Display Order
                 </th>
@@ -610,9 +580,6 @@ export default function AdminTeamPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="h-5 w-20 rounded bg-[#EADCCB]/30" />
-                    </td>
                     <td className="px-6 py-4 text-center">
                       <div className="h-4 w-8 mx-auto rounded bg-[#EADCCB]/30" />
                     </td>
@@ -633,7 +600,7 @@ export default function AdminTeamPage() {
               ) : members.length === 0 ? (
                 // Empty state
                 <tr>
-                  <td colSpan={7} className="px-6 py-12 text-center">
+                  <td colSpan={6} className="px-6 py-12 text-center">
                     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF5E6] text-[#FF8A00] border border-[#EADCCB]">
                       <Users className="h-6 w-6" />
                     </div>
@@ -642,7 +609,6 @@ export default function AdminTeamPage() {
                     </h3>
                     <p className="mt-1 text-xs text-[#78685D] max-w-sm mx-auto">
                       {search ||
-                      categoryFilter !== "ALL" ||
                       statusFilter !== "ALL" ||
                       featuredFilter !== "ALL"
                         ? "No team members matched your active search or filter criteria. Try clearing filters."
@@ -731,16 +697,6 @@ export default function AdminTeamPage() {
                             </div>
                           </div>
                         </div>
-                      </td>
-
-                      {/* Category */}
-                      <td className="px-6 py-4">
-                        <Badge
-                          variant="secondary"
-                          className="bg-[#FFF5E6] text-[#492A22] border-[#EADCCB] font-semibold text-xs"
-                        >
-                          {member.category}
-                        </Badge>
                       </td>
 
                       {/* Display Order */}
@@ -882,15 +838,15 @@ export default function AdminTeamPage() {
                       {/* Actions */}
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
-                          {/* View public profile */}
+                          {/* View on About page */}
                           <Button
                             asChild
                             variant="ghost"
                             size="sm"
                             className="h-8 w-8 p-0 text-[#78685D] hover:bg-[#FFF5E6] hover:text-[#492A22]"
-                            title="View public profile"
+                            title="View on About page"
                           >
-                            <Link href={`/team/${member.slug}`} target="_blank">
+                            <Link href="/about" target="_blank">
                               <ExternalLink className="h-3.5 w-3.5" />
                             </Link>
                           </Button>

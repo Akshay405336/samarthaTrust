@@ -1,16 +1,19 @@
-
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { getAboutBannerBgUrl, getAssetUrl } from "@/lib/utils/asset-version";
 
 export function AboutBanner() {
+  const bgImageSrc = getAboutBannerBgUrl();
+  const foregroundImageSrc = getAssetUrl("/images/about/Joyful-Sibling.png");
+
   return (
     <section className="relative isolate overflow-hidden bg-[#151817] text-white">
       {/* Background image */}
       <Image
-        src="/images/about/about-banner-bg.png"
+        src={bgImageSrc}
         alt=""
         fill
         priority
@@ -19,7 +22,7 @@ export function AboutBanner() {
       />
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/75 to-[#10251f]/75" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-[#10251f]/75" />
 
       <Container className="relative z-10">
         <div className="grid min-h-[400px] items-center gap-8 py-10 sm:min-h-[440px] sm:py-12 lg:min-h-[480px] lg:grid-cols-[0.8fr_1.2fr] lg:gap-10 lg:py-12">
@@ -62,7 +65,7 @@ export function AboutBanner() {
                 </defs>
 
                 <image
-                  href="/images/about/hand.jpg"
+                  href={foregroundImageSrc}
                   width="500"
                   height="470"
                   preserveAspectRatio="xMidYMid slice"

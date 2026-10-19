@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { publicTeamQuerySchema } from "@/lib/validations/team";
-import {
-  listPublicTeamMembers,
-  getDistinctCategories,
-} from "@/lib/team/team-service";
+import { listPublicTeamMembers } from "@/lib/team/team-service";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
     const rawParams = {
-      category: searchParams.get("category") || undefined,
       featured: searchParams.get("featured") || undefined,
       limit: searchParams.get("limit") || undefined,
     };
@@ -27,24 +23,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const [members, categories] = await Promise.all([
-      listPublicTeamMembers({
-        category: parsed.data.category,
-        featured:
-          parsed.data.featured === "true"
-            ? true
-            : parsed.data.featured === "false"
-              ? false
-              : undefined,
-        limit: parsed.data.limit,
-      }),
-      getDistinctCategories(),
-    ]);
+    const members = await listPublicTeamMembers({
+      featured:
+        parsed.data.featured === "true"
+          ? true
+          : parsed.data.featured === "false"
+            ? false
+            : undefined,
+      limit: parsed.data.limit,
+    });
 
     return NextResponse.json({
       success: true,
       data: members,
-      categories,
     });
   } catch (error) {
     if (

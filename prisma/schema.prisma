@@ -85,7 +85,6 @@ model TeamMember {
   name         String
   slug         String   @unique
   designation  String
-  category     String   @default("Trustee")
   profileImage String?
   bio          String?  @db.Text
   shortBio     String?
@@ -102,7 +101,6 @@ model TeamMember {
   updatedAt    DateTime @updatedAt
 
   @@index([isActive])
-  @@index([category])
   @@index([isFeatured])
   @@index([displayOrder])
   @@index([slug])

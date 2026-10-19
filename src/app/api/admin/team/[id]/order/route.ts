@@ -35,7 +35,6 @@ export async function PATCH(request: NextRequest, context: RouteParams) {
     try {
       revalidatePath("/about");
       revalidatePath("/our-trustees");
-      revalidatePath("/team");
     } catch {
       // Ignored outside Next.js request context
     }

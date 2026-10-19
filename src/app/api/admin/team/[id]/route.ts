@@ -84,8 +84,6 @@ export async function PUT(request: NextRequest, context: RouteParams) {
     try {
       revalidatePath("/about");
       revalidatePath("/our-trustees");
-      revalidatePath("/team");
-      revalidatePath(`/team/${member.slug}`);
     } catch {
       // Ignored outside Next.js request context
     }
@@ -126,10 +124,6 @@ export async function DELETE(request: NextRequest, context: RouteParams) {
     try {
       revalidatePath("/about");
       revalidatePath("/our-trustees");
-      revalidatePath("/team");
-      if (deleted.slug) {
-        revalidatePath(`/team/${deleted.slug}`);
-      }
     } catch {
       // Ignored outside Next.js request context
     }

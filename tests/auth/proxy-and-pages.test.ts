@@ -112,4 +112,28 @@ describe("Next.js 16 Proxy & Route Protection", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("location")).toBeNull();
   });
+
+  it("does not redirect /admin/login when ?from= is present even if access token is present (prevents infinite redirect loop)", async () => {
+    const validToken = await createAccessToken({
+      userId: "usr_revoked_admin",
+      email: "admin@samarthatrust.org",
+      name: "Super Admin",
+      role: Role.SUPER_ADMIN,
+      sessionId: "sess_revoked_999",
+    });
+
+    const req = new NextRequest(
+      "http://localhost:3000/admin/login?from=%2Fadmin",
+      {
+        headers: {
+          cookie: `${AUTH_COOKIES.ACCESS_TOKEN}=${validToken}`,
+        },
+      }
+    );
+
+    const res = await proxy(req);
+    // Must NOT redirect back to /admin (which would cause infinite loop)
+    expect(res.status).toBe(200);
+    expect(res.headers.get("location")).toBeNull();
+  });
 });

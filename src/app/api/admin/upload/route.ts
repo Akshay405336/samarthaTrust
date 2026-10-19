@@ -7,9 +7,19 @@ const ALLOWED_MIME_TYPES = new Set([
   "image/jpeg",
   "image/png",
   "image/webp",
+  "image/avif",
   "image/gif",
   "image/svg+xml",
 ]);
+
+const MIME_TO_EXT: Record<string, string> = {
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp",
+  "image/avif": ".avif",
+  "image/gif": ".gif",
+  "image/svg+xml": ".svg",
+};
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
@@ -38,7 +48,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error:
-            "Invalid file type. Allowed formats: JPG, PNG, WebP, GIF, SVG.",
+            "Invalid file type. Allowed formats: JPG, PNG, WebP, AVIF, GIF, SVG.",
         },
         { status: 400 }
       );
@@ -58,35 +68,52 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const folderParam = (formData.get("folder") as string | null) || "blogs";
-    const safeFolder =
-      folderParam === "team"
-        ? "team"
-        : folderParam.replace(/[^a-z0-9_-]/gi, "") || "blogs";
 
-    // Create target uploads directory inside public/
-    const uploadDir = path.join(process.cwd(), "public", "uploads", safeFolder);
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    let uploadDir: string;
+    let publicUrlPrefix: string;
+
+    if (folderParam === "team" || folderParam === "profiles") {
+      // Store team profile images inside public/images/profiles/
+      uploadDir = path.join(process.cwd(), "public", "images", "profiles");
+      publicUrlPrefix = "/images/profiles";
+    } else {
+      const safeFolder = folderParam.replace(/[^a-z0-9_-]/gi, "") || "blogs";
+      uploadDir = path.join(process.cwd(), "public", "uploads", safeFolder);
+      publicUrlPrefix = `/uploads/${safeFolder}`;
+    }
+
+    // Create target directory if it doesn't exist
+    if (!fs.existsSync(/*turbopackIgnore: true*/ uploadDir)) {
+      fs.mkdirSync(/*turbopackIgnore: true*/ uploadDir, { recursive: true });
     }
 
     // Generate safe, collision-resistant filename
-    const originalExt = path.extname(file.name) || ".png";
-    const cleanExt = originalExt.toLowerCase();
+    const originalExt = path.extname(file.name) || "";
+    const cleanExt = originalExt
+      ? originalExt.toLowerCase()
+      : MIME_TO_EXT[file.type] || ".jpg";
     const timestamp = Date.now().toString(36);
     const randomSuffix = Math.random().toString(36).substring(2, 8);
-    const baseName = path
-      .basename(file.name, originalExt)
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .replace(/-+/g, "-")
-      .substring(0, 40);
+    const rawBaseName = originalExt
+      ? path.basename(file.name, originalExt)
+      : file.name;
+    const safeBase =
+      rawBaseName
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .substring(0, 40) ||
+      (folderParam === "team" || folderParam === "profiles"
+        ? "profile"
+        : "image");
 
-    const fileName = `${baseName || "image"}-${timestamp}-${randomSuffix}${cleanExt}`;
+    const fileName = `${safeBase}-${timestamp}-${randomSuffix}${cleanExt}`;
     const filePath = path.join(uploadDir, fileName);
 
     fs.writeFileSync(filePath, buffer);
 
-    const publicUrl = `/uploads/${safeFolder}/${fileName}`;
+    const publicUrl = `${publicUrlPrefix}/${fileName}`;
 
     return NextResponse.json({
       success: true,

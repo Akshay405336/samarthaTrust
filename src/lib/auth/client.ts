@@ -92,7 +92,8 @@ export async function authFetch(
       // Refresh failed or session expired (7 days passed / revoked)
       if (
         typeof window !== "undefined" &&
-        window.location.pathname.startsWith("/admin")
+        window.location.pathname.startsWith("/admin") &&
+        window.location.pathname !== "/admin/login"
       ) {
         // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.href = `/admin/login?from=${encodeURIComponent(

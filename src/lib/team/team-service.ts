@@ -68,7 +68,6 @@ export async function createTeamMember(
       name: input.name,
       slug,
       designation: input.designation,
-      category: input.category || "Trustee",
       profileImage: input.profileImage || null,
       bio: input.bio || null,
       shortBio: input.shortBio || null,
@@ -112,7 +111,6 @@ export async function updateTeamMember(
       ...(input.designation !== undefined
         ? { designation: input.designation }
         : {}),
-      ...(input.category !== undefined ? { category: input.category } : {}),
       ...(input.profileImage !== undefined
         ? { profileImage: input.profileImage }
         : {}),
@@ -196,13 +194,8 @@ export async function listAdminTeamMembers(
     where.OR = [
       { name: { contains: q, mode: "insensitive" } },
       { designation: { contains: q, mode: "insensitive" } },
-      { category: { contains: q, mode: "insensitive" } },
       { bio: { contains: q, mode: "insensitive" } },
     ];
-  }
-
-  if (params.category && params.category !== "ALL") {
-    where.category = { equals: params.category, mode: "insensitive" };
   }
 
   if (params.status === "ACTIVE") {
@@ -273,17 +266,12 @@ export async function listAdminTeamMembers(
  * Lists active team members for public display.
  */
 export async function listPublicTeamMembers(options?: {
-  category?: string;
   featured?: boolean;
   limit?: number;
 }): Promise<TeamMember[]> {
   const where: Prisma.TeamMemberWhereInput = {
     isActive: true,
   };
-
-  if (options?.category && options.category !== "ALL") {
-    where.category = { equals: options.category, mode: "insensitive" };
-  }
 
   if (typeof options?.featured === "boolean") {
     where.isFeatured = options.featured;
@@ -354,18 +342,4 @@ export async function updateTeamMemberOrder(
     where: { id },
     data: { displayOrder },
   });
-}
-
-/**
- * Fetches distinct categories used in the team members table.
- */
-export async function getDistinctCategories(): Promise<string[]> {
-  const records = await prisma.teamMember.findMany({
-    distinct: ["category"],
-    select: { category: true },
-    where: { isActive: true },
-    orderBy: { category: "asc" },
-  });
-
-  return records.map((r) => r.category).filter(Boolean);
 }

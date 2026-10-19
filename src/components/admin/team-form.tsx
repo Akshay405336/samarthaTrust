@@ -17,7 +17,6 @@ import {
   Mail,
   Phone,
   Globe,
-  Tag,
 } from "lucide-react";
 import {
   LinkedInIcon,
@@ -29,7 +28,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { TEAM_CATEGORIES, generateSlug } from "@/lib/validations/team";
+import { generateSlug, isAbsoluteHttpUrl } from "@/lib/validations/team";
 
 interface TeamFormProps {
   initialData?: {
@@ -37,7 +36,6 @@ interface TeamFormProps {
     name: string;
     slug: string;
     designation: string;
-    category: string;
     profileImage?: string | null;
     bio?: string | null;
     shortBio?: string | null;
@@ -66,20 +64,15 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
     initialData?.designation || ""
   );
 
-  const initialCat = initialData?.category || "Trustee";
-  const isCustomInitialCat = !TEAM_CATEGORIES.includes(
-    initialCat as (typeof TEAM_CATEGORIES)[number]
+  const initialProfile = initialData?.profileImage || "";
+  const [profileImage, setProfileImage] = React.useState(initialProfile);
+  const [imageUrlInput, setImageUrlInput] = React.useState(
+    initialProfile.startsWith("http://") ||
+      initialProfile.startsWith("https://")
+      ? initialProfile
+      : ""
   );
-  const [category, setCategory] = React.useState(
-    isCustomInitialCat ? "Other" : initialCat
-  );
-  const [customCategory, setCustomCategory] = React.useState(
-    isCustomInitialCat ? initialCat : ""
-  );
-
-  const [profileImage, setProfileImage] = React.useState(
-    initialData?.profileImage || ""
-  );
+  const [imageUrlError, setImageUrlError] = React.useState<string | null>(null);
   const [shortBio, setShortBio] = React.useState(initialData?.shortBio || "");
   const [bio, setBio] = React.useState(initialData?.bio || "");
 
@@ -136,13 +129,35 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
   // Image file upload handler
   const handleImageUpload = async (file: File) => {
     if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setGeneralError("File is too large. Maximum size is 5 MB.");
+      return;
+    }
+
+    const validTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/avif",
+      "image/gif",
+      "image/svg+xml",
+    ];
+    if (!validTypes.includes(file.type)) {
+      setGeneralError(
+        "Invalid file type. Allowed formats: JPG, PNG, WebP, AVIF, GIF, SVG."
+      );
+      return;
+    }
+
     setUploadingImage(true);
     setGeneralError(null);
+    setImageUrlError(null);
 
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", "team");
+      formData.append("folder", "profiles");
 
       const res = await fetch("/api/admin/upload", {
         method: "POST",
@@ -155,32 +170,92 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
       }
 
       setProfileImage(data.url);
+      setImageUrlInput("");
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Failed to upload image.";
       setGeneralError(msg);
     } finally {
       setUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setImageUrlInput(val);
+
+    const trimmed = val.trim();
+    if (!trimmed) {
+      setImageUrlError(null);
+      // If the current photo was an external URL, clearing the input clears profileImage
+      // If the current photo is an uploaded local image, do not overwrite it unintentionally
+      if (
+        profileImage.startsWith("http://") ||
+        profileImage.startsWith("https://")
+      ) {
+        setProfileImage("");
+      }
+      return;
+    }
+
+    if (trimmed.startsWith("/")) {
+      setImageUrlError(
+        "Direct image URL must be an absolute URL starting with http:// or https:// (e.g., https://example.com/photo.jpg). Local paths cannot be entered as external URLs; use the Upload Photo button above."
+      );
+      return;
+    }
+
+    if (!isAbsoluteHttpUrl(trimmed)) {
+      setImageUrlError(
+        "Please enter a valid absolute HTTP or HTTPS URL (e.g., https://example.com/photo.jpg)."
+      );
+      return;
+    }
+
+    setImageUrlError(null);
+    setProfileImage(trimmed);
+  };
+
+  const handleRemovePhoto = () => {
+    setProfileImage("");
+    setImageUrlInput("");
+    setImageUrlError(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
+    if (imageUrlError) {
+      setGeneralError("Please fix the invalid direct image URL before saving.");
+      return;
+    }
+
+    if (imageUrlInput.trim()) {
+      const trimmed = imageUrlInput.trim();
+      if (trimmed.startsWith("/") || !isAbsoluteHttpUrl(trimmed)) {
+        setImageUrlError(
+          "Direct image URL must be a valid absolute HTTP or HTTPS URL (e.g., https://example.com/photo.jpg)."
+        );
+        setGeneralError("Please enter a valid absolute HTTP or HTTPS URL.");
+        return;
+      }
+    }
+
     setSaving(true);
     setErrors({});
     setGeneralError(null);
     setSuccessMessage(null);
 
-    const finalCategory =
-      category === "Other" && customCategory.trim()
-        ? customCategory.trim()
-        : category;
-
     const payload = {
       name: name.trim(),
       slug: slug.trim() || generateSlug(name),
       designation: designation.trim(),
-      category: finalCategory,
       profileImage: profileImage.trim() || null,
       shortBio: shortBio.trim() || null,
       bio: bio.trim() || null,
@@ -371,10 +446,10 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       htmlFor="slug"
                       className="text-sm font-semibold text-[#492A22]"
                     >
-                      Profile URL Slug
+                      Member Slug
                     </Label>
                     <span className="text-[11px] text-[#78685D]">
-                      Public URL: /team/{slug || "slug"}
+                      Identifier: {slug || "slug"}
                     </span>
                   </div>
                   <Input
@@ -386,43 +461,6 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   />
                   {errors.slug && (
                     <p className="text-xs text-red-600">{errors.slug}</p>
-                  )}
-                </div>
-
-                {/* Category Selection */}
-                <div className="space-y-1.5">
-                  <Label
-                    htmlFor="category"
-                    className="text-sm font-semibold text-[#492A22]"
-                  >
-                    Team Category <span className="text-[#F52232]">*</span>
-                  </Label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <select
-                      id="category"
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      className="rounded-md border border-[#EADCCB] bg-white px-3 py-2 text-sm text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
-                    >
-                      {TEAM_CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                      <option value="Other">Custom Category...</option>
-                    </select>
-
-                    {category === "Other" && (
-                      <Input
-                        value={customCategory}
-                        onChange={(e) => setCustomCategory(e.target.value)}
-                        placeholder="Enter custom category"
-                        className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
-                      />
-                    )}
-                  </div>
-                  {errors.category && (
-                    <p className="text-xs text-red-600">{errors.category}</p>
                   )}
                 </div>
 
@@ -638,9 +676,19 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
             {/* Profile Photo Card */}
             <Card className="border-[#EADCCB] bg-white shadow-2xs">
               <CardHeader className="border-b border-[#EADCCB]/70 bg-[#FFFCF5] px-6 py-4">
-                <h2 className="text-base font-bold text-[#492A22]">
-                  Profile Photo
-                </h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-base font-bold text-[#492A22]">
+                    Profile Photo
+                  </h2>
+                  {profileImage && (
+                    <span className="text-[11px] font-medium text-[#78685D]">
+                      {profileImage.startsWith("http://") ||
+                      profileImage.startsWith("https://")
+                        ? "🌐 External URL"
+                        : "📁 Uploaded File"}
+                    </span>
+                  )}
+                </div>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 <div className="flex flex-col items-center gap-4">
@@ -651,6 +699,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                         src={profileImage}
                         alt="Profile preview"
                         fill
+                        unoptimized
                         className="object-cover"
                       />
                     ) : (
@@ -660,12 +709,24 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     )}
                   </div>
 
+                  {/* Image Path display */}
+                  {profileImage && (
+                    <div className="text-center max-w-full px-2">
+                      <p
+                        className="text-[11px] font-mono text-[#78685D] truncate max-w-[220px]"
+                        title={profileImage}
+                      >
+                        {profileImage}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Photo Actions */}
                   <div className="flex flex-wrap items-center justify-center gap-2">
                     <input
                       ref={fileInputRef}
                       type="file"
-                      accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+                      accept="image/jpeg,image/png,image/webp,image/avif,image/gif,image/svg+xml"
                       className="hidden"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
@@ -701,7 +762,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => setProfileImage("")}
+                        onClick={handleRemovePhoto}
                         className="text-red-600 hover:bg-red-50 hover:text-red-700"
                         title="Remove photo"
                       >
@@ -710,22 +771,35 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     )}
                   </div>
 
-                  {/* Manual URL entry fallback */}
-                  <div className="w-full pt-2 border-t border-[#EADCCB]/60 space-y-1">
+                  {/* Direct external URL entry */}
+                  <div className="w-full pt-3 border-t border-[#EADCCB]/60 space-y-1.5">
                     <Label
                       htmlFor="profileImageUrl"
-                      className="text-[11px] text-[#78685D]"
+                      className="text-xs font-semibold text-[#492A22]"
                     >
                       Or paste direct image URL
                     </Label>
                     <Input
                       id="profileImageUrl"
-                      type="url"
-                      value={profileImage}
-                      onChange={(e) => setProfileImage(e.target.value)}
-                      placeholder="/images/trustees/name.jpg"
-                      className="h-8 text-xs border-[#EADCCB]"
+                      type="text"
+                      value={imageUrlInput}
+                      onChange={handleImageUrlChange}
+                      placeholder="https://example.com/photos/trustee.jpg"
+                      className={`h-8 text-xs border-[#EADCCB] ${
+                        imageUrlError
+                          ? "border-red-500 focus-visible:ring-red-400"
+                          : ""
+                      }`}
                     />
+                    <p className="text-[11px] text-[#78685D] leading-tight">
+                      Must be an absolute HTTP/HTTPS URL. Local files should be
+                      uploaded above.
+                    </p>
+                    {imageUrlError && (
+                      <p className="text-[11px] text-red-600 leading-tight">
+                        {imageUrlError}
+                      </p>
+                    )}
                   </div>
                 </div>
               </CardContent>

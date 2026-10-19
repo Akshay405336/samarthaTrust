@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
       page: searchParams.get("page") || "1",
       limit: searchParams.get("limit") || "10",
       search: searchParams.get("search") || undefined,
-      category: searchParams.get("category") || undefined,
       status: searchParams.get("status") || "ALL",
       featured: searchParams.get("featured") || "ALL",
       sort: searchParams.get("sort") || "order_asc",
@@ -104,8 +103,6 @@ export async function POST(request: NextRequest) {
     try {
       revalidatePath("/about");
       revalidatePath("/our-trustees");
-      revalidatePath("/team");
-      revalidatePath(`/team/${member.slug}`);
     } catch {
       // Ignored when outside Next.js request context (e.g. unit tests)
     }

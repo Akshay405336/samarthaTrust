@@ -81,7 +81,10 @@ export async function requireAdminSession(
 ): Promise<SafeUser> {
   const user = await getAdminSession();
   if (!user) {
-    redirect(redirectPath);
+    const destination = redirectPath.includes("from=")
+      ? redirectPath
+      : `${redirectPath}${redirectPath.includes("?") ? "&" : "?"}from=%2Fadmin`;
+    redirect(destination);
   }
   return user;
 }

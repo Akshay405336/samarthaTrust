@@ -1,9 +1,14 @@
 import fs from "fs";
 import path from "path";
+import * as React from "react";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { getAssetUrl, clearAssetVersionCache } from "@/lib/utils/asset-version";
+import {
+  getAssetUrl,
+  getAboutBannerBgUrl,
+  clearAssetVersionCache,
+} from "@/lib/utils/asset-version";
 
-describe("Asset Versioning Utility (getAssetUrl)", () => {
+describe("Asset Versioning Utility (getAssetUrl & getAboutBannerBgUrl)", () => {
   const originalEnv = process.env.NODE_ENV;
   const testDir = path.join(process.cwd(), "public", "test-assets");
   const testFile = path.join(testDir, "sample-image.png");
@@ -85,11 +90,10 @@ describe("Asset Versioning Utility (getAssetUrl)", () => {
     expect(getAssetUrl("relative/path.png")).toBe("relative/path.png");
   });
 
-  it("returns original path unchanged without query parameter in production", () => {
+  it("appends deterministic version query in production to ensure reliable CDN cache invalidation on replacement", () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const url = getAssetUrl("/test-assets/sample-image.png");
-    expect(url).toBe("/test-assets/sample-image.png");
-    expect(url).not.toContain("?v=");
+    expect(url).toMatch(/^\/test-assets\/sample-image\.png\?v=[a-z0-9]+$/);
   });
 
   it("works reliably with the real hero image asset in public/images/samartha-hero.png", () => {
@@ -125,5 +129,76 @@ describe("Asset Versioning Utility (getAssetUrl)", () => {
       "/_next/image?url=%2Fimages%2Fabout%2Fabout-heart.png"
     );
     expect(result).toContain("&w=1080&q=75");
+  });
+
+  it("resolves the real About banner background image with version query", () => {
+    const bannerUrl = getAboutBannerBgUrl();
+    expect(bannerUrl).toMatch(
+      /^\/images\/about\/about-banner-bg\.png\?v=[a-z0-9]+$/
+    );
+  });
+
+  it("automatically picks up a newly placed candidate image when its mtime is newer", () => {
+    const testJpg = path.join(
+      process.cwd(),
+      "public",
+      "images",
+      "about-banner-bg.jpg"
+    );
+    try {
+      fs.writeFileSync(testJpg, "dummy-banner-content");
+      const futureTime = new Date(Date.now() + 60000);
+      fs.utimesSync(testJpg, futureTime, futureTime);
+
+      clearAssetVersionCache();
+      const resolved = getAboutBannerBgUrl();
+      expect(resolved).toContain("/images/about-banner-bg.jpg?v=");
+    } finally {
+      if (fs.existsSync(testJpg)) {
+        fs.unlinkSync(testJpg);
+      }
+      clearAssetVersionCache();
+    }
+  });
+
+  it("automatically updates version parameter when banner background image is modified", () => {
+    const realBannerPath = path.join(
+      process.cwd(),
+      "public",
+      "images",
+      "about",
+      "about-banner-bg.png"
+    );
+    const initialUrl = getAboutBannerBgUrl();
+
+    const stat = fs.statSync(realBannerPath);
+    const newTime = new Date(stat.mtimeMs + 5000);
+    fs.utimesSync(realBannerPath, newTime, newTime);
+
+    const updatedUrl = getAboutBannerBgUrl();
+    expect(updatedUrl).not.toBe(initialUrl);
+
+    // Restore original timestamp
+    fs.utimesSync(realBannerPath, stat.atime, stat.mtime);
+    clearAssetVersionCache();
+  });
+
+  it("verifies AboutBanner component uses getAboutBannerBgUrl with object-cover and object-center", async () => {
+    const { AboutBanner } =
+      await import("@/components/customer/about-us/about-banner");
+    const jsx = AboutBanner();
+    expect(jsx).not.toBeNull();
+    const children = React.Children.toArray(jsx.props.children);
+    const imageChild = children.find(
+      (child: any) => child?.props?.src && typeof child.props.src === "string"
+    ) as any;
+
+    expect(imageChild).toBeDefined();
+    expect(imageChild.props.src).toMatch(
+      /^\/images\/about\/about-banner-bg\.png\?v=[a-z0-9]+$/
+    );
+    expect(imageChild.props.className).toContain("object-cover");
+    expect(imageChild.props.className).toContain("object-center");
+    expect(imageChild.props.className).toContain("-z-20");
   });
 });

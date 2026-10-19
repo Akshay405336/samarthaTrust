@@ -31,8 +31,19 @@ export async function proxy(request: NextRequest) {
 
   // 2. Handle /admin/login page
   if (pathname === "/admin/login") {
-    // If the admin is already authenticated with a valid access token, redirect them to dashboard.
-    // Do not redirect based solely on refresh cookie to avoid redirect loops if the session is revoked.
+    // If the request has ?from=..., it indicates the client was directed here due to an unauthenticated
+    // or revoked session. Never redirect back to /admin in this case to prevent infinite redirect loops.
+    // Also clear any stale auth cookies from the browser response.
+    const fromParam = request.nextUrl.searchParams.get("from");
+    if (fromParam) {
+      const response = NextResponse.next();
+      response.cookies.delete(AUTH_COOKIES.ACCESS_TOKEN);
+      response.cookies.delete(AUTH_COOKIES.REFRESH_TOKEN);
+      return response;
+    }
+
+    // If the admin is already authenticated with a valid access token and not arriving from a redirect,
+    // take them to the dashboard.
     if (hasValidAccessToken) {
       return NextResponse.redirect(new URL("/admin", request.url));
     }
@@ -56,10 +67,11 @@ export async function proxy(request: NextRequest) {
     if (!hasValidAccessToken && !refreshToken) {
       const targetDestination = pathname + search;
       const redirectUrl = new URL("/admin/login", request.url);
-      if (targetDestination !== "/admin") {
-        redirectUrl.searchParams.set("from", targetDestination);
-      }
-      return NextResponse.redirect(redirectUrl);
+      redirectUrl.searchParams.set("from", targetDestination);
+      const response = NextResponse.redirect(redirectUrl);
+      response.cookies.delete(AUTH_COOKIES.ACCESS_TOKEN);
+      response.cookies.delete(AUTH_COOKIES.REFRESH_TOKEN);
+      return response;
     }
 
     return NextResponse.next();

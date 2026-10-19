@@ -1,9 +1,12 @@
 import * as React from "react";
+import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/admin/breadcrumbs";
 import { TeamForm } from "@/components/admin/team-form";
 import { getTeamMemberById } from "@/lib/team/team-service";
+
+export const instant = false;
 
 interface EditTeamMemberPageProps {
   params: Promise<{
@@ -11,11 +14,15 @@ interface EditTeamMemberPageProps {
   }>;
 }
 
+const getCachedTeamMember = cache(async (id: string) => {
+  return getTeamMemberById(id);
+});
+
 export async function generateMetadata({
   params,
 }: EditTeamMemberPageProps): Promise<Metadata> {
   const { id } = await params;
-  const member = await getTeamMemberById(id);
+  const member = await getCachedTeamMember(id);
   return {
     title: member
       ? `Edit "${member.name}" | Team Management`
@@ -27,7 +34,7 @@ export default async function EditTeamMemberPage({
   params,
 }: EditTeamMemberPageProps) {
   const { id } = await params;
-  const member = await getTeamMemberById(id);
+  const member = await getCachedTeamMember(id);
 
   if (!member) {
     notFound();
@@ -49,7 +56,6 @@ export default async function EditTeamMemberPage({
           name: member.name,
           slug: member.slug,
           designation: member.designation,
-          category: member.category,
           profileImage: member.profileImage,
           bio: member.bio,
           shortBio: member.shortBio,

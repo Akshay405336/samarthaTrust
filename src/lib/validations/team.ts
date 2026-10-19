@@ -3,18 +3,6 @@ import { generateSlug } from "@/lib/validations/blog";
 
 export { generateSlug };
 
-export const TEAM_CATEGORIES = [
-  "Trustee",
-  "Founder",
-  "Director",
-  "Leadership",
-  "Advisory Board",
-  "Volunteer",
-  "Team Member",
-] as const;
-
-export type TeamCategoryPreset = (typeof TEAM_CATEGORIES)[number];
-
 const optionalUrl = z
   .string()
   .max(1000, "URL must be under 1000 characters")
@@ -58,6 +46,44 @@ const optionalPhone = z
   .or(z.literal(""))
   .transform((val) => (val && val.trim() !== "" ? val.trim() : null));
 
+/**
+ * Validates whether a string is a valid absolute HTTP or HTTPS URL.
+ * Rejects local paths such as /uploads/team/... or relative paths.
+ */
+export function isAbsoluteHttpUrl(val: string): boolean {
+  if (!val || typeof val !== "string" || val.trim() === "") return false;
+  try {
+    const parsed = new URL(val.trim());
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+export const optionalProfileImage = z
+  .string()
+  .max(1000, "Profile image URL must be under 1000 characters")
+  .optional()
+  .nullable()
+  .or(z.literal(""))
+  .refine(
+    (val) => {
+      if (!val || val.trim() === "") return true;
+      const trimmed = val.trim();
+      // Allow local paths starting with /
+      if (trimmed.startsWith("/")) {
+        return true;
+      }
+      // If external, must be valid http or https URL
+      return isAbsoluteHttpUrl(trimmed);
+    },
+    {
+      message:
+        "Profile image must be a local path (/images/profiles/...) or a valid absolute HTTP/HTTPS URL",
+    }
+  )
+  .transform((val) => (val && val.trim() !== "" ? val.trim() : null));
+
 export const createTeamMemberSchema = z.object({
   name: z
     .string()
@@ -76,18 +102,7 @@ export const createTeamMemberSchema = z.object({
     .string()
     .min(2, "Designation must be at least 2 characters")
     .max(120, "Designation must be under 120 characters"),
-  category: z
-    .string()
-    .min(2, "Category must be at least 2 characters")
-    .max(80, "Category must be under 80 characters")
-    .default("Trustee"),
-  profileImage: z
-    .string()
-    .max(1000, "Profile image URL must be under 1000 characters")
-    .optional()
-    .nullable()
-    .or(z.literal(""))
-    .transform((val) => (val && val.trim() !== "" ? val.trim() : null)),
+  profileImage: optionalProfileImage,
   bio: z
     .string()
     .optional()
@@ -132,18 +147,7 @@ export const updateTeamMemberSchema = z.object({
     .min(2, "Designation must be at least 2 characters")
     .max(120, "Designation must be under 120 characters")
     .optional(),
-  category: z
-    .string()
-    .min(2, "Category must be at least 2 characters")
-    .max(80, "Category must be under 80 characters")
-    .optional(),
-  profileImage: z
-    .string()
-    .max(1000, "Profile image URL must be under 1000 characters")
-    .optional()
-    .nullable()
-    .or(z.literal(""))
-    .transform((val) => (val && val.trim() !== "" ? val.trim() : null)),
+  profileImage: optionalProfileImage,
   bio: z
     .string()
     .optional()
@@ -172,7 +176,6 @@ export const teamQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(10),
   search: z.string().optional(),
-  category: z.string().optional(),
   status: z.enum(["ALL", "ACTIVE", "INACTIVE"]).default("ALL"),
   featured: z.enum(["ALL", "true", "false"]).default("ALL"),
   sort: z
@@ -188,7 +191,6 @@ export const teamQuerySchema = z.object({
 });
 
 export const publicTeamQuerySchema = z.object({
-  category: z.string().optional(),
   featured: z.enum(["true", "false"]).optional(),
   limit: z.coerce.number().int().positive().max(100).optional(),
 });

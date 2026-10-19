@@ -5,13 +5,54 @@ import { ShieldCheck, Mail, ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
-import { TeamSection } from "@/components/customer/team-section";
+import {
+  TeamSection,
+  TeamSectionSkeleton,
+  type TeamMemberPublicItem,
+} from "@/components/customer/about-us/team-section";
+import { listPublicTeamMembers } from "@/lib/team/team-service";
 
 export const metadata: Metadata = {
   title: "Our Trustees & Governance",
   description:
     "Governance, leadership, and board of trustees of Samartha Trust.",
 };
+
+async function OurTrusteesTeamSection() {
+  let initialMembers: TeamMemberPublicItem[] = [];
+  try {
+    const members = await listPublicTeamMembers();
+    initialMembers = members.map((m) => ({
+      id: m.id,
+      name: m.name,
+      slug: m.slug,
+      designation: m.designation,
+      profileImage: m.profileImage,
+      shortBio: m.shortBio,
+      bio: m.bio,
+      email: m.email,
+      phone: m.phone,
+      linkedinUrl: m.linkedinUrl,
+      facebookUrl: m.facebookUrl,
+      instagramUrl: m.instagramUrl,
+      websiteUrl: m.websiteUrl,
+      displayOrder: m.displayOrder,
+      isFeatured: m.isFeatured,
+    }));
+  } catch (error) {
+    console.error("Failed to prefetch trustees for governance page:", error);
+  }
+
+  return (
+    <TeamSection
+      badge="Board Members"
+      title="Board of"
+      highlight="Trustees"
+      description="Profiles of governing trustees and leaders dedicated to grassroots empowerment and institutional integrity."
+      initialMembers={initialMembers}
+    />
+  );
+}
 
 export default function OurTrusteesPage() {
   return (
@@ -68,14 +109,9 @@ export default function OurTrusteesPage() {
       </section>
 
       {/* Dynamic Trustees and Leadership Directory */}
-      <TeamSection
-        badge="Board Members"
-        title="Board of"
-        highlight="Trustees"
-        description="Profiles of governing trustees and leaders dedicated to grassroots empowerment and institutional integrity."
-        categoryFilter="Trustee"
-        showCategoryTabs={false}
-      />
+      <React.Suspense fallback={<TeamSectionSkeleton />}>
+        <OurTrusteesTeamSection />
+      </React.Suspense>
     </div>
   );
 }

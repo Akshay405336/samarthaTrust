@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -69,9 +68,9 @@ export function CustomerFooter() {
               </Link>
 
               <p className="max-w-sm text-sm leading-7 text-[#B7BABE]">
-                Dedicated to empowering individuals with abilities and
-                uplifting underprivileged communities through accessible
-                education, healthcare, and sustainable livelihood support.
+                Dedicated to empowering individuals with abilities and uplifting
+                underprivileged communities through accessible education,
+                healthcare, and sustainable livelihood support.
               </p>
 
               <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2">
@@ -194,6 +193,7 @@ export function CustomerFooter() {
 
             <Link
               href="/admin/login"
+              prefetch={false}
               className="inline-flex items-center gap-1.5 font-medium text-[#B7BABE] transition-colors hover:text-[#FF895A]"
             >
               Admin Portal

@@ -12,21 +12,38 @@ const assetVersionCache = new Map<
 >();
 
 /**
- * Returns the asset URL with a stable cache-busting query parameter in development,
+ * Canonical default path for the About banner background image.
+ */
+export const DEFAULT_ABOUT_BANNER_BG = "/images/about/about-banner-bg.png";
+
+/**
+ * Supported candidate paths for the About page banner background.
+ * Scanned in order to detect available formats and locations.
+ */
+export const ABOUT_BANNER_CANDIDATE_PATHS = [
+  "/images/about/about-banner-bg.png",
+  "/images/about/about-banner-bg.jpg",
+  "/images/about/about-banner-bg.jpeg",
+  "/images/about/about-banner-bg.webp",
+  "/images/about-banner-bg.jpg",
+  "/images/about-banner-bg.jpeg",
+  "/images/about-banner-bg.png",
+  "/images/about-banner-bg.webp",
+] as const;
+
+/**
+ * Returns the asset URL with a deterministic, stable cache-busting query parameter
  * derived from the file's last modified timestamp (mtimeMs).
  *
- * In production, it returns the original path unchanged to preserve static CDN caching.
+ * In both development and production, this ensures:
+ * 1. An unchanged file produces an identical, stable URL for maximum CDN cache efficiency.
+ * 2. Replacing the file on disk automatically updates the version query (?v=...),
+ *    bypassing immutable browser and CDN caches without manual code edits.
  *
- * @param src The relative public asset path (e.g. "/images/samartha-hero.png")
- * @returns The versioned asset path (e.g. "/images/samartha-hero.png?v=l8x4z1") in development,
- *          or the unmodified path in production.
+ * @param src The relative public asset path (e.g. "/images/about/about-banner-bg.png")
+ * @returns The versioned asset path (e.g. "/images/about/about-banner-bg.png?v=l8x4z1")
  */
 export function getAssetUrl(src: string): string {
-  // In production, preserve standard static URLs for CDN efficiency
-  if (process.env.NODE_ENV === "production") {
-    return src;
-  }
-
   // Only handle local public assets starting with "/" and not external or API URLs
   if (
     !src ||
@@ -65,6 +82,38 @@ export function getAssetUrl(src: string): string {
   } catch {
     return src;
   }
+}
+
+/**
+ * Resolves the active About banner background image URL.
+ * Automatically scans supported candidate formats (.png, .jpg, .jpeg, .webp)
+ * in /images/about/ and /images/, picks the latest existing file by modification time,
+ * and returns its versioned URL.
+ */
+export function getAboutBannerBgUrl(): string {
+  try {
+    let latestPath: string | null = null;
+    let latestMtime = -1;
+
+    for (const candidate of ABOUT_BANNER_CANDIDATE_PATHS) {
+      const fullPath = path.join(process.cwd(), "public", candidate);
+      if (fs.existsSync(fullPath)) {
+        const stat = fs.statSync(fullPath);
+        if (stat.mtimeMs > latestMtime) {
+          latestMtime = stat.mtimeMs;
+          latestPath = candidate;
+        }
+      }
+    }
+
+    if (latestPath) {
+      return getAssetUrl(latestPath);
+    }
+  } catch {
+    // Fall back to default if filesystem access encounters an issue
+  }
+
+  return getAssetUrl(DEFAULT_ABOUT_BANNER_BG);
 }
 
 /**
