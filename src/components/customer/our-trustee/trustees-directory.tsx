@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import {
   ArrowUpRight,
@@ -39,7 +38,7 @@ export async function TrusteesDirectory() {
   }
 
   const sortedMembers = [...members].sort(
-    (a, b) => a.displayOrder - b.displayOrder,
+    (a, b) => a.displayOrder - b.displayOrder
   );
 
   return (
@@ -265,7 +264,9 @@ export async function TrusteesDirectory() {
                                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FFF5EB] text-[#F4510B] transition-colors group-hover/contact:bg-[#F4510B] group-hover/contact:text-white">
                                   <Mail className="h-4 w-4" />
                                 </span>
-                                <span className="break-all">{member.email}</span>
+                                <span className="break-all">
+                                  {member.email}
+                                </span>
                               </a>
                             )}
 

@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   FileText,
   Users,
+  Briefcase,
   Calendar,
   Layers,
   Settings,
@@ -32,6 +33,11 @@ const navigationItems = [
     name: "Team Management",
     href: "/admin/team",
     icon: Users,
+  },
+  {
+    name: "Our Works",
+    href: "/admin/works",
+    icon: Briefcase,
   },
   {
     name: "Programs (Upcoming)",

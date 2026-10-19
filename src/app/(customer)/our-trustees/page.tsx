@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import * as React from "react";
 import { TrusteesHero } from "@/components/customer/our-trustee/trustees-hero";

@@ -1,4 +1,3 @@
-
 import { Container } from "@/components/shared/container";
 import { getAssetUrl } from "@/lib/utils/asset-version";
 import Image from "next/image";
@@ -74,9 +73,9 @@ export function TrusteesHero() {
 
             {/* Description */}
             <p className="max-w-[580px] text-[15px] leading-7 text-[#78685D] sm:text-base lg:text-[17px]">
-              Meet the dedicated leaders guiding Samartha Trust with
-              compassion, integrity, and a shared commitment to a brighter
-              future for every child and community.
+              Meet the dedicated leaders guiding Samartha Trust with compassion,
+              integrity, and a shared commitment to a brighter future for every
+              child and community.
             </p>
           </div>
 

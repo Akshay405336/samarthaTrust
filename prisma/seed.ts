@@ -118,6 +118,135 @@ async function main() {
         `ℹ️ Existing blogs found (${blogCount} posts). Skipping blog seed.`
       );
     }
+
+    // Seed initial Our Works if none exist
+    console.log("🌱 Seeding initial Our Works initiatives...");
+    const initialWorks = [
+      {
+        slug: "education-scholarship-assistance",
+        title: "Child Education & Scholarship Assistance",
+        category: "Education",
+        badge: "Education First",
+        iconName: "GraduationCap",
+        shortDescription:
+          "Holistic academic support and merit scholarships for underserved students.",
+        description:
+          "Education is the most powerful tool for breaking intergenerational poverty cycles. Our initiative provides underserved children with holistic academic support.",
+        features: [
+          "Annual school kit distribution (books, stationery, uniforms)",
+          "Merit-cum-means financial scholarships for higher schooling",
+          "After-school remedial coaching centers in rural villages",
+          "Digital learning workshops introducing computers and basic coding",
+        ],
+        beneficiaries: "School-going children from marginalized backgrounds",
+        programStatus: "Active & Ongoing",
+        ctaText: "Support This Work",
+        ctaLink: "/contact",
+        displayOrder: 1,
+        status: "PUBLISHED" as const,
+        isFeatured: true,
+        publishedAt: new Date("2026-01-15T10:00:00Z"),
+      },
+      {
+        slug: "preventive-healthcare-diagnostic-camps",
+        title: "Preventive Healthcare & Diagnostic Camps",
+        category: "Healthcare",
+        badge: "Health & Well-being",
+        iconName: "HeartPulse",
+        shortDescription:
+          "Free doctor consultations, vital checks, and vision screening across remote areas.",
+        description:
+          "Access to basic medical screening is often limited in remote or socioeconomically disadvantaged regions. We bridge this critical gap through targeted health camps.",
+        features: [
+          "Free general physician consultations and vital checks",
+          "Vision screening and complimentary corrective spectacles",
+          "Pediatric nutrition screening and vitamin supplementation",
+          "Hygiene, maternal health, and sanitation awareness workshops",
+        ],
+        beneficiaries: "Rural families, elders, and young children",
+        programStatus: "Active & Ongoing",
+        ctaText: "Support This Work",
+        ctaLink: "/contact",
+        displayOrder: 2,
+        status: "PUBLISHED" as const,
+        isFeatured: true,
+        publishedAt: new Date("2026-02-10T10:00:00Z"),
+      },
+      {
+        slug: "vocational-skills-women-empowerment",
+        title: "Vocational Skills & Women Empowerment",
+        category: "Economic Empowerment",
+        badge: "Economic Empowerment",
+        iconName: "Users",
+        shortDescription:
+          "Certified tailoring, computer literacy, and micro-enterprise coaching for women.",
+        description:
+          "Fostering financial independence and entrepreneurial resilience by equipping women and youth with employable practical skills.",
+        features: [
+          "Certified tailoring, embroidery, and handicraft training modules",
+          "Basic computer literacy and office administration coaching",
+          "Micro-enterprise financial literacy and banking guidance",
+          "Self-help group (SHG) formation and mentorship networks",
+        ],
+        beneficiaries: "Rural youth and aspiring women entrepreneurs",
+        programStatus: "Active & Ongoing",
+        ctaText: "Support This Work",
+        ctaLink: "/contact",
+        displayOrder: 3,
+        status: "PUBLISHED" as const,
+        isFeatured: false,
+        publishedAt: new Date("2026-03-05T10:00:00Z"),
+      },
+      {
+        slug: "rural-welfare-environmental-sustainability",
+        title: "Rural Welfare & Environmental Sustainability",
+        category: "Community Welfare",
+        badge: "Community Welfare",
+        iconName: "Sprout",
+        shortDescription:
+          "Potable water supply, tree-planting drives, and seasonal emergency relief.",
+        description:
+          "Strengthening the foundations of communities through sustainable sanitation, ecological conservation, and emergency response.",
+        features: [
+          "Potable water supply support in drought-prone areas",
+          "Community tree-planting and environmental conservation drives",
+          "Seasonal emergency relief kit distribution during crises",
+          "Elderly and destitute care support in local hamlets",
+        ],
+        beneficiaries: "Vulnerable community members and regional habitats",
+        programStatus: "Active & Ongoing",
+        ctaText: "Support This Work",
+        ctaLink: "/contact",
+        displayOrder: 4,
+        status: "PUBLISHED" as const,
+        isFeatured: false,
+        publishedAt: new Date("2026-04-01T10:00:00Z"),
+      },
+    ];
+
+    for (const work of initialWorks) {
+      await prisma.work.upsert({
+        where: { slug: work.slug },
+        update: {
+          title: work.title,
+          category: work.category,
+          badge: work.badge,
+          iconName: work.iconName,
+          shortDescription: work.shortDescription,
+          description: work.description,
+          features: work.features,
+          beneficiaries: work.beneficiaries,
+          programStatus: work.programStatus,
+          ctaText: work.ctaText,
+          ctaLink: work.ctaLink,
+          displayOrder: work.displayOrder,
+          status: work.status,
+          isFeatured: work.isFeatured,
+        },
+        create: work,
+      });
+    }
+    console.log("✅ Initial Our Works seeded/upserted successfully!");
   } catch (error: unknown) {
     const message =
       error instanceof Error
