@@ -24,7 +24,7 @@ export function ContactPageContent() {
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 items-start">
             {/* Form Column (7 cols) */}
             <div className="lg:col-span-7">
-              <div className="rounded-2xl border border-[#EADCCB] bg-white p-6 sm:p-8 shadow-xs">
+              <div className="rounded-2xl border border-[#EADDED] bg-white p-6 sm:p-8 shadow-xs">
                 <ContactFormSection />
               </div>
             </div>

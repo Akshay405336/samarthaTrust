@@ -1,35 +1,58 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Users, Sprout } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { getAssetUrl } from "@/lib/utils/asset-version";
 
 export function HeroSection() {
   return (
-    <section className="relative m-0 w-full overflow-hidden bg-white p-0">
-      <div className="grid w-full grid-cols-1 items-stretch gap-0 lg:grid-cols-[47%_53%]">
-        {/* Left content */}
-        <div className="relative z-10 flex min-w-0 flex-col justify-center gap-5 bg-white px-6 py-5 sm:px-10 sm:py-6 lg:py-5 lg:pl-[max(3rem,calc((100vw-1400px)/2))] lg:pr-7 xl:gap-6">
-          {/* Eyebrow */}
-          <p className="text-[11px] font-semibold tracking-[0.12em] text-[#78685D] sm:text-xs sm:tracking-[0.15em]">
+    <section className="relative isolate m-0 min-h-[620px] w-full overflow-hidden bg-[#17121b] p-0 sm:min-h-[660px] lg:min-h-[min(740px,100svh)]">
+      {/* Static background image */}
+      <Image
+        src="/images/Golden-Hour.png"
+        alt="Schoolchildren in a rural landscape at golden hour"
+        fill
+        priority
+        quality={100}
+        sizes="100vw"
+        className="absolute inset-0 z-0 object-cover object-[58%_42%] sm:object-[60%_40%] lg:object-[62%_38%]"
+      />
+
+      {/* Static dark fade overlay */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/70 via-black/50 via-[38%] to-transparent"
+      />
+
+      {/* Additional subtle shading behind the text only */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[75%] bg-gradient-to-r from-black/25 via-black/10 to-transparent"
+      />
+
+      {/* Hero content */}
+      <div className="relative z-10 mx-auto flex min-h-[620px] w-full max-w-[1720px] items-center px-5 pb-8 pt-24 sm:min-h-[660px] sm:px-8 sm:pb-9 sm:pt-36 lg:min-h-[min(740px,100svh)] lg:px-14 lg:pb-8 lg:pt-36 xl:px-20">
+        <div className="w-full max-w-[740px]">
+          {/* Animated tagline */}
+          <p className="hero-fade-up hero-delay-1 mb-4 text-[10px] font-semibold tracking-[0.1em] text-white sm:mb-5 sm:text-[11px] sm:tracking-[0.14em] lg:text-xs">
             People <span className="px-1">·</span> Education
             <span className="px-1">·</span> Opportunities
             <span className="px-1">·</span> A Brighter Tomorrow
           </p>
 
-          {/* Main heading */}
-          <h1 className="text-[clamp(2.5rem,3.5vw,4rem)] font-extrabold leading-[1.08] tracking-[-0.045em] text-[#492A22]">
+          {/* Animated heading */}
+          <h1 className="hero-fade-up hero-delay-2 text-[clamp(2rem,3.8vw,4.2rem)] font-extrabold leading-[1.04] tracking-[-0.045em] text-white">
             <span className="block">Together for a</span>
 
             <span className="mt-1 block">
               <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
                   Brighter
                 </span>
 
                 <svg
-                  className="absolute -bottom-2 left-0 h-2.5 w-full overflow-visible"
+                  className="absolute -bottom-2 left-0 h-2 w-full overflow-visible"
                   viewBox="0 0 140 12"
                   fill="none"
                   aria-hidden="true"
@@ -40,7 +63,6 @@ export function HeroSection() {
                     strokeWidth="3.5"
                     strokeLinecap="round"
                   />
-
                   <defs>
                     <linearGradient
                       id="samartha-hero-underline"
@@ -50,9 +72,9 @@ export function HeroSection() {
                       y2="0"
                       gradientUnits="userSpaceOnUse"
                     >
-                      <stop stopColor="#F52232" />
-                      <stop offset=".52" stopColor="#FF8A00" />
-                      <stop offset="1" stopColor="#FFD21C" />
+                      <stop stopColor="#7100A8" />
+                      <stop offset=".48" stopColor="#9200A8" />
+                      <stop offset="1" stopColor="#E90078" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -61,25 +83,22 @@ export function HeroSection() {
             </span>
           </h1>
 
-          {/* Supporting description */}
-          <p className="max-w-[580px] text-[15px] leading-7 text-[#78685D] sm:text-base lg:text-[17px]">
+          {/* Animated description */}
+          <p className="hero-fade-up hero-delay-3 mt-5 max-w-[620px] text-[13px] leading-5 text-white sm:text-sm sm:leading-6 lg:mt-6 lg:text-base lg:leading-7">
             We work towards inclusive communities, quality education and
             sustainable opportunities for a brighter, more equitable future.
           </p>
 
-          {/* Action buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-1 sm:gap-4">
+          {/* Animated buttons */}
+          <div className="hero-fade-up hero-delay-4 mt-5 flex flex-wrap items-center gap-3 sm:mt-6 sm:gap-3.5">
             <Button
               asChild
               size="lg"
-              className="group h-14 rounded-full border-0 bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C] px-6 text-base font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:brightness-105 active:scale-[0.98] sm:px-8"
+              className="group h-11 rounded-full border-0 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] px-5 text-xs font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.98] sm:h-12 sm:px-6 sm:text-sm lg:h-13 lg:px-7"
             >
-              <Link
-                href="/programs"
-                className="inline-flex items-center gap-2.5"
-              >
+              <Link href="/programs" className="inline-flex items-center gap-2">
                 <span>Support Our Work</span>
-                <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </Button>
 
@@ -87,62 +106,40 @@ export function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="h-14 rounded-full border-[#F52232] bg-white px-6 text-base font-semibold text-[#492A22] shadow-none transition-colors duration-200 hover:bg-[#FFF5E6] hover:text-[#F52232] active:scale-[0.98] sm:px-8"
+              className="h-11 rounded-full border-white/80 bg-transparent px-5 text-xs font-semibold text-white shadow-none hover:bg-white/10 hover:text-white sm:h-12 sm:px-6 sm:text-sm lg:h-13 lg:px-7"
             >
               <Link href="/about">Learn More</Link>
             </Button>
           </div>
 
-          {/* Three feature highlights */}
-          <div className="mt-2 grid max-w-[600px] grid-cols-3 items-center border-t border-[#EADCCB]/70 pt-4 text-[#492A22]">
-            <div className="flex items-center gap-2 pr-2 sm:gap-3 sm:pr-4">
-              <BookOpen className="h-5 w-5 shrink-0 text-[#F52232] sm:h-7 sm:w-7" />
-              <span className="text-[11px] font-medium leading-5 sm:text-sm">
+          {/* Animated impact points */}
+          <div className="hero-fade-up hero-delay-5 mt-5 grid max-w-[600px] grid-cols-3 items-center border-t border-white/40 pt-3 text-white sm:mt-6 sm:pt-4">
+            <div className="flex items-center gap-2 pr-2 sm:gap-2.5 sm:pr-3">
+              <BookOpen className="h-4 w-4 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
+              <span className="text-[9px] font-medium leading-4 sm:text-[11px] lg:text-xs lg:leading-5">
                 Education
                 <br />
                 for All
               </span>
             </div>
 
-            <div className="flex items-center gap-2 border-l border-[#EADCCB] px-2 sm:gap-3 sm:px-4">
-              <Users className="h-5 w-5 shrink-0 text-[#FF8A00] sm:h-7 sm:w-7" />
-              <span className="text-[11px] font-medium leading-5 sm:text-sm">
+            <div className="flex items-center gap-2 border-l border-white/40 px-2 sm:gap-2.5 sm:px-3">
+              <Users className="h-4 w-4 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
+              <span className="text-[9px] font-medium leading-4 sm:text-[11px] lg:text-xs lg:leading-5">
                 Stronger
                 <br />
                 Communities
               </span>
             </div>
 
-            <div className="flex items-center gap-2 border-l border-[#EADCCB] pl-2 sm:gap-3 sm:pl-4">
-              <Sprout className="h-5 w-5 shrink-0 text-[#FF8A00] sm:h-7 sm:w-7" />
-              <span className="text-[11px] font-medium leading-5 sm:text-sm">
+            <div className="flex items-center gap-2 border-l border-white/40 pl-2 sm:gap-2.5 sm:pl-3">
+              <Sprout className="h-4 w-4 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
+              <span className="text-[9px] font-medium leading-4 sm:text-[11px] lg:text-xs lg:leading-5">
                 Sustainable
                 <br />
                 Change
               </span>
             </div>
-          </div>
-        </div>
-
-        {/* Right image with soft white fade */}
-        <div className="relative m-0 min-w-0 w-full self-stretch overflow-hidden bg-white p-0">
-          <div className="relative h-full min-h-[320px] w-full lg:min-h-[460px]">
-            <Image
-              src={getAssetUrl("/images/samartha-hero.png")}
-              alt="A smiling schoolgirl holding books alongside other children and a tree-planting scene"
-              width={1920}
-              height={768}
-              priority
-              unoptimized
-              sizes="(max-width: 1023px) 100vw, 53vw"
-              className="absolute inset-0 block h-full w-full select-none object-cover object-center lg:object-center"
-            />
-
-            {/* White fade blends the photograph into the left content */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-20 bg-gradient-to-r from-white via-white/70 to-transparent lg:block xl:w-32"
-            />
           </div>
         </div>
       </div>

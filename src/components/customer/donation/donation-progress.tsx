@@ -20,13 +20,13 @@ export function DonationProgress({
   return (
     <nav
       aria-label="Donation progress"
-      className="w-full bg-white rounded-2xl p-4 sm:p-6 border border-[#EFE8D8] shadow-sm mb-8"
+      className="w-full bg-white rounded-2xl p-4 sm:p-6 border border-[#EADDED] shadow-sm mb-8"
     >
       <ol className="flex items-center justify-between w-full relative">
         {/* Background track line */}
         <div
           aria-hidden="true"
-          className="absolute top-1/2 left-6 right-6 -translate-y-1/2 h-0.5 bg-[#EFE8D8] z-0 hidden sm:block"
+          className="absolute top-1/2 left-6 right-6 -translate-y-1/2 h-0.5 bg-[#EADDED] z-0 hidden sm:block"
         />
 
         {WIZARD_STEPS.map((stepItem) => {
@@ -50,7 +50,7 @@ export function DonationProgress({
                 disabled={!isClickable}
                 onClick={() => isClickable && onStepClick?.(stepNum)}
                 className={cn(
-                  "group flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F52232] rounded-xl p-1 transition-all",
+                  "group flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8] rounded-xl p-1 transition-all",
                   isClickable
                     ? "cursor-pointer hover:opacity-80"
                     : "cursor-default"
@@ -66,8 +66,8 @@ export function DonationProgress({
                     isCompleted
                       ? "bg-[#2E7D32] border-[#2E7D32] text-white shadow-xs"
                       : isCurrent
-                        ? "bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFAA00] border-transparent text-white shadow-md scale-105"
-                        : "bg-white border-[#D6CBB8] text-[#78685D]"
+                        ? "bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] border-transparent text-white shadow-md scale-105"
+                        : "bg-white border-[#EADDED] text-[#75647B]"
                   )}
                 >
                   {isCompleted ? (
@@ -83,15 +83,15 @@ export function DonationProgress({
                     className={cn(
                       "text-xs font-bold leading-tight transition-colors",
                       isCurrent
-                        ? "text-[#F52232]"
+                        ? "text-[#9200A8]"
                         : isCompleted
-                          ? "text-[#492A22]"
-                          : "text-[#78685D]"
+                          ? "text-[#35123F]"
+                          : "text-[#75647B]"
                     )}
                   >
                     {stepItem.shortTitle}
                   </p>
-                  <p className="hidden md:block text-[11px] text-[#78685D] mt-0.5 font-medium">
+                  <p className="hidden md:block text-[11px] text-[#75647B] mt-0.5 font-medium">
                     {stepItem.description}
                   </p>
                 </div>

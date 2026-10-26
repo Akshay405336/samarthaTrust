@@ -8,7 +8,7 @@ export function AboutSection() {
   return (
     <section
       aria-labelledby="about-heading"
-      className="relative w-full overflow-hidden border-b border-[#EADCCB]/60 bg-white py-6 sm:py-8 lg:py-6"
+      className="relative w-full overflow-hidden border-b border-[#EADDED] bg-white py-6 sm:py-8 lg:py-6"
     >
       <Container>
         <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-[48%_52%] lg:gap-0">
@@ -31,10 +31,10 @@ export function AboutSection() {
             {/* Eyebrow */}
             <div className="flex items-center gap-2">
               <Heart
-                className="h-3.5 w-3.5 shrink-0 fill-[#F4510B] text-[#F4510B]"
+                className="h-3.5 w-3.5 shrink-0 fill-[#E90078] text-[#E90078]"
                 aria-hidden="true"
               />
-              <span className="text-[11px] font-semibold tracking-[0.12em] text-[#78685D] sm:text-xs sm:tracking-[0.15em]">
+              <span className="text-[11px] font-semibold tracking-[0.12em] text-[#75647B] sm:text-xs sm:tracking-[0.15em]">
                 About Us
               </span>
             </div>
@@ -42,13 +42,13 @@ export function AboutSection() {
             {/* Heading */}
             <h2
               id="about-heading"
-              className="text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#492A22]"
+              className="text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#35123F]"
             >
               We Believe This Life’s About Give For Poor People.
             </h2>
 
             {/* Description */}
-            <p className="max-w-[580px] text-[15px] leading-7 text-[#78685D] sm:text-base lg:text-[17px]">
+            <p className="max-w-[580px] text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]">
               At Samartha Trust, our mission is to provide a safe, nurturing,
               and supportive environment for children in need, including
               orphaned and specially-abled children. We strive to ensure access
@@ -59,7 +59,7 @@ export function AboutSection() {
             <div className="grid grid-cols-1 gap-4 pt-1 sm:grid-cols-2 sm:gap-4 xl:gap-5">
               {/* Mission */}
               <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-full bg-[#F5F0DF] text-[#26312D] sm:h-[72px] sm:w-[72px]">
+                <div className="flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-full bg-[#FCE7F3]/70 text-[#9200A8] sm:h-[72px] sm:w-[72px]">
                   <Target
                     className="h-10 w-10"
                     strokeWidth={1.6}
@@ -68,10 +68,10 @@ export function AboutSection() {
                 </div>
 
                 <div className="min-w-0">
-                  <h3 className="text-base font-semibold leading-snug text-[#492A22] sm:text-lg">
+                  <h3 className="text-base font-semibold leading-snug text-[#35123F] sm:text-lg">
                     Our Mission
                   </h3>
-                  <p className="mt-1 text-[15px] leading-6 text-[#78685D] sm:text-base">
+                  <p className="mt-1 text-[15px] leading-6 text-[#75647B] sm:text-base">
                     The World Apply And Join us to Access Funding.
                   </p>
                 </div>
@@ -79,7 +79,7 @@ export function AboutSection() {
 
               {/* Vision */}
               <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-full bg-[#F5F0DF] text-[#26312D] sm:h-[72px] sm:w-[72px]">
+                <div className="flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-full bg-[#FCE7F3]/70 text-[#9200A8] sm:h-[72px] sm:w-[72px]">
                   <Eye
                     className="h-10 w-10"
                     strokeWidth={1.6}
@@ -88,10 +88,10 @@ export function AboutSection() {
                 </div>
 
                 <div className="min-w-0">
-                  <h3 className="text-base font-semibold leading-snug text-[#492A22] sm:text-lg">
+                  <h3 className="text-base font-semibold leading-snug text-[#35123F] sm:text-lg">
                     Our Vision
                   </h3>
-                  <p className="mt-1 text-[15px] leading-6 text-[#78685D] sm:text-base">
+                  <p className="mt-1 text-[15px] leading-6 text-[#75647B] sm:text-base">
                     The World Apply And Join us to Access Funding.
                   </p>
                 </div>

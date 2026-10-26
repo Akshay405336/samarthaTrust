@@ -45,7 +45,7 @@ export function TransparencySection() {
   return (
     <section
       aria-labelledby="transparency-heading"
-      className="relative isolate overflow-hidden bg-gradient-to-br from-[#FF8126] via-[#F4510B] to-[#E73528] py-10 text-white sm:py-12 lg:py-14"
+      className="relative isolate overflow-hidden bg-gradient-to-br from-[#7100A8] via-[#9200A8] to-[#E90078] py-10 text-white sm:py-12 lg:py-14"
     >
       {/* Subtle background decoration */}
       <div
@@ -127,7 +127,7 @@ export function TransparencySection() {
                 <div className="relative mt-auto pt-5">
                   <Link
                     href={item.href}
-                    className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/[0.14] px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/[0.24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4510B]"
+                    className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/[0.14] px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/[0.24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#9200A8]"
                   >
                     {item.action}
                     <ArrowUpRight

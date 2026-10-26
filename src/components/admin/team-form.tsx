@@ -326,7 +326,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
             asChild
             variant="outline"
             size="sm"
-            className="border-[#EADCCB] text-[#78685D] hover:bg-[#FFF5E6]"
+            className="border-[#EADDED] text-[#75647B] hover:bg-[#FAF5FF]"
           >
             <Link href="/admin/team">
               <ArrowLeft className="h-4 w-4 mr-1" />
@@ -334,10 +334,10 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-[#492A22]">
+            <h1 className="text-2xl font-bold tracking-tight text-[#35123F]">
               {mode === "create" ? "Add Team Member" : "Edit Team Member"}
             </h1>
-            <p className="text-xs text-[#78685D]">
+            <p className="text-xs text-[#75647B]">
               {mode === "create"
                 ? "Create a new leadership, trustee, or team profile for public display."
                 : `Editing profile for "${name || "Team Member"}"`}
@@ -350,7 +350,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
             type="button"
             onClick={() => handleSubmit()}
             disabled={saving || uploadingImage}
-            className="gap-2 bg-[#F52232] text-white hover:bg-[#D91B29] shadow-xs"
+            className="gap-2 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] hover:from-[#5E008C] hover:via-[#7D0090] hover:to-[#D0006B] text-white shadow-xs"
           >
             {saving ? (
               <>
@@ -389,9 +389,9 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
           {/* Main profile content (2 cols) */}
           <div className="space-y-6 lg:col-span-2">
             {/* Basic Info Card */}
-            <Card className="border-[#EADCCB] bg-white shadow-2xs">
-              <CardHeader className="border-b border-[#EADCCB]/70 bg-[#FFFCF5] px-6 py-4">
-                <h2 className="text-base font-bold text-[#492A22]">
+            <Card className="border-[#EADDED] bg-white shadow-2xs">
+              <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
+                <h2 className="text-base font-bold text-[#35123F]">
                   Profile Details
                 </h2>
               </CardHeader>
@@ -400,16 +400,16 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="name"
-                    className="text-sm font-semibold text-[#492A22]"
+                    className="text-sm font-semibold text-[#35123F]"
                   >
-                    Full Name <span className="text-[#F52232]">*</span>
+                    Full Name <span className="text-red-600">*</span>
                   </Label>
                   <Input
                     id="name"
                     value={name}
                     onChange={handleNameChange}
                     placeholder="e.g. Dr. Rajeshwari Sharma"
-                    className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                    className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     required
                   />
                   {errors.name && (
@@ -421,17 +421,17 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="designation"
-                    className="text-sm font-semibold text-[#492A22]"
+                    className="text-sm font-semibold text-[#35123F]"
                   >
                     Designation / Title{" "}
-                    <span className="text-[#F52232]">*</span>
+                    <span className="text-red-600">*</span>
                   </Label>
                   <Input
                     id="designation"
                     value={designation}
                     onChange={(e) => setDesignation(e.target.value)}
                     placeholder="e.g. Managing Trustee & Founder"
-                    className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                    className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     required
                   />
                   {errors.designation && (
@@ -444,11 +444,11 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="slug"
-                      className="text-sm font-semibold text-[#492A22]"
+                      className="text-sm font-semibold text-[#35123F]"
                     >
                       Member Slug
                     </Label>
-                    <span className="text-[11px] text-[#78685D]">
+                    <span className="text-[11px] text-[#75647B]">
                       Identifier: {slug || "slug"}
                     </span>
                   </div>
@@ -457,7 +457,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     value={slug}
                     onChange={handleSlugChange}
                     placeholder="rajeshwari-sharma"
-                    className="font-mono text-xs border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                    className="font-mono text-xs border-[#EADDED] focus-visible:ring-[#9200A8]"
                   />
                   {errors.slug && (
                     <p className="text-xs text-red-600">{errors.slug}</p>
@@ -469,11 +469,11 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="shortBio"
-                      className="text-sm font-semibold text-[#492A22]"
+                      className="text-sm font-semibold text-[#35123F]"
                     >
                       Short Bio (Card summary)
                     </Label>
-                    <span className="text-[11px] text-[#78685D]">
+                    <span className="text-[11px] text-[#75647B]">
                       {shortBio.length}/500 chars
                     </span>
                   </div>
@@ -483,7 +483,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     value={shortBio}
                     onChange={(e) => setShortBio(e.target.value)}
                     placeholder="Brief 1-2 sentence introduction displayed on profile cards and About Us overview..."
-                    className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                    className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     maxLength={500}
                   />
                   {errors.shortBio && (
@@ -495,7 +495,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="bio"
-                    className="text-sm font-semibold text-[#492A22]"
+                    className="text-sm font-semibold text-[#35123F]"
                   >
                     Full Biography
                   </Label>
@@ -505,7 +505,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder="Comprehensive background, achievements, community commitment, education, and career profile..."
-                    className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                    className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                   />
                   {errors.bio && (
                     <p className="text-xs text-red-600">{errors.bio}</p>
@@ -515,12 +515,12 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
             </Card>
 
             {/* Public Contact & Social Links */}
-            <Card className="border-[#EADCCB] bg-white shadow-2xs">
-              <CardHeader className="border-b border-[#EADCCB]/70 bg-[#FFFCF5] px-6 py-4">
-                <h2 className="text-base font-bold text-[#492A22]">
+            <Card className="border-[#EADDED] bg-white shadow-2xs">
+              <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
+                <h2 className="text-base font-bold text-[#35123F]">
                   Public Contact & Social Handles (Optional)
                 </h2>
-                <p className="text-xs text-[#78685D]">
+                <p className="text-xs text-[#75647B]">
                   These details will be publicly displayed on the member profile
                   card and page.
                 </p>
@@ -531,9 +531,9 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="email"
-                      className="text-xs font-semibold text-[#492A22] flex items-center gap-1.5"
+                      className="text-xs font-semibold text-[#35123F] flex items-center gap-1.5"
                     >
-                      <Mail className="h-3.5 w-3.5 text-[#FF8A00]" />
+                      <Mail className="h-3.5 w-3.5 text-[#C00083]" />
                       <span>Public Email</span>
                     </Label>
                     <Input
@@ -542,7 +542,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="trustee@samarthatrust.org"
-                      className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                      className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     />
                     {errors.email && (
                       <p className="text-xs text-red-600">{errors.email}</p>
@@ -553,9 +553,9 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="phone"
-                      className="text-xs font-semibold text-[#492A22] flex items-center gap-1.5"
+                      className="text-xs font-semibold text-[#35123F] flex items-center gap-1.5"
                     >
-                      <Phone className="h-3.5 w-3.5 text-[#FF8A00]" />
+                      <Phone className="h-3.5 w-3.5 text-[#C00083]" />
                       <span>Public Phone</span>
                     </Label>
                     <Input
@@ -564,7 +564,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+91 98765 43210"
-                      className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                      className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     />
                     {errors.phone && (
                       <p className="text-xs text-red-600">{errors.phone}</p>
@@ -575,7 +575,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="linkedinUrl"
-                      className="text-xs font-semibold text-[#492A22] flex items-center gap-1.5"
+                      className="text-xs font-semibold text-[#35123F] flex items-center gap-1.5"
                     >
                       <LinkedInIcon className="h-3.5 w-3.5 text-blue-600" />
                       <span>LinkedIn Profile URL</span>
@@ -586,7 +586,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       value={linkedinUrl}
                       onChange={(e) => setLinkedinUrl(e.target.value)}
                       placeholder="https://linkedin.com/in/username"
-                      className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                      className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     />
                     {errors.linkedinUrl && (
                       <p className="text-xs text-red-600">
@@ -599,7 +599,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="websiteUrl"
-                      className="text-xs font-semibold text-[#492A22] flex items-center gap-1.5"
+                      className="text-xs font-semibold text-[#35123F] flex items-center gap-1.5"
                     >
                       <Globe className="h-3.5 w-3.5 text-emerald-600" />
                       <span>Personal / Org Website URL</span>
@@ -610,7 +610,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       value={websiteUrl}
                       onChange={(e) => setWebsiteUrl(e.target.value)}
                       placeholder="https://example.com"
-                      className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                      className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     />
                     {errors.websiteUrl && (
                       <p className="text-xs text-red-600">
@@ -623,7 +623,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="facebookUrl"
-                      className="text-xs font-semibold text-[#492A22] flex items-center gap-1.5"
+                      className="text-xs font-semibold text-[#35123F] flex items-center gap-1.5"
                     >
                       <FacebookIcon className="h-3.5 w-3.5 text-blue-700" />
                       <span>Facebook URL</span>
@@ -634,7 +634,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       value={facebookUrl}
                       onChange={(e) => setFacebookUrl(e.target.value)}
                       placeholder="https://facebook.com/username"
-                      className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                      className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     />
                     {errors.facebookUrl && (
                       <p className="text-xs text-red-600">
@@ -647,7 +647,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="instagramUrl"
-                      className="text-xs font-semibold text-[#492A22] flex items-center gap-1.5"
+                      className="text-xs font-semibold text-[#35123F] flex items-center gap-1.5"
                     >
                       <InstagramIcon className="h-3.5 w-3.5 text-pink-600" />
                       <span>Instagram URL</span>
@@ -658,7 +658,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       value={instagramUrl}
                       onChange={(e) => setInstagramUrl(e.target.value)}
                       placeholder="https://instagram.com/username"
-                      className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                      className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                     />
                     {errors.instagramUrl && (
                       <p className="text-xs text-red-600">
@@ -674,14 +674,14 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
           {/* Sidebar Settings (1 col) */}
           <div className="space-y-6">
             {/* Profile Photo Card */}
-            <Card className="border-[#EADCCB] bg-white shadow-2xs">
-              <CardHeader className="border-b border-[#EADCCB]/70 bg-[#FFFCF5] px-6 py-4">
+            <Card className="border-[#EADDED] bg-white shadow-2xs">
+              <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-bold text-[#492A22]">
+                  <h2 className="text-base font-bold text-[#35123F]">
                     Profile Photo
                   </h2>
                   {profileImage && (
-                    <span className="text-[11px] font-medium text-[#78685D]">
+                    <span className="text-[11px] font-medium text-[#75647B]">
                       {profileImage.startsWith("http://") ||
                       profileImage.startsWith("https://")
                         ? "🌐 External URL"
@@ -693,7 +693,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
               <CardContent className="p-6 space-y-4">
                 <div className="flex flex-col items-center gap-4">
                   {/* Photo Preview */}
-                  <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full border-2 border-[#EADCCB] bg-[#FFF5E6] shadow-inner">
+                  <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full border-2 border-[#EADDED] bg-[#FAF5FF] shadow-inner">
                     {profileImage ? (
                       <Image
                         src={profileImage}
@@ -703,8 +703,8 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-[#78685D]">
-                        <UserIcon className="h-14 w-14 stroke-1 text-[#78685D]/60" />
+                      <div className="flex h-full w-full items-center justify-center text-[#75647B]">
+                        <UserIcon className="h-14 w-14 stroke-1 text-[#75647B]/60" />
                       </div>
                     )}
                   </div>
@@ -713,7 +713,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   {profileImage && (
                     <div className="text-center max-w-full px-2">
                       <p
-                        className="text-[11px] font-mono text-[#78685D] truncate max-w-[220px]"
+                        className="text-[11px] font-mono text-[#75647B] truncate max-w-[220px]"
                         title={profileImage}
                       >
                         {profileImage}
@@ -740,7 +740,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       size="sm"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={uploadingImage}
-                      className="gap-1.5 border-[#EADCCB] text-[#492A22] hover:bg-[#FFF5E6]"
+                      className="gap-1.5 border-[#EADDED] text-[#35123F] hover:bg-[#FAF5FF]"
                     >
                       {uploadingImage ? (
                         <>
@@ -749,7 +749,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                         </>
                       ) : (
                         <>
-                          <Upload className="h-3.5 w-3.5 text-[#FF8A00]" />
+                          <Upload className="h-3.5 w-3.5 text-[#9200A8]" />
                           <span>
                             {profileImage ? "Change Photo" : "Upload Photo"}
                           </span>
@@ -772,10 +772,10 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   </div>
 
                   {/* Direct external URL entry */}
-                  <div className="w-full pt-3 border-t border-[#EADCCB]/60 space-y-1.5">
+                  <div className="w-full pt-3 border-t border-[#EADDED]/60 space-y-1.5">
                     <Label
                       htmlFor="profileImageUrl"
-                      className="text-xs font-semibold text-[#492A22]"
+                      className="text-xs font-semibold text-[#35123F]"
                     >
                       Or paste direct image URL
                     </Label>
@@ -785,13 +785,13 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                       value={imageUrlInput}
                       onChange={handleImageUrlChange}
                       placeholder="https://example.com/photos/trustee.jpg"
-                      className={`h-8 text-xs border-[#EADCCB] ${
+                      className={`h-8 text-xs border-[#EADDED] ${
                         imageUrlError
                           ? "border-red-500 focus-visible:ring-red-400"
                           : ""
                       }`}
                     />
-                    <p className="text-[11px] text-[#78685D] leading-tight">
+                    <p className="text-[11px] text-[#75647B] leading-tight">
                       Must be an absolute HTTP/HTTPS URL. Local files should be
                       uploaded above.
                     </p>
@@ -806,23 +806,23 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
             </Card>
 
             {/* Publishing Settings Card */}
-            <Card className="border-[#EADCCB] bg-white shadow-2xs">
-              <CardHeader className="border-b border-[#EADCCB]/70 bg-[#FFFCF5] px-6 py-4">
-                <h2 className="text-base font-bold text-[#492A22]">
+            <Card className="border-[#EADDED] bg-white shadow-2xs">
+              <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
+                <h2 className="text-base font-bold text-[#35123F]">
                   Visibility & Order
                 </h2>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 {/* Active Toggle */}
-                <div className="flex items-center justify-between rounded-lg border border-[#EADCCB] p-3">
+                <div className="flex items-center justify-between rounded-lg border border-[#EADDED] p-3">
                   <div>
                     <Label
                       htmlFor="isActive"
-                      className="text-sm font-semibold text-[#492A22] block cursor-pointer"
+                      className="text-sm font-semibold text-[#35123F] block cursor-pointer"
                     >
                       Active Status
                     </Label>
-                    <p className="text-xs text-[#78685D]">
+                    <p className="text-xs text-[#75647B]">
                       Visible to the public on the website
                     </p>
                   </div>
@@ -831,22 +831,22 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     type="checkbox"
                     checked={isActive}
                     onChange={(e) => setIsActive(e.target.checked)}
-                    className="h-4 w-4 rounded border-[#EADCCB] text-[#F52232] focus:ring-[#FF8A00] cursor-pointer"
+                    className="h-4 w-4 rounded border-[#EADDED] text-[#9200A8] focus:ring-[#9200A8] cursor-pointer"
                   />
                 </div>
 
                 {/* Featured Toggle */}
-                <div className="flex items-center justify-between rounded-lg border border-[#EADCCB] p-3">
+                <div className="flex items-center justify-between rounded-lg border border-[#EADDED] p-3">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-amber-500" />
                     <div>
                       <Label
                         htmlFor="isFeatured"
-                        className="text-sm font-semibold text-[#492A22] block cursor-pointer"
+                        className="text-sm font-semibold text-[#35123F] block cursor-pointer"
                       >
                         Featured Profile
                       </Label>
-                      <p className="text-xs text-[#78685D]">
+                      <p className="text-xs text-[#75647B]">
                         Highlight in featured leadership cards
                       </p>
                     </div>
@@ -856,7 +856,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     type="checkbox"
                     checked={isFeatured}
                     onChange={(e) => setIsFeatured(e.target.checked)}
-                    className="h-4 w-4 rounded border-[#EADCCB] text-[#FF8A00] focus:ring-[#FF8A00] cursor-pointer"
+                    className="h-4 w-4 rounded border-[#EADDED] text-[#9200A8] focus:ring-[#9200A8] cursor-pointer"
                   />
                 </div>
 
@@ -865,11 +865,11 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="displayOrder"
-                      className="text-xs font-semibold text-[#492A22]"
+                      className="text-xs font-semibold text-[#35123F]"
                     >
                       Display Order Sequence
                     </Label>
-                    <span className="text-[11px] text-[#78685D]">
+                    <span className="text-[11px] text-[#75647B]">
                       Lower numbers appear first
                     </span>
                   </div>
@@ -878,7 +878,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                     type="number"
                     value={displayOrder}
                     onChange={(e) => setDisplayOrder(Number(e.target.value))}
-                    className="border-[#EADCCB] focus-visible:ring-[#FF8A00]"
+                    className="border-[#EADDED] focus-visible:ring-[#9200A8]"
                   />
                   {errors.displayOrder && (
                     <p className="text-xs text-red-600">
@@ -892,7 +892,7 @@ export function TeamForm({ initialData, mode }: TeamFormProps) {
                   <Button
                     type="submit"
                     disabled={saving || uploadingImage}
-                    className="w-full gap-2 bg-[#F52232] text-white hover:bg-[#D91B29] shadow-xs"
+                    className="w-full gap-2 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] hover:from-[#5E008C] hover:via-[#7D0090] hover:to-[#D0006B] text-white shadow-xs"
                   >
                     {saving ? (
                       <>

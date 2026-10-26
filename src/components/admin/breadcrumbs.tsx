@@ -17,13 +17,13 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className={cn("flex items-center text-xs text-[#78685D]", className)}
+      className={cn("flex items-center text-xs text-[#75647B]", className)}
     >
       <ol className="flex items-center space-x-1.5">
         <li>
           <Link
             href="/admin"
-            className="flex items-center text-[#78685D] hover:text-[#F52232] transition-colors"
+            className="flex items-center text-[#75647B] hover:text-[#9200A8] transition-colors"
           >
             <Home className="h-3.5 w-3.5" />
             <span className="sr-only">Admin Home</span>
@@ -33,17 +33,17 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
           const isLast = index === items.length - 1;
           return (
             <li key={index} className="flex items-center space-x-1.5">
-              <ChevronRight className="h-3.5 w-3.5 text-[#EADCCB] shrink-0" />
+              <ChevronRight className="h-3.5 w-3.5 text-[#EADDED] shrink-0" />
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="hover:text-[#F52232] transition-colors"
+                  className="hover:text-[#9200A8] transition-colors"
                 >
                   {item.label}
                 </Link>
               ) : (
                 <span
-                  className={cn(isLast && "font-semibold text-[#492A22]")}
+                  className={cn(isLast && "font-semibold text-[#35123F]")}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.label}

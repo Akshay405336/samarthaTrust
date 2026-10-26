@@ -33,16 +33,16 @@ export function SectionHeading({
       )}
     >
       {badge && (
-        <span className="mb-3.5 inline-flex items-center rounded-full bg-[#FFF5E6] border border-[#EADCCB] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[#F52232] shadow-2xs">
+        <span className="mb-3.5 inline-flex items-center rounded-full bg-[#FCE7F3]/60 border border-[#EADDED] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[#9200A8] shadow-2xs">
           {badge}
         </span>
       )}
-      <h2 className="text-2xl font-bold tracking-tight text-[#492A22] sm:text-3xl lg:text-4xl leading-tight">
+      <h2 className="text-2xl font-bold tracking-tight text-[#35123F] sm:text-3xl lg:text-4xl leading-tight">
         {title}{" "}
         {highlight && <span className="text-brand-gradient">{highlight}</span>}
       </h2>
       {description && (
-        <p className="mt-4 text-base text-[#78685D] sm:text-lg leading-relaxed max-w-2xl">
+        <p className="mt-4 text-base text-[#75647B] sm:text-lg leading-relaxed max-w-2xl">
           {description}
         </p>
       )}

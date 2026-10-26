@@ -17,8 +17,8 @@ const programs = [
     image: "/images/programs/advocacy.png",
     category: "INCLUSION & EQUALITY",
     icon: Accessibility,
-    accent: "#FF4938",
-    iconBg: "bg-[#FFF0ED]",
+    accent: "#7100A8",
+    iconBg: "bg-[#FCE7F3]",
   },
   {
     title: "Vocational Skills",
@@ -27,8 +27,8 @@ const programs = [
     image: "/images/programs/vocational.png",
     category: "SKILLS & INDEPENDENCE",
     icon: GraduationCap,
-    accent: "#FF8A18",
-    iconBg: "bg-[#FFF3E5]",
+    accent: "#9200A8",
+    iconBg: "bg-[#FAF5FF]",
   },
   {
     title: "Rehabilitation",
@@ -37,8 +37,8 @@ const programs = [
     image: "/images/programs/rehabilitation.png",
     category: "CARE & WELLBEING",
     icon: HeartPulse,
-    accent: "#E94743",
-    iconBg: "bg-[#FFF0ED]",
+    accent: "#C00083",
+    iconBg: "bg-[#FDF2F8]",
   },
   {
     title: "School Readiness",
@@ -47,8 +47,8 @@ const programs = [
     image: "/images/programs/school-readiness.png",
     category: "LEARNING & GROWTH",
     icon: GraduationCap,
-    accent: "#E99A00",
-    iconBg: "bg-[#FFF6D9]",
+    accent: "#E90078",
+    iconBg: "bg-[#FCE7F3]",
   },
 ];
 
@@ -59,26 +59,26 @@ export function ProgramsSection() {
         {/* Section heading */}
         <div className="mb-8 flex flex-col gap-4 sm:mb-10 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#F4510B]">
-              <span className="h-1.5 w-6 rounded-full bg-gradient-to-r from-[#FF303F] to-[#FFC928]" />
+            <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#9200A8]">
+              <span className="h-1.5 w-6 rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078]" />
               What We Do
             </div>
 
-            <h2 className="text-3xl font-extrabold tracking-tight text-[#4B2B23] sm:text-4xl lg:text-5xl">
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#35123F] sm:text-4xl lg:text-5xl">
               Our{" "}
-              <span className="bg-gradient-to-r from-[#FF303F] via-[#FF7A18] to-[#FFC928] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
                 Programs
               </span>
             </h2>
 
-            <p className="mt-3 max-w-xl text-sm leading-6 text-[#80685F] sm:text-base">
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[#75647B] sm:text-base">
               Supporting children through care, education, inclusion, and
               opportunities for independent living.
             </p>
           </div>
 
-          <div className="hidden items-center gap-2 pb-1 text-sm font-semibold text-[#80685F] md:flex">
-            <Users className="h-5 w-5 text-[#FF7A18]" />
+          <div className="hidden items-center gap-2 pb-1 text-sm font-semibold text-[#75647B] md:flex">
+            <Users className="h-5 w-5 text-[#E90078]" />
             <span>Every child deserves an opportunity</span>
           </div>
         </div>
@@ -91,10 +91,10 @@ export function ProgramsSection() {
             return (
               <article
                 key={program.title}
-                className="group relative overflow-hidden rounded-[22px] border border-[#F0E5DD] bg-white shadow-[0_8px_28px_rgba(75,43,35,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_38px_rgba(75,43,35,0.10)]"
+                className="group relative overflow-hidden rounded-[22px] border border-[#EADDED] bg-white shadow-[0_8px_28px_rgba(53,18,63,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_38px_rgba(53,18,63,0.10)]"
               >
                 {/* Program image */}
-                <div className="relative h-[210px] overflow-hidden bg-[#F4EDE7] sm:h-[190px] xl:h-[185px]">
+                <div className="relative h-[210px] overflow-hidden bg-[#FAF5FF] sm:h-[190px] xl:h-[185px]">
                   <Image
                     src={program.image}
                     alt={program.title}
@@ -129,15 +129,15 @@ export function ProgramsSection() {
                     style={{ backgroundColor: program.accent }}
                   />
 
-                  <h3 className="text-lg font-bold leading-snug text-[#4B2B23] transition-colors group-hover:text-[#E94743]">
+                  <h3 className="text-lg font-bold leading-snug text-[#35123F] transition-colors group-hover:text-[#9200A8]">
                     {program.title}
                   </h3>
 
-                  <p className="mt-2 min-h-[72px] text-sm leading-6 text-[#80685F]">
+                  <p className="mt-2 min-h-[72px] text-sm leading-6 text-[#75647B]">
                     {program.description}
                   </p>
 
-                  <div className="mt-4 border-t border-[#F2EAE4] pt-3">
+                  <div className="mt-4 border-t border-[#EADDED] pt-3">
                     <Link
                       href="/contact"
                       aria-label={`Enquire about ${program.title}`}

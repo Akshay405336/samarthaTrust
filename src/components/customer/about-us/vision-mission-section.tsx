@@ -8,8 +8,8 @@ const items = [
     description:
       "To build an inclusive and compassionate society where every child, regardless of ability or background, has equal opportunities to grow, learn, and live with dignity.",
     icon: Eye,
-    accent: "#FF6B35",
-    soft: "bg-[#FFF0E8]",
+    accent: "#7100A8",
+    soft: "bg-[#FCE7F3]/70",
   },
   {
     label: "OUR MISSION",
@@ -17,30 +17,30 @@ const items = [
     description:
       "To provide safe residential care, quality education, healthcare, and rehabilitation support, empowering children to become confident, independent individuals.",
     icon: HeartHandshake,
-    accent: "#E94743",
-    soft: "bg-[#FFF0ED]",
+    accent: "#9200A8",
+    soft: "bg-[#FAF5FF]",
   },
 ];
 
 export function VisionMissionSection() {
   return (
-    <section className="relative overflow-hidden bg-[#FCF9F6] py-8 sm:py-10 lg:py-12">
+    <section className="relative overflow-hidden bg-[#FAF5FF]/60 py-8 sm:py-10 lg:py-12">
       <Container>
         {/* Section heading */}
         <div className="mx-auto mb-7 max-w-2xl text-center sm:mb-9">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#F5D9CA] bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#A75A3D]">
-            <Sparkles className="h-3.5 w-3.5 text-[#FF8A26]" />
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#9200A8]">
+            <Sparkles className="h-3.5 w-3.5 text-[#E90078]" />
             What Guides Us
           </div>
 
-          <h2 className="text-2xl font-extrabold tracking-tight text-[#4B2B23] sm:text-3xl lg:text-4xl">
+          <h2 className="text-2xl font-extrabold tracking-tight text-[#35123F] sm:text-3xl lg:text-4xl">
             Our Vision{" "}
-            <span className="bg-gradient-to-r from-[#FF303F] via-[#FF7A18] to-[#FFC928] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
               &amp; Mission
             </span>
           </h2>
 
-          <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-[#80685F]">
+          <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-[#75647B]">
             Guided by dignity, inclusion, and a brighter future for every child.
           </p>
         </div>
@@ -53,7 +53,7 @@ export function VisionMissionSection() {
             return (
               <article
                 key={item.label}
-                className="group relative overflow-hidden rounded-2xl border border-[#F0E6DF] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-6"
+                className="group relative overflow-hidden rounded-2xl border border-[#EADDED] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-6"
               >
                 {/* Left accent */}
                 <div
@@ -83,11 +83,11 @@ export function VisionMissionSection() {
 
                 {/* Card content */}
                 <div className="mt-4">
-                  <h3 className="text-xl font-bold leading-snug text-[#4B2B23] sm:text-2xl">
+                  <h3 className="text-xl font-bold leading-snug text-[#35123F] sm:text-2xl">
                     {item.title}
                   </h3>
 
-                  <p className="mt-2 text-sm leading-6 text-[#80685F] sm:text-base sm:leading-7">
+                  <p className="mt-2 text-sm leading-6 text-[#75647B] sm:text-base sm:leading-7">
                     {item.description}
                   </p>
                 </div>
@@ -98,7 +98,7 @@ export function VisionMissionSection() {
                     className="h-1 w-6 rounded-full transition-all duration-300 group-hover:w-10"
                     style={{ backgroundColor: item.accent }}
                   />
-                  <span className="text-[11px] font-semibold text-[#9A8277]">
+                  <span className="text-[11px] font-semibold text-[#75647B]">
                     Samartha Trust
                   </span>
                 </div>
@@ -109,12 +109,12 @@ export function VisionMissionSection() {
 
         {/* Closing accent */}
         <div className="mt-5 flex items-center justify-center gap-2">
-          <span className="h-px w-7 bg-[#F1D9C9]" />
-          <Target className="h-4 w-4 text-[#FF7A18]" />
-          <span className="text-xs font-medium text-[#80685F]">
+          <span className="h-px w-7 bg-[#EADDED]" />
+          <Target className="h-4 w-4 text-[#9200A8]" />
+          <span className="text-xs font-medium text-[#75647B]">
             One purpose. A brighter future.
           </span>
-          <span className="h-px w-7 bg-[#F1D9C9]" />
+          <span className="h-px w-7 bg-[#EADDED]" />
         </div>
       </Container>
     </section>

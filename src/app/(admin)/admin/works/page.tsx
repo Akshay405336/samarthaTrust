@@ -394,18 +394,18 @@ export default function AdminWorksPage() {
       {/* Delete Confirmation Modal */}
       {workToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-[#EADCCB] bg-white p-6 shadow-2xl">
+          <div className="w-full max-w-md rounded-2xl border border-[#EADDED] bg-white p-6 shadow-2xl">
             <div className="flex items-start gap-4">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-600">
                 <AlertTriangle className="h-5 w-5" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-base font-bold text-[#492A22]">
+                <h3 className="text-base font-bold text-[#35123F]">
                   Delete Work Initiative?
                 </h3>
-                <p className="text-sm text-[#78685D]">
+                <p className="text-sm text-[#75647B]">
                   Are you sure you want to delete{" "}
-                  <strong className="text-[#492A22]">
+                  <strong className="text-[#35123F]">
                     {workToDelete.title}
                   </strong>
                   ? This will permanently remove it from the database and public
@@ -420,7 +420,7 @@ export default function AdminWorksPage() {
                 size="sm"
                 onClick={() => setWorkToDelete(null)}
                 disabled={isDeleting}
-                className="border-[#EADCCB] text-[#78685D] hover:bg-[#FFF5E6]"
+                className="border-[#EADDED] text-[#75647B] hover:bg-[#FAF5FF]"
               >
                 Cancel
               </Button>
@@ -452,14 +452,14 @@ export default function AdminWorksPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-extrabold tracking-tight text-[#492A22] sm:text-3xl">
+            <h1 className="text-2xl font-extrabold tracking-tight text-[#35123F] sm:text-3xl">
               Our Works Management
             </h1>
             <Badge variant="warm" className="text-xs font-semibold">
               {totalCount} Total
             </Badge>
           </div>
-          <p className="mt-1 text-sm text-[#78685D]">
+          <p className="mt-1 text-sm text-[#75647B]">
             Manage grassroots initiatives, deliverables, beneficiaries, and
             public status.
           </p>
@@ -470,21 +470,21 @@ export default function AdminWorksPage() {
             asChild
             variant="outline"
             size="sm"
-            className="border-[#EADCCB] text-[#492A22] hover:bg-[#FFF5E6]"
+            className="border-[#EADDED] text-[#35123F] hover:bg-[#FAF5FF]"
           >
             <Link
               href="/our-works"
               target="_blank"
               className="flex items-center gap-1.5"
             >
-              <ExternalLink className="h-4 w-4 text-[#FF8A00]" />
+              <ExternalLink className="h-4 w-4 text-[#C00083]" />
               <span>View Public Page</span>
             </Link>
           </Button>
 
           <Button
             asChild
-            className="bg-gradient-to-r from-[#F52232] to-[#FF8A00] font-semibold text-white shadow-xs hover:opacity-95"
+            className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] hover:from-[#5E008C] hover:via-[#7D0090] hover:to-[#D0006B] font-semibold text-white shadow-xs hover:opacity-95"
           >
             <Link href="/admin/works/new" className="flex items-center gap-1.5">
               <Plus className="h-4 w-4" />
@@ -496,19 +496,19 @@ export default function AdminWorksPage() {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Card className="border-[#EADCCB] bg-white p-4 shadow-2xs">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#78685D]">
+        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#75647B]">
             Total Works
           </span>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-[#492A22]">
+            <span className="text-2xl font-extrabold text-[#35123F]">
               {totalCount}
             </span>
-            <span className="text-xs text-[#78685D]">initiatives</span>
+            <span className="text-xs text-[#75647B]">initiatives</span>
           </div>
         </Card>
 
-        <Card className="border-[#EADCCB] bg-white p-4 shadow-2xs">
+        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
             Published Live
           </span>
@@ -516,11 +516,11 @@ export default function AdminWorksPage() {
             <span className="text-2xl font-extrabold text-emerald-600">
               {publishedCount}
             </span>
-            <span className="text-xs text-[#78685D]">active</span>
+            <span className="text-xs text-[#75647B]">active</span>
           </div>
         </Card>
 
-        <Card className="border-[#EADCCB] bg-white p-4 shadow-2xs">
+        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
             Drafts
           </span>
@@ -528,35 +528,35 @@ export default function AdminWorksPage() {
             <span className="text-2xl font-extrabold text-amber-600">
               {draftCount}
             </span>
-            <span className="text-xs text-[#78685D]">pending</span>
+            <span className="text-xs text-[#75647B]">pending</span>
           </div>
         </Card>
 
-        <Card className="border-[#EADCCB] bg-white p-4 shadow-2xs">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#F52232]">
+        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#9200A8]">
             Featured
           </span>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-[#F52232]">
+            <span className="text-2xl font-extrabold text-[#9200A8]">
               {featuredCount}
             </span>
-            <span className="text-xs text-[#78685D]">highlighted</span>
+            <span className="text-xs text-[#75647B]">highlighted</span>
           </div>
         </Card>
       </div>
 
       {/* Filter and Search Bar */}
-      <Card className="border-[#EADCCB] bg-white shadow-2xs">
+      <Card className="border-[#EADDED] bg-white shadow-2xs">
         <CardContent className="p-4 sm:p-5">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#78685D]" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#75647B]" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search works by title, description, badge, category..."
-                className="border-[#EADCCB] pl-9 text-sm"
+                className="border-[#EADDED] pl-9 text-sm"
               />
             </div>
 
@@ -569,7 +569,7 @@ export default function AdminWorksPage() {
                   setStatusFilter(e.target.value);
                   setPagination((prev) => ({ ...prev, page: 1 }));
                 }}
-                className="h-9 rounded-lg border border-[#EADCCB] bg-white px-3 text-xs font-semibold text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
+                className="h-9 rounded-lg border border-[#EADDED] bg-white px-3 text-xs font-semibold text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
               >
                 <option value="ALL">All Statuses</option>
                 <option value="PUBLISHED">Published Live</option>
@@ -584,7 +584,7 @@ export default function AdminWorksPage() {
                   setCategoryFilter(e.target.value);
                   setPagination((prev) => ({ ...prev, page: 1 }));
                 }}
-                className="h-9 rounded-lg border border-[#EADCCB] bg-white px-3 text-xs font-semibold text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
+                className="h-9 rounded-lg border border-[#EADDED] bg-white px-3 text-xs font-semibold text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
               >
                 <option value="ALL">All Categories</option>
                 {availableCategories.map((c) => (
@@ -601,7 +601,7 @@ export default function AdminWorksPage() {
                   setSortOption(e.target.value);
                   setPagination((prev) => ({ ...prev, page: 1 }));
                 }}
-                className="h-9 rounded-lg border border-[#EADCCB] bg-white px-3 text-xs font-semibold text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
+                className="h-9 rounded-lg border border-[#EADDED] bg-white px-3 text-xs font-semibold text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
               >
                 <option value="order_asc">Display Order (1 → 99)</option>
                 <option value="order_desc">Display Order (99 → 1)</option>
@@ -616,11 +616,11 @@ export default function AdminWorksPage() {
                 size="sm"
                 onClick={handleRefresh}
                 disabled={isRefreshing}
-                className="h-9 border-[#EADCCB] text-[#78685D] hover:bg-[#FFF5E6] hover:text-[#492A22]"
+                className="h-9 border-[#EADDED] text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
                 title="Refresh table"
               >
                 <RefreshCw
-                  className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin text-[#F52232]" : ""}`}
+                  className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin text-[#9200A8]" : ""}`}
                 />
               </Button>
             </div>
@@ -629,17 +629,17 @@ export default function AdminWorksPage() {
       </Card>
 
       {/* Works Table */}
-      <Card className="overflow-hidden border-[#EADCCB] bg-white shadow-2xs">
-        <CardHeader className="border-b border-[#EADCCB]/70 bg-[#FFFCF5] px-6 py-4">
+      <Card className="overflow-hidden border-[#EADDED] bg-white shadow-2xs">
+        <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Briefcase className="h-4 w-4 text-[#F52232]" />
-              <span className="text-sm font-semibold text-[#492A22]">
+              <Briefcase className="h-4 w-4 text-[#9200A8]" />
+              <span className="text-sm font-semibold text-[#35123F]">
                 Our Works Initiatives ({pagination.total})
               </span>
             </div>
             {pagination.total > 0 && (
-              <span className="text-xs text-[#78685D]">
+              <span className="text-xs text-[#75647B]">
                 Page {pagination.page} of {pagination.totalPages}
               </span>
             )}
@@ -647,8 +647,8 @@ export default function AdminWorksPage() {
         </CardHeader>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-[#492A22]">
-            <thead className="border-b border-[#EADCCB] bg-[#FFFDF9] text-xs font-bold uppercase tracking-wider text-[#78685D]">
+          <table className="w-full text-left text-sm text-[#35123F]">
+            <thead className="border-b border-[#EADDED] bg-[#FDF8FF] text-xs font-bold uppercase tracking-wider text-[#75647B]">
               <tr>
                 <th scope="col" className="px-6 py-3.5">
                   Initiative
@@ -673,36 +673,36 @@ export default function AdminWorksPage() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EADCCB]/60">
+            <tbody className="divide-y divide-[#EADDED]/60">
               {initialLoading ? (
                 Array.from({ length: 4 }).map((_, idx) => (
                   <tr key={idx} className="animate-pulse">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-[#EADCCB]/40" />
+                        <div className="h-10 w-10 rounded-xl bg-[#FCE7F3]/60" />
                         <div className="space-y-2">
-                          <div className="h-4 w-48 rounded bg-[#EADCCB]/40" />
-                          <div className="h-3 w-32 rounded bg-[#EADCCB]/30" />
+                          <div className="h-4 w-48 rounded bg-[#FCE7F3]/60" />
+                          <div className="h-3 w-32 rounded bg-[#EADDED]" />
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="h-4 w-24 rounded bg-[#EADCCB]/30" />
+                      <div className="h-4 w-24 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4">
-                      <div className="h-4 w-28 rounded bg-[#EADCCB]/30" />
+                      <div className="h-4 w-28 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="mx-auto h-4 w-8 rounded bg-[#EADCCB]/30" />
+                      <div className="mx-auto h-4 w-8 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="mx-auto h-4 w-10 rounded bg-[#EADCCB]/30" />
+                      <div className="mx-auto h-4 w-10 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="mx-auto h-5 w-16 rounded bg-[#EADCCB]/30" />
+                      <div className="mx-auto h-5 w-16 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="ml-auto h-8 w-28 rounded bg-[#EADCCB]/30" />
+                      <div className="ml-auto h-8 w-28 rounded bg-[#EADDED]" />
                     </td>
                   </tr>
                 ))
@@ -710,13 +710,13 @@ export default function AdminWorksPage() {
                 <tr>
                   <td colSpan={7} className="px-6 py-12 text-center">
                     <div className="mx-auto max-w-sm space-y-3">
-                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF5E6] text-[#F52232]">
+                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF5FF] text-[#9200A8]">
                         <Briefcase className="h-6 w-6" />
                       </div>
-                      <h3 className="text-base font-bold text-[#492A22]">
+                      <h3 className="text-base font-bold text-[#35123F]">
                         No Work Initiatives Found
                       </h3>
-                      <p className="text-xs text-[#78685D]">
+                      <p className="text-xs text-[#75647B]">
                         {debouncedSearch ||
                         statusFilter !== "ALL" ||
                         categoryFilter !== "ALL"
@@ -741,17 +741,17 @@ export default function AdminWorksPage() {
                   return (
                     <tr
                       key={work.id}
-                      className="transition-colors hover:bg-[#FFFDF9]"
+                      className="transition-colors hover:bg-[#FDF8FF]"
                     >
                       {/* Initiative Title & Icon */}
                       <td className="px-6 py-4">
                         <div className="flex items-start gap-3">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#F0DFCF] bg-[#FFF5E9] text-[#F4510B]">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#EADDED] bg-[#FAF5FF] text-[#9200A8]">
                             <Icon className="h-5 w-5" />
                           </div>
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-[#492A22] hover:text-[#F52232]">
+                              <span className="font-bold text-[#35123F] hover:text-[#9200A8]">
                                 {work.title}
                               </span>
                               {work.isFeatured && (
@@ -764,9 +764,9 @@ export default function AdminWorksPage() {
                                 </Badge>
                               )}
                             </div>
-                            <div className="flex items-center gap-2 text-xs text-[#78685D] mt-0.5">
+                            <div className="flex items-center gap-2 text-xs text-[#75647B] mt-0.5">
                               {work.badge && (
-                                <span className="font-semibold text-[#C54B20]">
+                                <span className="font-semibold text-[#C00083]">
                                   {work.badge}
                                 </span>
                               )}
@@ -781,14 +781,14 @@ export default function AdminWorksPage() {
 
                       {/* Category */}
                       <td className="px-6 py-4">
-                        <span className="inline-flex rounded-md bg-[#FFF5E6] px-2.5 py-1 text-xs font-semibold text-[#C54B20] border border-[#EADCCB]">
+                        <span className="inline-flex rounded-md bg-[#FCE7F3]/60 px-2.5 py-1 text-xs font-semibold text-[#9200A8] border border-[#EADDED]">
                           {work.category}
                         </span>
                       </td>
 
                       {/* Program Status */}
                       <td className="px-6 py-4">
-                        <span className="text-xs font-medium text-[#492A22]">
+                        <span className="text-xs font-medium text-[#35123F]">
                           {work.programStatus || "Active & Ongoing"}
                         </span>
                       </td>
@@ -797,7 +797,7 @@ export default function AdminWorksPage() {
                       <td className="px-6 py-4 text-center">
                         <Badge
                           variant="outline"
-                          className="text-xs border-[#EADCCB]"
+                          className="text-xs border-[#EADDED]"
                         >
                           {work.features?.length || 0} items
                         </Badge>
@@ -843,10 +843,10 @@ export default function AdminWorksPage() {
                               setEditingOrderVal(work.displayOrder);
                             }}
                             title="Click to change display order"
-                            className="group inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-[#492A22] hover:bg-[#FFF5E6]"
+                            className="group inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-[#35123F] hover:bg-[#FCE7F3]/60"
                           >
                             <span>#{work.displayOrder}</span>
-                            <Edit className="h-3 w-3 opacity-0 group-hover:opacity-100 text-[#78685D]" />
+                            <Edit className="h-3 w-3 opacity-0 group-hover:opacity-100 text-[#75647B]" />
                           </button>
                         )}
                       </td>
@@ -878,7 +878,7 @@ export default function AdminWorksPage() {
                             className={`h-8 w-8 ${
                               work.isFeatured
                                 ? "text-amber-600 hover:bg-amber-50"
-                                : "text-[#78685D] hover:bg-[#FFF5E6]"
+                                : "text-[#75647B] hover:bg-[#FAF5FF]"
                             }`}
                             title={
                               work.isFeatured
@@ -915,7 +915,7 @@ export default function AdminWorksPage() {
                             asChild
                             variant="outline"
                             size="icon"
-                            className="h-8 w-8 border-[#EADCCB] text-[#492A22] hover:bg-[#FFF5E6]"
+                            className="h-8 w-8 border-[#EADDED] text-[#35123F] hover:bg-[#FAF5FF]"
                             title="Edit Work"
                           >
                             <Link href={`/admin/works/${work.id}/edit`}>
@@ -928,7 +928,7 @@ export default function AdminWorksPage() {
                             variant="outline"
                             size="icon"
                             onClick={() => setWorkToDelete(work)}
-                            className="h-8 w-8 border-[#EADCCB] text-red-600 hover:bg-red-50 hover:text-red-700"
+                            className="h-8 w-8 border-[#EADDED] text-red-600 hover:bg-red-50 hover:text-red-700"
                             title="Delete Work"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -945,7 +945,7 @@ export default function AdminWorksPage() {
 
         {/* Pagination footer */}
         {!initialLoading && pagination.total > 0 && (
-          <div className="border-t border-[#EADCCB] bg-[#FFFDF9] px-6">
+          <div className="border-t border-[#EADDED] bg-[#FDF8FF] px-6">
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.totalPages}

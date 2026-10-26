@@ -108,33 +108,33 @@ export default function ProgramsPage() {
                 <div
                   key={program.id}
                   id={program.id}
-                  className="scroll-mt-24 rounded-2xl border border-[#EADCCB] bg-white p-8 sm:p-12 shadow-2xs transition-all hover:border-[#FF8A00]/50 hover:shadow-md"
+                  className="scroll-mt-24 rounded-2xl border border-[#EADDED] bg-white p-8 sm:p-12 shadow-2xs transition-all hover:border-[#9200A8]/30 hover:shadow-md"
                 >
                   <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
                     <div className="lg:col-span-8 space-y-4">
                       <div className="flex flex-wrap items-center gap-3">
                         <Badge variant="warm">{program.badge}</Badge>
-                        <span className="text-xs font-semibold text-[#F52232] flex items-center gap-1">
-                          <Sparkles className="h-3 w-3 text-[#FF8A00]" />
+                        <span className="text-xs font-semibold text-[#9200A8] flex items-center gap-1">
+                          <Sparkles className="h-3 w-3 text-[#E90078]" />
                           <span>{program.status}</span>
                         </span>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFF5E6] text-[#F52232] border border-[#EADCCB] shrink-0">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#FCE7F3]/60 text-[#9200A8] border border-[#EADDED] shrink-0">
                           <Icon className="h-5 w-5" />
                         </div>
-                        <h2 className="text-2xl font-bold tracking-tight text-[#492A22] sm:text-3xl">
+                        <h2 className="text-2xl font-bold tracking-tight text-[#35123F] sm:text-3xl">
                           {program.title}
                         </h2>
                       </div>
 
-                      <p className="text-base text-[#78685D] leading-relaxed">
+                      <p className="text-base text-[#75647B] leading-relaxed">
                         {program.description}
                       </p>
 
                       <div className="pt-2">
-                        <h3 className="text-xs font-bold text-[#492A22] mb-3 uppercase tracking-wider">
+                        <h3 className="text-xs font-bold text-[#35123F] mb-3 uppercase tracking-wider">
                           Key Program Deliverables:
                         </h3>
                         <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
@@ -143,10 +143,10 @@ export default function ProgramsPage() {
                               key={fIdx}
                               className="flex items-start gap-2.5"
                             >
-                              <div className="rounded-full bg-[#FFF5E6] p-0.5 text-[#F52232] border border-[#EADCCB] mt-0.5 shrink-0">
+                              <div className="rounded-full bg-[#FCE7F3] p-0.5 text-[#9200A8] border border-[#EADDED] mt-0.5 shrink-0">
                                 <Check className="h-3.5 w-3.5" />
                               </div>
-                              <span className="text-sm text-[#78685D]">
+                              <span className="text-sm text-[#75647B]">
                                 {feature}
                               </span>
                             </div>
@@ -155,21 +155,21 @@ export default function ProgramsPage() {
                       </div>
                     </div>
 
-                    <div className="lg:col-span-4 rounded-xl border border-[#EADCCB] bg-[#FFFCF5] p-6 space-y-4">
+                    <div className="lg:col-span-4 rounded-xl border border-[#EADDED] bg-[#FAF5FF] p-6 space-y-4">
                       <div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#F52232]">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#9200A8]">
                           Target Beneficiaries
                         </span>
-                        <p className="mt-1 text-sm font-semibold text-[#492A22]">
+                        <p className="mt-1 text-sm font-semibold text-[#35123F]">
                           {program.beneficiaries}
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-[#EADCCB] space-y-3">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#492A22]">
+                      <div className="pt-4 border-t border-[#EADDED] space-y-3">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#35123F]">
                           Support This Initiative
                         </span>
-                        <p className="text-xs text-[#78685D]">
+                        <p className="text-xs text-[#75647B]">
                           Collaborate as a volunteer, institutional partner, or
                           donor for this program.
                         </p>
@@ -193,12 +193,12 @@ export default function ProgramsPage() {
       </section>
 
       {/* Collaboration Callout - Alternate Light Section (~15%) */}
-      <section className="bg-[#FFFCF5] py-16 sm:py-20 border-t border-[#EADCCB]">
+      <section className="bg-[#FAF5FF] py-16 sm:py-20 border-t border-[#EADDED]">
         <Container className="text-center max-w-3xl space-y-6">
-          <h2 className="text-3xl font-bold text-[#492A22] tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-bold text-[#35123F] tracking-tight sm:text-4xl">
             Have a Program or Community Collaboration in Mind?
           </h2>
-          <p className="text-[#78685D] text-base sm:text-lg leading-relaxed">
+          <p className="text-[#75647B] text-base sm:text-lg leading-relaxed">
             We welcome collaborative proposals from fellow non-profits, CSR
             foundations, and passionate civic volunteers to amplify grassroots
             impact.

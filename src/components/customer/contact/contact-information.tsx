@@ -11,13 +11,13 @@ export function ContactInformation() {
   return (
     <div className="space-y-6">
       <div>
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[#F52232]">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[#9200A8]">
           Official Channels
         </span>
-        <h2 className="text-2xl font-bold text-[#492A22] sm:text-3xl mt-1">
+        <h2 className="text-2xl font-bold text-[#35123F] sm:text-3xl mt-1">
           Get in Touch Directly
         </h2>
-        <p className="mt-1.5 text-sm text-[#78685D] leading-relaxed">
+        <p className="mt-1.5 text-sm text-[#75647B] leading-relaxed">
           Reach our administrative team through any of our verified communication
           channels or visit our registered headquarters.
         </p>
@@ -56,16 +56,16 @@ export function ContactInformation() {
         />
 
         {/* Commitment note */}
-        <div className="rounded-2xl border border-[#EADCCB] bg-[#FFFDF9] p-5 sm:p-6 shadow-2xs">
+        <div className="rounded-2xl border border-[#EADDED] bg-[#FAF5FF] p-5 sm:p-6 shadow-2xs">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FFF0E2] text-[#F52232]">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FCE7F3] text-[#9200A8]">
               <ShieldCheck className="h-4 w-4" />
             </div>
-            <h3 className="text-sm font-bold text-[#492A22]">
+            <h3 className="text-sm font-bold text-[#35123F]">
               Verified & Direct Coordination
             </h3>
           </div>
-          <p className="mt-2 text-xs text-[#78685D] leading-relaxed">
+          <p className="mt-2 text-xs text-[#75647B] leading-relaxed">
             All messages and phone calls are answered directly by our Bangalore
             headquarters team. We respect your privacy and ensure your details
             are never shared with third parties.

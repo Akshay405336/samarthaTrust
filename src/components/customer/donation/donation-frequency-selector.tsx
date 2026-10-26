@@ -16,7 +16,7 @@ export function DonationFrequencySelector({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <label className="block text-sm font-bold text-[#492A22]">
+        <label className="block text-sm font-bold text-[#35123F]">
           Donation Type
         </label>
         <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#E8F5E9] text-[#2E7D32]">
@@ -26,23 +26,23 @@ export function DonationFrequencySelector({
       </div>
 
       {/* Intentional, polished One-Time Gift Card */}
-      <div className="flex items-center justify-between p-3.5 sm:p-4 rounded-xl bg-white border-2 border-[#EADCCB] shadow-xs">
+      <div className="flex items-center justify-between p-3.5 sm:p-4 rounded-xl bg-white border-2 border-[#EADDED] shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-[#F52232] to-[#FF8A00] flex items-center justify-center text-white shrink-0 shadow-xs">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-[#7100A8] to-[#9200A8] flex items-center justify-center text-white shrink-0 shadow-xs">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-sm font-bold text-[#492A22] block">
+            <span className="text-sm font-bold text-[#35123F] block">
               One-Time Contribution
             </span>
-            <p className="text-xs text-[#78685D] mt-0.5">
+            <p className="text-xs text-[#75647B] mt-0.5">
               Your gift is immediately allocated to your chosen cause.
             </p>
           </div>
         </div>
 
         <div className="hidden sm:block text-right">
-          <span className="text-xs font-semibold text-[#78685D]">
+          <span className="text-xs font-semibold text-[#75647B]">
             Official Receipt Provided
           </span>
         </div>

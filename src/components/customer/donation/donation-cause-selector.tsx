@@ -35,10 +35,10 @@ export function DonationCauseSelector({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="block text-sm font-bold text-[#492A22]">
-          Select Cause to Support <span className="text-[#F52232]">*</span>
+        <label className="block text-sm font-bold text-[#35123F]">
+          Select Cause to Support <span className="text-[#9200A8]">*</span>
         </label>
-        <span className="text-xs text-[#78685D]">
+        <span className="text-xs text-[#75647B]">
           Choose where your gift makes a difference
         </span>
       </div>
@@ -60,10 +60,10 @@ export function DonationCauseSelector({
               aria-checked={isSelected}
               onClick={() => onSelectCause(cause.id)}
               className={cn(
-                "group relative text-left p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F52232]",
+                "group relative text-left p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8]",
                 isSelected
-                  ? "bg-[#FFF9F2] border-[#F52232] shadow-sm"
-                  : "bg-white border-[#EFE8D8] hover:border-[#DFCBB4] hover:bg-[#FFFDF9]"
+                  ? "bg-[#FCE7F3]/40 border-[#9200A8] shadow-sm"
+                  : "bg-white border-[#EADDED] hover:border-[#9200A8]/40 hover:bg-[#FAF5FF]"
               )}
             >
               {/* Header inside card */}
@@ -73,8 +73,8 @@ export function DonationCauseSelector({
                     className={cn(
                       "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors",
                       isSelected
-                        ? "bg-gradient-to-r from-[#F52232] to-[#FF8A00] text-white"
-                        : "bg-[#F8F4EC] text-[#78685D] group-hover:text-[#F52232] group-hover:bg-[#FFF0E2]"
+                        ? "bg-gradient-to-r from-[#7100A8] to-[#9200A8] text-white"
+                        : "bg-[#FAF5FF] text-[#75647B] group-hover:text-[#9200A8] group-hover:bg-[#FCE7F3]"
                     )}
                   >
                     <Icon className="w-5 h-5" />
@@ -83,13 +83,13 @@ export function DonationCauseSelector({
                     <h4
                       className={cn(
                         "text-sm font-bold leading-tight transition-colors",
-                        isSelected ? "text-[#492A22]" : "text-[#492A22]"
+                        isSelected ? "text-[#35123F]" : "text-[#35123F]"
                       )}
                     >
                       {cause.title}
                     </h4>
                     {cause.badge && (
-                      <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FFF0E2] text-[#F52232]">
+                      <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FCE7F3] text-[#9200A8]">
                         {cause.badge}
                       </span>
                     )}
@@ -101,8 +101,8 @@ export function DonationCauseSelector({
                     className={cn(
                       "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
                       isSelected
-                        ? "border-[#F52232] bg-[#F52232] text-white"
-                        : "border-[#D6CBB8] bg-white group-hover:border-[#78685D]"
+                        ? "border-[#9200A8] bg-[#9200A8] text-white"
+                        : "border-[#EADDED] bg-white group-hover:border-[#75647B]"
                     )}
                   >
                     {isSelected && (
@@ -113,7 +113,7 @@ export function DonationCauseSelector({
               </div>
 
               {/* Description */}
-              <p className="mt-3 text-xs text-[#78685D] leading-relaxed">
+              <p className="mt-3 text-xs text-[#75647B] leading-relaxed">
                 {cause.shortDescription}
               </p>
             </button>

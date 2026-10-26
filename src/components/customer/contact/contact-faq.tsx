@@ -25,18 +25,18 @@ export function ContactFAQ() {
   };
 
   return (
-    <section className="bg-white py-14 sm:py-20 border-t border-[#EADCCB]/70">
+    <section className="bg-white py-14 sm:py-20 border-t border-[#EADDED]">
       <Container>
         <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#EADCCB] bg-[#FFF5E6] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F52232] mb-3 shadow-2xs">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#EADDED] bg-[#FCE7F3]/60 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#9200A8] mb-3 shadow-2xs">
             <HelpCircle className="h-3.5 w-3.5" />
             <span>Common Queries</span>
           </div>
 
-          <h2 className="text-2xl font-bold text-[#492A22] sm:text-3xl lg:text-4xl">
+          <h2 className="text-2xl font-bold text-[#35123F] sm:text-3xl lg:text-4xl">
             Frequently Asked Questions
           </h2>
-          <p className="mt-2 text-sm text-[#78685D] leading-relaxed">
+          <p className="mt-2 text-sm text-[#75647B] leading-relaxed">
             Quick answers to common questions about reaching out, volunteering,
             and collaborating with Samartha Trust.
           </p>
@@ -55,8 +55,8 @@ export function ContactFAQ() {
                 className={cn(
                   "rounded-2xl border transition-all duration-200 overflow-hidden bg-white",
                   isOpen
-                    ? "border-[#FF8A00]/60 shadow-xs"
-                    : "border-[#EADCCB] hover:border-[#EADCCB]/90 hover:bg-[#FFFDF9]"
+                    ? "border-[#9200A8]/50 shadow-xs"
+                    : "border-[#EADDED] hover:border-[#9200A8]/30 hover:bg-[#FAF5FF]"
                 )}
               >
                 <button
@@ -65,19 +65,19 @@ export function ContactFAQ() {
                   aria-expanded={isOpen}
                   aria-controls={contentId}
                   onClick={() => toggle(index)}
-                  className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-bold text-sm sm:text-base text-[#492A22] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F52232] transition-colors"
+                  className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-bold text-sm sm:text-base text-[#35123F] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8] transition-colors"
                 >
                   <span className="pr-3 leading-snug">{faq.question}</span>
                   <div
                     className={cn(
-                      "w-7 h-7 rounded-full bg-[#FFF5E6] border border-[#EADCCB] flex items-center justify-center shrink-0 transition-transform duration-200",
-                      isOpen && "rotate-180 bg-[#F52232] text-white border-[#F52232]"
+                      "w-7 h-7 rounded-full bg-[#FCE7F3]/60 border border-[#EADDED] flex items-center justify-center shrink-0 transition-transform duration-200",
+                      isOpen && "rotate-180 bg-[#9200A8] text-white border-[#9200A8]"
                     )}
                   >
                     <ChevronDown
                       className={cn(
                         "w-4 h-4 transition-colors",
-                        isOpen ? "text-white" : "text-[#78685D]"
+                        isOpen ? "text-white" : "text-[#75647B]"
                       )}
                     />
                   </div>
@@ -88,7 +88,7 @@ export function ContactFAQ() {
                     id={contentId}
                     role="region"
                     aria-labelledby={buttonId}
-                    className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-[#78685D] leading-relaxed border-t border-[#F5EFE6] pt-3.5 animate-in fade-in-50 duration-200"
+                    className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-[#75647B] leading-relaxed border-t border-[#EADDED] pt-3.5 animate-in fade-in-50 duration-200"
                   >
                     {faq.answer}
                   </div>

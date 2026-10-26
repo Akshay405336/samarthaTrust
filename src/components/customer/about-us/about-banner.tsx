@@ -38,14 +38,14 @@ export function AboutBanner() {
               >
                 <path
                   d="M250 425 C210 390 38 275 38 157 C38 77 132 35 198 91 C225 113 244 139 250 147 C256 139 275 113 302 91 C368 35 462 77 462 157 C462 275 290 390 250 425Z"
-                  stroke="#FFA313"
+                  stroke="#E90078"
                   strokeWidth="15"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
                 <path
                   d="M250 425 C210 390 38 275 38 157 C38 77 132 35 198 91 C225 113 244 139 250 147 C256 139 275 113 302 91 C368 35 462 77 462 157 C462 275 290 390 250 425Z"
-                  stroke="#FF6B26"
+                  stroke="#9200A8"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeDasharray="3 10"
@@ -83,7 +83,7 @@ export function AboutBanner() {
             <h1 className="text-3xl font-extrabold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[56px]">
               Every People
               <br className="hidden sm:block" /> This Get Some{" "}
-              <span className="text-[#FF512F]">Food.</span>
+              <span className="text-[#E90078]">Food.</span>
             </h1>
 
             <p className="mt-5 max-w-[560px] text-sm leading-6 text-white/85 sm:text-base sm:leading-7 lg:text-lg">
@@ -96,7 +96,7 @@ export function AboutBanner() {
             <div className="mt-6 sm:mt-7">
               <Link
                 href="/contact"
-                className="group inline-flex min-h-11 items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-[#FF303F] to-[#FF9F00] px-7 py-3 text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:from-[#E92735] hover:to-[#F58A00] hover:shadow-lg sm:text-base"
+                className="group inline-flex min-h-11 items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] px-7 py-3 text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg sm:text-base"
               >
                 Support Our Mission
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

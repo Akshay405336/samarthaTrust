@@ -69,24 +69,24 @@ export function AdminHeader({ onMenuToggle }: AdminHeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-[#EADCCB] bg-white px-4 sm:px-6 shadow-2xs">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-[#EADDED] bg-white px-4 sm:px-6 shadow-2xs">
       <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={onMenuToggle}
-          className="inline-flex items-center justify-center rounded-md p-2 text-[#492A22] hover:bg-[#FFF5E6] lg:hidden cursor-pointer"
+          className="inline-flex items-center justify-center rounded-md p-2 text-[#35123F] hover:bg-[#FAF5FF] lg:hidden cursor-pointer"
           aria-label="Open sidebar"
         >
           <Menu className="h-5 w-5" />
         </button>
-        <span className="text-sm font-bold text-[#492A22] hidden sm:inline-block">
+        <span className="text-sm font-bold text-[#35123F] hidden sm:inline-block">
           Management Console
         </span>
       </div>
 
       <div className="flex items-center gap-3">
         {/* Status indicator */}
-        <div className="hidden sm:flex items-center gap-2 rounded-full border border-[#EADCCB] bg-[#FFF5E6]/60 px-3 py-1 text-xs text-[#492A22]">
+        <div className="hidden sm:flex items-center gap-2 rounded-full border border-[#EADDED] bg-[#FCE7F3]/60 px-3 py-1 text-xs text-[#35123F]">
           <span className="h-2 w-2 rounded-full bg-[#10B981] animate-pulse" />
           <span className="font-medium">System Active</span>
         </div>
@@ -95,26 +95,26 @@ export function AdminHeader({ onMenuToggle }: AdminHeaderProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="text-[#78685D] hover:text-[#F52232]"
+          className="text-[#75647B] hover:text-[#9200A8]"
           aria-label="Notifications"
         >
           <Bell className="h-4 w-4" />
         </Button>
 
         {/* User profile dropdown and real logout */}
-        <div className="flex items-center gap-2.5 border-l border-[#EADCCB] pl-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#F52232] to-[#FF8A00] text-white text-xs font-bold shadow-2xs">
+        <div className="flex items-center gap-2.5 border-l border-[#EADDED] pl-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078] text-white text-xs font-bold shadow-2xs">
             <User className="h-4 w-4" />
           </div>
           <div className="hidden md:flex flex-col text-left text-xs">
-            <span className="font-bold text-[#492A22]">{profile.name}</span>
-            <span className="text-[11px] text-[#78685D]">{profile.email}</span>
+            <span className="font-bold text-[#35123F]">{profile.name}</span>
+            <span className="text-[11px] text-[#75647B]">{profile.email}</span>
           </div>
           <button
             type="button"
             onClick={handleLogout}
             disabled={loggingOut}
-            className="ml-1 inline-flex items-center justify-center rounded-md p-1.5 text-[#78685D] hover:bg-red-50 hover:text-[#F52232] transition-colors cursor-pointer disabled:opacity-50"
+            className="ml-1 inline-flex items-center justify-center rounded-md p-1.5 text-[#75647B] hover:bg-red-50 hover:text-[#DC2626] transition-colors cursor-pointer disabled:opacity-50"
             title="Sign out"
             aria-label="Sign out"
           >

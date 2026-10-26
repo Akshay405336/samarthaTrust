@@ -32,7 +32,7 @@ function parseInlineFormatting(text: string): React.ReactNode[] {
           href={href}
           target={isExternal ? "_blank" : undefined}
           rel={isExternal ? "noopener noreferrer" : undefined}
-          className="font-medium text-[#F52232] underline underline-offset-2 hover:text-[#C4111F] transition-colors"
+          className="font-medium text-[#9200A8] underline underline-offset-2 hover:text-[#E90078] transition-colors"
         >
           {match[2]}
         </a>
@@ -40,14 +40,14 @@ function parseInlineFormatting(text: string): React.ReactNode[] {
     } else if (match[4]) {
       // Bold: **text**
       nodes.push(
-        <strong key={match.index} className="font-bold text-[#492A22]">
+        <strong key={match.index} className="font-bold text-[#35123F]">
           {match[4]}
         </strong>
       );
     } else if (match[5]) {
       // Italic: *text*
       nodes.push(
-        <em key={match.index} className="italic text-[#492A22]/95">
+        <em key={match.index} className="italic text-[#35123F]/95">
           {match[5]}
         </em>
       );
@@ -56,7 +56,7 @@ function parseInlineFormatting(text: string): React.ReactNode[] {
       nodes.push(
         <code
           key={match.index}
-          className="rounded bg-[#FFF5E6] px-1.5 py-0.5 font-mono text-xs text-[#F52232] border border-[#EADCCB]/60"
+          className="rounded bg-[#FCE7F3]/60 px-1.5 py-0.5 font-mono text-xs text-[#9200A8] border border-[#EADDED]"
         >
           {match[6]}
         </code>
@@ -87,14 +87,14 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
     .filter(Boolean);
 
   return (
-    <div className={cn("prose-content space-y-6 text-[#492A22]", className)}>
+    <div className={cn("prose-content space-y-6 text-[#35123F]", className)}>
       {blocks.map((block, index) => {
         // Heading 1 or Heading 2
         if (block.startsWith("## ")) {
           return (
             <h2
               key={index}
-              className="text-2xl font-bold tracking-tight text-[#492A22] sm:text-3xl mt-8 mb-4 border-b border-[#EADCCB]/60 pb-3"
+              className="text-2xl font-bold tracking-tight text-[#35123F] sm:text-3xl mt-8 mb-4 border-b border-[#EADDED] pb-3"
             >
               {parseInlineFormatting(block.replace(/^##\s+/, ""))}
             </h2>
@@ -105,7 +105,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
           return (
             <h2
               key={index}
-              className="text-2xl font-extrabold tracking-tight text-[#492A22] sm:text-3xl mt-8 mb-4"
+              className="text-2xl font-extrabold tracking-tight text-[#35123F] sm:text-3xl mt-8 mb-4"
             >
               {parseInlineFormatting(block.replace(/^#\s+/, ""))}
             </h2>
@@ -117,7 +117,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
           return (
             <h3
               key={index}
-              className="text-xl font-bold tracking-tight text-[#492A22] sm:text-2xl mt-6 mb-3"
+              className="text-xl font-bold tracking-tight text-[#35123F] sm:text-2xl mt-6 mb-3"
             >
               {parseInlineFormatting(block.replace(/^###\s+/, ""))}
             </h3>
@@ -129,7 +129,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
           return (
             <h4
               key={index}
-              className="text-lg font-bold tracking-tight text-[#492A22] mt-4 mb-2"
+              className="text-lg font-bold tracking-tight text-[#35123F] mt-4 mb-2"
             >
               {parseInlineFormatting(block.replace(/^####\s+/, ""))}
             </h4>
@@ -145,7 +145,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
           return (
             <blockquote
               key={index}
-              className="border-l-4 border-[#F52232] bg-[#FFFCF5] rounded-r-xl py-3.5 px-6 my-6 italic text-[#492A22] shadow-2xs leading-relaxed"
+              className="border-l-4 border-[#9200A8] bg-[#FAF5FF] rounded-r-xl py-3.5 px-6 my-6 italic text-[#35123F] shadow-2xs leading-relaxed"
             >
               {quoteLines.map((line, i) => (
                 <p key={i} className={i > 0 ? "mt-2" : ""}>
@@ -165,12 +165,12 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
           return (
             <ul
               key={index}
-              className="space-y-2.5 my-4 pl-6 list-disc marker:text-[#F52232]"
+              className="space-y-2.5 my-4 pl-6 list-disc marker:text-[#9200A8]"
             >
               {lines.map((item, i) => (
                 <li
                   key={i}
-                  className="text-base sm:text-lg leading-relaxed text-[#492A22]/90"
+                  className="text-base sm:text-lg leading-relaxed text-[#35123F]/90"
                 >
                   {parseInlineFormatting(item.replace(/^[-*]\s+/, ""))}
                 </li>
@@ -185,12 +185,12 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
           return (
             <ol
               key={index}
-              className="space-y-2.5 my-4 pl-6 list-decimal marker:text-[#F52232] marker:font-semibold"
+              className="space-y-2.5 my-4 pl-6 list-decimal marker:text-[#9200A8] marker:font-semibold"
             >
               {lines.map((item, i) => (
                 <li
                   key={i}
-                  className="text-base sm:text-lg leading-relaxed text-[#492A22]/90"
+                  className="text-base sm:text-lg leading-relaxed text-[#35123F]/90"
                 >
                   {parseInlineFormatting(item.replace(/^\d+\.\s+/, ""))}
                 </li>
@@ -203,7 +203,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
         return (
           <p
             key={index}
-            className="text-base sm:text-lg text-[#492A22]/90 leading-relaxed sm:leading-loose"
+            className="text-base sm:text-lg text-[#35123F]/90 leading-relaxed sm:leading-loose"
           >
             {lines.map((line, lineIdx) => (
               <React.Fragment key={lineIdx}>

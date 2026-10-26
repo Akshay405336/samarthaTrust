@@ -31,7 +31,7 @@ const ENGAGEMENT_AREAS = [
 
 export function ContactIntro() {
   return (
-    <section className="bg-[#FFFCF5] py-10 sm:py-12 border-b border-[#EADCCB]/60">
+    <section className="bg-[#FAF5FF] py-10 sm:py-12 border-b border-[#EADDED]">
       <Container>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {ENGAGEMENT_AREAS.map((area) => {
@@ -39,15 +39,15 @@ export function ContactIntro() {
             return (
               <div
                 key={area.title}
-                className="flex flex-col rounded-2xl border border-[#EADCCB] bg-white p-5 shadow-2xs transition-all hover:border-[#FF8A00]/50"
+                className="flex flex-col rounded-2xl border border-[#EADDED] bg-white p-5 shadow-2xs transition-all hover:border-[#9200A8]/40"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF5E6] text-[#F52232] border border-[#EADCCB] mb-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FCE7F3]/60 text-[#9200A8] border border-[#EADDED] mb-3">
                   <Icon className="h-5 w-5" />
                 </div>
-                <h3 className="text-sm font-bold text-[#492A22]">
+                <h3 className="text-sm font-bold text-[#35123F]">
                   {area.title}
                 </h3>
-                <p className="mt-1 text-xs text-[#78685D] leading-relaxed">
+                <p className="mt-1 text-xs text-[#75647B] leading-relaxed">
                   {area.description}
                 </p>
               </div>

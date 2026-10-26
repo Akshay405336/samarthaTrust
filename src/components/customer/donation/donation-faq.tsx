@@ -13,16 +13,16 @@ export function DonationFAQ() {
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-[#FFFCF5] border-t border-[#EFE8D8]">
+    <section className="py-12 sm:py-16 bg-white border-t border-[#EADDED]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#F52232]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#9200A8]">
             Common Inquiries
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#492A22] mt-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#35123F] mt-2">
             Frequently Asked Questions
           </h2>
-          <p className="text-xs sm:text-sm text-[#78685D] mt-2 leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#75647B] mt-2 leading-relaxed">
             Everything you need to know about contributing to Samartha Trust.
           </p>
         </div>
@@ -36,7 +36,7 @@ export function DonationFAQ() {
             return (
               <div
                 key={faq.question}
-                className="rounded-2xl border border-[#EFE8D8] bg-white overflow-hidden transition-colors"
+                className="rounded-2xl border border-[#EADDED] bg-white overflow-hidden transition-colors"
               >
                 <button
                   type="button"
@@ -44,16 +44,16 @@ export function DonationFAQ() {
                   aria-expanded={isOpen}
                   aria-controls={contentId}
                   onClick={() => toggle(index)}
-                  className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-bold text-sm sm:text-base text-[#492A22] hover:bg-[#FFFDF9] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F52232]"
+                  className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-bold text-sm sm:text-base text-[#35123F] hover:bg-[#FAF5FF] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8]"
                 >
                   <span className="pr-4">{faq.question}</span>
                   <div
                     className={cn(
-                      "w-7 h-7 rounded-full bg-[#F8F4EC] flex items-center justify-center shrink-0 transition-transform duration-200",
-                      isOpen && "rotate-180 bg-[#FFF0E2] text-[#F52232]"
+                      "w-7 h-7 rounded-full bg-[#FAF5FF] flex items-center justify-center shrink-0 transition-transform duration-200",
+                      isOpen && "rotate-180 bg-[#FCE7F3] text-[#9200A8]"
                     )}
                   >
-                    <ChevronDown className="w-4 h-4 text-[#78685D]" />
+                    <ChevronDown className="w-4 h-4 text-[#75647B]" />
                   </div>
                 </button>
 
@@ -62,7 +62,7 @@ export function DonationFAQ() {
                     id={contentId}
                     role="region"
                     aria-labelledby={buttonId}
-                    className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-[#78685D] leading-relaxed border-t border-[#F5EFE6] pt-3 animate-in fade-in-50 duration-200"
+                    className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-[#75647B] leading-relaxed border-t border-[#EADDED] pt-3 animate-in fade-in-50 duration-200"
                   >
                     {faq.answer}
                   </div>

@@ -89,14 +89,14 @@ export function AdminSidebar({
 
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-50 flex w-64 flex-col border-r border-[#EADCCB] bg-white text-[#492A22] transition-transform duration-200 lg:static lg:translate-x-0 shadow-xl lg:shadow-none",
+          "fixed top-0 bottom-0 left-0 z-50 flex w-64 flex-col border-r border-[#EADDED] bg-white text-[#35123F] transition-transform duration-200 lg:static lg:translate-x-0 shadow-xl lg:shadow-none",
           mobileOpen ? "translate-x-0" : "-translate-x-full",
           className
         )}
       >
         {/* Brand header */}
-        <div className="flex h-16 items-center gap-3 border-b border-[#EADCCB] px-6">
-          <div className="relative h-9 w-9 rounded-lg bg-[#FFF5E6] p-1 shrink-0 border border-[#EADCCB] shadow-2xs">
+        <div className="flex h-16 items-center gap-3 border-b border-[#EADDED] px-6">
+          <div className="relative h-9 w-9 rounded-lg bg-[#FCE7F3]/60 p-1 shrink-0 border border-[#EADDED] shadow-2xs">
             <Image
               src="/logo.png"
               alt="Samartha Trust Logo"
@@ -106,10 +106,10 @@ export function AdminSidebar({
             />
           </div>
           <div>
-            <span className="font-bold text-[#492A22] text-sm tracking-tight leading-none block">
+            <span className="font-bold text-[#35123F] text-sm tracking-tight leading-none block">
               Samartha Trust
             </span>
-            <div className="flex items-center gap-1 text-[11px] font-semibold text-[#F52232] mt-0.5">
+            <div className="flex items-center gap-1 text-[11px] font-semibold text-[#9200A8] mt-0.5">
               <Shield className="h-3 w-3" />
               <span>Admin Console</span>
             </div>
@@ -118,7 +118,7 @@ export function AdminSidebar({
 
         {/* Navigation list */}
         <div className="flex-1 overflow-y-auto px-4 py-6">
-          <div className="mb-2 px-3 text-xs font-bold uppercase tracking-wider text-[#78685D]">
+          <div className="mb-2 px-3 text-xs font-bold uppercase tracking-wider text-[#75647B]">
             Administration
           </div>
           <nav className="space-y-1">
@@ -135,8 +135,8 @@ export function AdminSidebar({
                   className={cn(
                     "flex items-center justify-between rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors",
                     isActive
-                      ? "bg-gradient-to-r from-[#F52232] to-[#FF8A00] text-white shadow-xs font-semibold"
-                      : "text-[#78685D] hover:bg-[#FFF5E6] hover:text-[#F52232]"
+                      ? "bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] text-white shadow-xs font-semibold"
+                      : "text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#9200A8]"
                   )}
                 >
                   <div className="flex items-center gap-3">
@@ -144,7 +144,7 @@ export function AdminSidebar({
                     <span>{item.name}</span>
                   </div>
                   {item.badge && (
-                    <span className="rounded bg-[#FFF5E6] px-2 py-0.5 text-[10px] font-semibold text-[#F52232] border border-[#EADCCB]">
+                    <span className="rounded bg-[#FCE7F3] px-2 py-0.5 text-[10px] font-semibold text-[#9200A8] border border-[#EADDED]">
                       {item.badge}
                     </span>
                   )}
@@ -155,12 +155,12 @@ export function AdminSidebar({
         </div>
 
         {/* Public site link and footer */}
-        <div className="border-t border-[#EADCCB] p-4 bg-white">
+        <div className="border-t border-[#EADDED] p-4 bg-white">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[#78685D] transition-colors hover:bg-[#FFF5E6] hover:text-[#F52232]"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[#75647B] transition-colors hover:bg-[#FAF5FF] hover:text-[#9200A8]"
           >
-            <Globe className="h-4 w-4 text-[#F52232]" />
+            <Globe className="h-4 w-4 text-[#9200A8]" />
             <span>Return to Public Website</span>
           </Link>
         </div>

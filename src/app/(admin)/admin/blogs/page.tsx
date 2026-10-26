@@ -390,10 +390,10 @@ export default function AdminBlogsPage() {
       {/* Header and CTA */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#492A22] sm:text-3xl">
+          <h1 className="text-2xl font-bold tracking-tight text-[#35123F] sm:text-3xl">
             Blog & Article Management
           </h1>
-          <p className="text-sm text-[#78685D] mt-0.5">
+          <p className="text-sm text-[#75647B] mt-0.5">
             Create, edit, organize, and publish stories and community outreach
             reports.
           </p>
@@ -439,17 +439,17 @@ export default function AdminBlogsPage() {
       )}
 
       {/* Main Table Card (Search, Filter, Table, and Pagination) */}
-      <Card className="border border-[#EADCCB] bg-white shadow-2xs overflow-hidden">
+      <Card className="border border-[#EADDED] bg-white shadow-2xs overflow-hidden">
         {/* Subtle progress indicator when background refresh is active */}
         {isRefreshing && (
-          <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#F52232] to-transparent animate-pulse" />
+          <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#9200A8] to-transparent animate-pulse" />
         )}
 
-        <CardHeader className="p-4 sm:p-5 border-b border-[#EADCCB]/70">
+        <CardHeader className="p-4 sm:p-5 border-b border-[#EADDED]/70">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             {/* Search Input */}
             <div className="relative w-full sm:w-72">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#78685D]" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#75647B]" />
               <Input
                 placeholder="Search by title, excerpt, content..."
                 value={search}
@@ -457,22 +457,22 @@ export default function AdminBlogsPage() {
                   setSearch(e.target.value);
                   setPagination((prev) => ({ ...prev, page: 1 }));
                 }}
-                className="pl-9 h-9 border-[#EADCCB] text-xs focus-visible:ring-[#F52232]"
+                className="pl-9 h-9 border-[#EADDED] text-xs focus-visible:ring-[#9200A8]"
               />
             </div>
 
             {/* Filter controls */}
             <div className="flex flex-wrap items-center gap-2.5">
               {/* Status Filter Dropdown */}
-              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
-                <span className="font-semibold text-[#492A22]">Status:</span>
+              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
+                <span className="font-semibold text-[#35123F]">Status:</span>
                 <select
                   value={statusFilter}
                   onChange={(e) => {
                     setStatusFilter(e.target.value);
                     setPagination((prev) => ({ ...prev, page: 1 }));
                   }}
-                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:ring-1 focus:ring-[#F52232]"
+                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:ring-1 focus:ring-[#9200A8]"
                 >
                   <option value="ALL">All Statuses</option>
                   <option value="PUBLISHED">Published</option>
@@ -482,15 +482,15 @@ export default function AdminBlogsPage() {
               </div>
 
               {/* Category Filter */}
-              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
-                <Tag className="h-3.5 w-3.5 text-[#F52232]" />
+              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
+                <Tag className="h-3.5 w-3.5 text-[#9200A8]" />
                 <select
                   value={categoryFilter}
                   onChange={(e) => {
                     setCategoryFilter(e.target.value);
                     setPagination((prev) => ({ ...prev, page: 1 }));
                   }}
-                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:ring-1 focus:ring-[#F52232]"
+                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:ring-1 focus:ring-[#9200A8]"
                 >
                   {categories.map((c) => (
                     <option key={c} value={c}>
@@ -501,12 +501,12 @@ export default function AdminBlogsPage() {
               </div>
 
               {/* Sort Order */}
-              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
-                <ArrowUpDown className="h-3.5 w-3.5 text-[#FF8A00]" />
+              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
+                <ArrowUpDown className="h-3.5 w-3.5 text-[#C00083]" />
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value)}
-                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:ring-1 focus:ring-[#F52232]"
+                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:ring-1 focus:ring-[#9200A8]"
                 >
                   <option value="newest">Newest First</option>
                   <option value="oldest">Oldest First</option>
@@ -536,20 +536,20 @@ export default function AdminBlogsPage() {
         <CardContent className="p-0">
           {initialLoading ? (
             <div className="flex flex-col items-center justify-center p-12 space-y-3">
-              <Loader2 className="h-8 w-8 animate-spin text-[#F52232]" />
-              <p className="text-xs text-[#78685D]">
+              <Loader2 className="h-8 w-8 animate-spin text-[#9200A8]" />
+              <p className="text-xs text-[#75647B]">
                 Loading blog posts from database...
               </p>
             </div>
           ) : blogs.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF5E6] text-[#F52232] border border-[#EADCCB]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF5FF] text-[#9200A8] border border-[#EADDED]">
                 <FileText className="h-6 w-6" />
               </div>
-              <h3 className="text-base font-bold text-[#492A22]">
+              <h3 className="text-base font-bold text-[#35123F]">
                 No blog posts found
               </h3>
-              <p className="text-xs text-[#78685D] max-w-sm">
+              <p className="text-xs text-[#75647B] max-w-sm">
                 No articles match your current search and filter criteria. You
                 can create a new story or clear the active filters.
               </p>
@@ -563,7 +563,7 @@ export default function AdminBlogsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-[#FFFCF5] text-xs uppercase tracking-wider text-[#78685D] border-b border-[#EADCCB]">
+                <thead className="bg-[#FDF8FF] text-xs uppercase tracking-wider text-[#75647B] border-b border-[#EADDED]">
                   <tr>
                     <th scope="col" className="px-5 py-3.5 font-bold">
                       Article & Slug
@@ -594,7 +594,7 @@ export default function AdminBlogsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#EADCCB]/60">
+                <tbody className="divide-y divide-[#EADDED]/60">
                   {blogs.map((blog) => {
                     const isPublished = blog.status === "PUBLISHED";
                     const isDraft = blog.status === "DRAFT";
@@ -604,14 +604,14 @@ export default function AdminBlogsPage() {
                     return (
                       <tr
                         key={blog.id}
-                        className={`hover:bg-[#FFF5E6]/30 transition-colors group ${
+                        className={`hover:bg-[#FAF5FF] transition-colors group ${
                           isRowBusy ? "opacity-75" : ""
                         }`}
                       >
                         {/* Article with Thumbnail */}
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
-                            <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg border border-[#EADCCB] bg-[#FFF5E6]">
+                            <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg border border-[#EADDED] bg-[#FAF5FF]">
                               {blog.coverImage ? (
                                 <Image
                                   src={blog.coverImage}
@@ -621,7 +621,7 @@ export default function AdminBlogsPage() {
                                   className="object-cover"
                                 />
                               ) : (
-                                <div className="flex h-full w-full items-center justify-center text-[#78685D]">
+                                <div className="flex h-full w-full items-center justify-center text-[#75647B]">
                                   <FileText className="h-5 w-5" />
                                 </div>
                               )}
@@ -629,11 +629,11 @@ export default function AdminBlogsPage() {
                             <div className="min-w-0 max-w-xs sm:max-w-sm">
                               <Link
                                 href={`/admin/blogs/${blog.id}/edit`}
-                                className="font-bold text-[#492A22] hover:text-[#F52232] transition-colors line-clamp-1 block text-sm"
+                                className="font-bold text-[#35123F] hover:text-[#9200A8] transition-colors line-clamp-1 block text-sm"
                               >
                                 {blog.title}
                               </Link>
-                              <span className="text-[11px] text-[#78685D] font-mono block truncate">
+                              <span className="text-[11px] text-[#75647B] font-mono block truncate">
                                 /blog/{blog.slug}
                               </span>
                             </div>
@@ -651,9 +651,9 @@ export default function AdminBlogsPage() {
                         </td>
 
                         {/* Author */}
-                        <td className="px-4 py-3.5 text-xs text-[#78685D]">
+                        <td className="px-4 py-3.5 text-xs text-[#75647B]">
                           <span className="flex items-center gap-1.5 font-medium">
-                            <User className="h-3 w-3 text-[#FF8A00]" />
+                            <User className="h-3 w-3 text-[#C00083]" />
                             <span className="truncate max-w-[120px]">
                               {blog.authorName}
                             </span>
@@ -688,19 +688,19 @@ export default function AdminBlogsPage() {
                             type="button"
                             disabled={isRowBusy}
                             onClick={() => handleToggleFeature(blog)}
-                            className="cursor-pointer p-1 rounded hover:bg-[#FFF5E6] transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+                            className="cursor-pointer p-1 rounded hover:bg-[#FCE7F3]/60 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
                             title={
                               blog.isFeatured ? "Unfeature" : "Mark as featured"
                             }
                           >
                             {currentAction === "feature" ? (
-                              <Loader2 className="h-4 w-4 mx-auto animate-spin text-[#FF8A00]" />
+                              <Loader2 className="h-4 w-4 mx-auto animate-spin text-[#C00083]" />
                             ) : (
                               <Sparkles
                                 className={`h-4 w-4 mx-auto ${
                                   blog.isFeatured
-                                    ? "text-[#FF8A00] fill-[#FF8A00]"
-                                    : "text-[#EADCCB] hover:text-[#FF8A00]"
+                                    ? "text-[#C00083] fill-[#C00083]"
+                                    : "text-[#EADDED] hover:text-[#C00083]"
                                 }`}
                               />
                             )}
@@ -708,9 +708,9 @@ export default function AdminBlogsPage() {
                         </td>
 
                         {/* Published Date */}
-                        <td className="px-4 py-3.5 text-xs text-[#78685D]">
+                        <td className="px-4 py-3.5 text-xs text-[#75647B]">
                           <span className="flex items-center gap-1.5">
-                            <Calendar className="h-3 w-3 text-[#F52232]" />
+                            <Calendar className="h-3 w-3 text-[#9200A8]" />
                             <span>
                               {blog.publishedAt
                                 ? new Date(blog.publishedAt).toLocaleDateString(
@@ -735,7 +735,7 @@ export default function AdminBlogsPage() {
                                 asChild
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 text-[#78685D] hover:text-[#492A22]"
+                                className="h-8 w-8 text-[#75647B] hover:text-[#35123F]"
                                 title="View public page"
                               >
                                 <Link
@@ -752,7 +752,7 @@ export default function AdminBlogsPage() {
                               asChild
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 text-[#78685D] hover:text-[#F52232]"
+                              className="h-8 w-8 text-[#75647B] hover:text-[#9200A8]"
                               title="Edit article"
                             >
                               <Link href={`/admin/blogs/${blog.id}/edit`}>
@@ -766,7 +766,7 @@ export default function AdminBlogsPage() {
                               size="icon"
                               disabled={isRowBusy}
                               onClick={() => handleTogglePublish(blog)}
-                              className="h-8 w-8 text-[#78685D] hover:text-[#10B981] disabled:cursor-not-allowed disabled:opacity-60"
+                              className="h-8 w-8 text-[#75647B] hover:text-[#10B981] disabled:cursor-not-allowed disabled:opacity-60"
                               title={
                                 isPublished
                                   ? "Unpublish to draft"
@@ -790,7 +790,7 @@ export default function AdminBlogsPage() {
                               size="icon"
                               disabled={isRowBusy}
                               onClick={() => handleArchive(blog)}
-                              className="h-8 w-8 text-[#78685D] hover:text-[#492A22] disabled:cursor-not-allowed disabled:opacity-60"
+                              className="h-8 w-8 text-[#75647B] hover:text-[#35123F] disabled:cursor-not-allowed disabled:opacity-60"
                               title={
                                 blog.status === "ARCHIVED"
                                   ? "Restore from archive to draft"
@@ -799,7 +799,7 @@ export default function AdminBlogsPage() {
                             >
                               {currentAction === "archive" ||
                               currentAction === "restore" ? (
-                                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#78685D]" />
+                                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#75647B]" />
                               ) : blog.status === "ARCHIVED" ? (
                                 <ArchiveRestore className="h-3.5 w-3.5 text-stone-600" />
                               ) : (
@@ -816,7 +816,7 @@ export default function AdminBlogsPage() {
                                 setDeletingId(blog.id);
                                 setDeletingTitle(blog.title);
                               }}
-                              className="h-8 w-8 text-[#78685D] hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                              className="h-8 w-8 text-[#75647B] hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
                               title="Delete permanently"
                             >
                               <Trash2 className="h-3.5 w-3.5" />
@@ -833,14 +833,14 @@ export default function AdminBlogsPage() {
 
           {/* Pagination Footer */}
           {!initialLoading && blogs.length > 0 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between border-t border-[#EADCCB]/70 px-6 py-4 text-xs text-[#78685D] gap-3">
+            <div className="flex flex-col sm:flex-row items-center justify-between border-t border-[#EADDED]/70 px-6 py-4 text-xs text-[#75647B] gap-3">
               <div>
                 Showing Page{" "}
-                <span className="font-bold text-[#492A22]">
+                <span className="font-bold text-[#35123F]">
                   {pagination.page}
                 </span>{" "}
                 of{" "}
-                <span className="font-bold text-[#492A22]">
+                <span className="font-bold text-[#35123F]">
                   {pagination.totalPages}
                 </span>{" "}
                 ({pagination.total} total articles)
@@ -875,8 +875,8 @@ export default function AdminBlogsPage() {
                       }
                       className={`h-8 w-8 rounded-md text-xs font-semibold cursor-pointer transition-colors ${
                         pagination.page === p
-                          ? "bg-[#F52232] text-white shadow-2xs"
-                          : "text-[#78685D] hover:bg-[#FFF5E6] hover:text-[#492A22]"
+                          ? "bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] text-white shadow-2xs"
+                          : "text-[#75647B] hover:bg-[#FCE7F3]/60 hover:text-[#35123F]"
                       }`}
                     >
                       {p}
@@ -907,26 +907,26 @@ export default function AdminBlogsPage() {
       {/* Delete Confirmation Modal */}
       {deletingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-[#EADCCB] bg-white p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
+          <div className="w-full max-w-md rounded-2xl border border-[#EADDED] bg-white p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-start gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-600">
                 <AlertTriangle className="h-5 w-5" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-base font-bold text-[#492A22]">
+                <h3 className="text-base font-bold text-[#35123F]">
                   Delete Article Permanently?
                 </h3>
-                <p className="text-xs text-[#78685D] leading-relaxed">
+                <p className="text-xs text-[#75647B] leading-relaxed">
                   Are you sure you want to permanently delete:
                   <br />
-                  <strong className="text-[#492A22]">{deletingTitle}</strong>?
+                  <strong className="text-[#35123F]">{deletingTitle}</strong>?
                   <br />
                   This action cannot be undone.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#EADCCB]">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#EADDED]">
               <Button
                 variant="outline"
                 size="sm"

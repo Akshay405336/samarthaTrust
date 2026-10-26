@@ -10,7 +10,7 @@ export default function CustomerLayout({
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <React.Suspense
-        fallback={<div className="h-20 bg-white border-b border-[#EADCCB]" />}
+        fallback={<div className="h-20 bg-white border-b border-[#EADDED]" />}
       >
         <CustomerHeader />
       </React.Suspense>

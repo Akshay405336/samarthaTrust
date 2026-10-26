@@ -136,9 +136,9 @@ function AdminLoginForm() {
 
   return (
     <div className="w-full max-w-md">
-      <Card className="border-[#EADCCB] bg-white text-[#492A22] shadow-xl">
+      <Card className="border-[#EADDED] bg-white text-[#35123F] shadow-xl">
         <CardHeader className="space-y-3 text-center pb-6">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FFF5E6] p-2 border border-[#EADCCB] shadow-2xs">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FCE7F3]/60 p-2 border border-[#EADDED] shadow-2xs">
             <Image
               src="/logo.png"
               alt="Samartha Trust Logo"
@@ -148,10 +148,10 @@ function AdminLoginForm() {
               priority
             />
           </div>
-          <CardTitle className="text-2xl font-bold text-[#492A22] tracking-tight">
+          <CardTitle className="text-2xl font-bold text-[#35123F] tracking-tight">
             Admin Sign In
           </CardTitle>
-          <CardDescription className="text-[#78685D] text-xs">
+          <CardDescription className="text-[#75647B] text-xs">
             Samartha Trust Content & Operational Management Portal
           </CardDescription>
         </CardHeader>
@@ -177,12 +177,12 @@ function AdminLoginForm() {
             <div>
               <Label
                 htmlFor="email"
-                className="text-[#492A22] text-xs font-semibold uppercase tracking-wider"
+                className="text-[#35123F] text-xs font-semibold uppercase tracking-wider"
               >
                 Email Address
               </Label>
               <div className="relative mt-1.5">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-[#78685D]" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-[#75647B]" />
                 <Input
                   id="email"
                   name="email"
@@ -191,13 +191,13 @@ function AdminLoginForm() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="admin@samarthatrust.org"
-                  className="pl-9 bg-white border-[#EADCCB] text-[#492A22] placeholder:text-[#78685D]/60 focus-visible:ring-[#F52232]"
+                  className="pl-9 bg-white border-[#EADDED] text-[#35123F] placeholder:text-[#75647B]/60 focus-visible:ring-[#9200A8]"
                   aria-invalid={!!errors.email}
                   disabled={loading}
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-xs text-[#F52232] flex items-center gap-1 font-medium">
+                <p className="mt-1 text-xs text-[#DC2626] flex items-center gap-1 font-medium">
                   <AlertCircle className="h-3 w-3" />
                   <span>{errors.email}</span>
                 </p>
@@ -208,13 +208,13 @@ function AdminLoginForm() {
               <div className="flex items-center justify-between">
                 <Label
                   htmlFor="password"
-                  className="text-[#492A22] text-xs font-semibold uppercase tracking-wider"
+                  className="text-[#35123F] text-xs font-semibold uppercase tracking-wider"
                 >
                   Password
                 </Label>
               </div>
               <div className="relative mt-1.5">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-[#78685D]" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-[#75647B]" />
                 <Input
                   id="password"
                   name="password"
@@ -223,14 +223,14 @@ function AdminLoginForm() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="pl-9 pr-10 bg-white border-[#EADCCB] text-[#492A22] placeholder:text-[#78685D]/60 focus-visible:ring-[#F52232]"
+                  className="pl-9 pr-10 bg-white border-[#EADDED] text-[#35123F] placeholder:text-[#75647B]/60 focus-visible:ring-[#9200A8]"
                   aria-invalid={!!errors.password}
                   disabled={loading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-3 top-2.5 p-0.5 text-[#78685D] hover:text-[#F52232] transition-colors cursor-pointer rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F52232]"
+                  className="absolute right-3 top-2.5 p-0.5 text-[#75647B] hover:text-[#9200A8] transition-colors cursor-pointer rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8]"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   title={showPassword ? "Hide password" : "Show password"}
                   tabIndex={0}
@@ -243,7 +243,7 @@ function AdminLoginForm() {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-xs text-[#F52232] flex items-center gap-1 font-medium">
+                <p className="mt-1 text-xs text-[#DC2626] flex items-center gap-1 font-medium">
                   <AlertCircle className="h-3 w-3" />
                   <span>{errors.password}</span>
                 </p>
@@ -267,7 +267,7 @@ function AdminLoginForm() {
           <div className="text-center pt-2">
             <Link
               href="/"
-              className="text-xs text-[#78685D] hover:text-[#F52232] transition-colors font-medium"
+              className="text-xs text-[#75647B] hover:text-[#9200A8] transition-colors font-medium"
             >
               Return to public customer website
             </Link>
@@ -289,7 +289,7 @@ export default function AdminLoginPage() {
     <React.Suspense
       fallback={
         <div className="w-full max-w-md h-96 flex items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#F52232] border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#9200A8] border-t-transparent" />
         </div>
       }
     >

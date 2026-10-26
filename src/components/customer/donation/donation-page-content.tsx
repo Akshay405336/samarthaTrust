@@ -352,7 +352,7 @@ export function DonationPageContent() {
           causeId: selectedCause.id,
         },
         theme: {
-          color: "#F52232",
+          color: "#9200A8",
         },
         modal: {
           ondismiss: () => {
@@ -467,7 +467,7 @@ export function DonationPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFCF5]">
+    <div className="min-h-screen bg-[#FAF5FF]">
       {/* Hero Banner */}
       <DonationHero />
 
@@ -501,7 +501,7 @@ export function DonationPageContent() {
         {/* Form Body and Sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Step Content */}
-          <div className="lg:col-span-8 bg-white rounded-2xl p-5 sm:p-8 border border-[#EFE8D8] shadow-sm">
+          <div className="lg:col-span-8 bg-white rounded-2xl p-5 sm:p-8 border border-[#EADDED] shadow-sm">
             {/* Step 1: Cause & Amount */}
             {state.step === 1 && (
               <div className="space-y-7">
@@ -526,7 +526,7 @@ export function DonationPageContent() {
                   error={state.validationErrors.amount}
                 />
 
-                <div className="pt-4 border-t border-[#EFE8D8] flex items-center justify-end">
+                <div className="pt-4 border-t border-[#EADDED] flex items-center justify-end">
                   <Button
                     type="button"
                     onClick={handleNextFromStep1}
@@ -548,12 +548,12 @@ export function DonationPageContent() {
                   errors={state.validationErrors}
                 />
 
-                <div className="pt-4 border-t border-[#EFE8D8] flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
+                <div className="pt-4 border-t border-[#EADDED] flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => goToStep(1)}
-                    className="w-full sm:w-auto border-[#D6CBB8]"
+                    className="w-full sm:w-auto border-[#EADDED]"
                   >
                     <ArrowLeft className="w-4 h-4 mr-1.5" />
                     <span>Back to Amount</span>
@@ -586,13 +586,13 @@ export function DonationPageContent() {
                   submittingText={submittingText}
                 />
 
-                <div className="pt-2 border-t border-[#EFE8D8]">
+                <div className="pt-2 border-t border-[#EADDED]">
                   <Button
                     type="button"
                     variant="ghost"
                     onClick={() => goToStep(2)}
                     disabled={state.isSubmitting}
-                    className="text-xs font-semibold text-[#78685D]"
+                    className="text-xs font-semibold text-[#75647B]"
                   >
                     <ArrowLeft className="w-3.5 h-3.5 mr-1" />
                     <span>Back to Donor Details</span>

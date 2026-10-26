@@ -42,10 +42,10 @@ export function DonationAmountSelector({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <label className="block text-sm font-bold text-[#492A22]">
-          Contribution Amount <span className="text-[#F52232]">*</span>
+        <label className="block text-sm font-bold text-[#35123F]">
+          Contribution Amount <span className="text-[#9200A8]">*</span>
         </label>
-        <span className="text-xs text-[#78685D]">
+        <span className="text-xs text-[#75647B]">
           Min {formatINR(MIN_AMOUNT)} · Max {formatINR(MAX_AMOUNT)}
         </span>
       </div>
@@ -66,10 +66,10 @@ export function DonationAmountSelector({
               aria-checked={isSelected}
               onClick={() => onSelectPreset(preset)}
               className={cn(
-                "py-3 px-3 rounded-xl font-bold text-sm sm:text-base border-2 transition-all duration-200 cursor-pointer text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F52232]",
+                "py-3 px-3 rounded-xl font-bold text-sm sm:text-base border-2 transition-all duration-200 cursor-pointer text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8]",
                 isSelected
-                  ? "bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFAA00] text-white border-transparent shadow-sm scale-102"
-                  : "bg-white text-[#492A22] border-[#EFE8D8] hover:border-[#FF8A00]/50 hover:bg-[#FFFDF9]"
+                  ? "bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] text-white border-transparent shadow-sm scale-102"
+                  : "bg-white text-[#35123F] border-[#EADDED] hover:border-[#9200A8]/40 hover:bg-[#FAF5FF]"
               )}
             >
               {formatINR(preset)}
@@ -82,12 +82,12 @@ export function DonationAmountSelector({
       <div className="pt-2">
         <label
           htmlFor="custom-amount-input"
-          className="block text-xs font-semibold text-[#78685D] mb-1.5"
+          className="block text-xs font-semibold text-[#75647B] mb-1.5"
         >
           Or enter a custom amount (INR):
         </label>
         <div className="relative rounded-xl shadow-xs">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#78685D]">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#75647B]">
             <IndianRupee className="h-5 w-5" />
           </div>
           <input
@@ -98,10 +98,10 @@ export function DonationAmountSelector({
             value={customAmountInput}
             onChange={(e) => onCustomAmountChange(e.target.value)}
             className={cn(
-              "block w-full rounded-xl border-2 py-3 pl-11 pr-4 text-base font-bold text-[#492A22] placeholder:text-stone-400 placeholder:font-normal focus:outline-none transition-colors",
+              "block w-full rounded-xl border-2 py-3 pl-11 pr-4 text-base font-bold text-[#35123F] placeholder:text-stone-400 placeholder:font-normal focus:outline-none transition-colors",
               isCustomAmount
-                ? "border-[#FF8A00] bg-white ring-1 ring-[#FF8A00]"
-                : "border-[#EFE8D8] bg-white hover:border-[#D6CBB8]"
+                ? "border-[#9200A8] bg-white ring-1 ring-[#9200A8]"
+                : "border-[#EADDED] bg-white hover:border-[#9200A8]/40"
             )}
             aria-invalid={Boolean(error)}
           />
@@ -110,10 +110,10 @@ export function DonationAmountSelector({
 
       {/* Dynamic Impact Note */}
       {amount >= MIN_AMOUNT && (
-        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[#FFF9F2] border border-[#FFE7CC] text-xs text-[#492A22]">
-          <HeartHandshake className="w-4 h-4 text-[#FF8A00] shrink-0 mt-0.5" />
+        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[#FCE7F3]/40 border border-[#EADDED] text-xs text-[#35123F]">
+          <HeartHandshake className="w-4 h-4 text-[#9200A8] shrink-0 mt-0.5" />
           <p className="leading-relaxed">
-            <span className="font-bold text-[#F52232]">
+            <span className="font-bold text-[#9200A8]">
               {formatINR(amount)}:
             </span>{" "}
             {getImpactNote(amount)}

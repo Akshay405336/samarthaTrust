@@ -4,7 +4,7 @@ export function AdminFooter() {
   const year = 2026;
 
   return (
-    <footer className="border-t border-[#EADCCB] bg-white px-6 py-4 text-xs text-[#78685D]">
+    <footer className="border-t border-[#EADDED] bg-white px-6 py-4 text-xs text-[#75647B]">
       <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
         <p>© {year} Samartha Trust — Internal Management Console.</p>
         <div className="flex items-center gap-4">

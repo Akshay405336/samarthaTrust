@@ -23,9 +23,9 @@ export function DonationDonorForm({
   return (
     <div className="space-y-6">
       {/* Intro Header */}
-      <div className="border-b border-[#EFE8D8] pb-4">
-        <h3 className="text-lg font-bold text-[#492A22]">Donor Information</h3>
-        <p className="text-xs sm:text-sm text-[#78685D] mt-1">
+      <div className="border-b border-[#EADDED] pb-4">
+        <h3 className="text-lg font-bold text-[#35123F]">Donor Information</h3>
+        <p className="text-xs sm:text-sm text-[#75647B] mt-1">
           Please provide your details for official receipting and communication.
         </p>
       </div>
@@ -36,12 +36,12 @@ export function DonationDonorForm({
         <div className="sm:col-span-2 space-y-1.5">
           <label
             htmlFor="donor-full-name"
-            className="block text-xs font-bold uppercase tracking-wider text-[#492A22]"
+            className="block text-xs font-bold uppercase tracking-wider text-[#35123F]"
           >
-            Full Name <span className="text-[#F52232]">*</span>
+            Full Name <span className="text-[#9200A8]">*</span>
           </label>
           <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#78685D]">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#75647B]">
               <User className="h-4 w-4" />
             </div>
             <input
@@ -52,10 +52,10 @@ export function DonationDonorForm({
               value={donor.fullName}
               onChange={(e) => onChange("fullName", e.target.value)}
               className={cn(
-                "block w-full rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-medium text-[#492A22] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F52232] transition-colors",
+                "block w-full rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-medium text-[#35123F] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#9200A8] transition-colors",
                 errors.fullName
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[#E8DFC9] hover:border-[#D6CBB8]"
+                  : "border-[#EADDED] hover:border-[#9200A8]/40"
               )}
               aria-invalid={Boolean(errors.fullName)}
             />
@@ -71,12 +71,12 @@ export function DonationDonorForm({
         <div className="space-y-1.5">
           <label
             htmlFor="donor-email"
-            className="block text-xs font-bold uppercase tracking-wider text-[#492A22]"
+            className="block text-xs font-bold uppercase tracking-wider text-[#35123F]"
           >
-            Email Address <span className="text-[#F52232]">*</span>
+            Email Address <span className="text-[#9200A8]">*</span>
           </label>
           <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#78685D]">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#75647B]">
               <Mail className="h-4 w-4" />
             </div>
             <input
@@ -87,10 +87,10 @@ export function DonationDonorForm({
               value={donor.email}
               onChange={(e) => onChange("email", e.target.value)}
               className={cn(
-                "block w-full rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-medium text-[#492A22] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F52232] transition-colors",
+                "block w-full rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-medium text-[#35123F] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#9200A8] transition-colors",
                 errors.email
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[#E8DFC9] hover:border-[#D6CBB8]"
+                  : "border-[#EADDED] hover:border-[#9200A8]/40"
               )}
               aria-invalid={Boolean(errors.email)}
             />
@@ -100,7 +100,7 @@ export function DonationDonorForm({
               {errors.email}
             </p>
           ) : (
-            <p className="text-[11px] text-[#78685D]">
+            <p className="text-[11px] text-[#75647B]">
               Your donation acknowledgement will be sent here.
             </p>
           )}
@@ -110,12 +110,12 @@ export function DonationDonorForm({
         <div className="space-y-1.5">
           <label
             htmlFor="donor-phone"
-            className="block text-xs font-bold uppercase tracking-wider text-[#492A22]"
+            className="block text-xs font-bold uppercase tracking-wider text-[#35123F]"
           >
-            Phone Number <span className="text-[#F52232]">*</span>
+            Phone Number <span className="text-[#9200A8]">*</span>
           </label>
           <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#78685D]">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#75647B]">
               <Phone className="h-4 w-4" />
             </div>
             <input
@@ -126,10 +126,10 @@ export function DonationDonorForm({
               value={donor.phone}
               onChange={(e) => onChange("phone", e.target.value)}
               className={cn(
-                "block w-full rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-medium text-[#492A22] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F52232] transition-colors",
+                "block w-full rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-medium text-[#35123F] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#9200A8] transition-colors",
                 errors.phone
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[#E8DFC9] hover:border-[#D6CBB8]"
+                  : "border-[#EADDED] hover:border-[#9200A8]/40"
               )}
               aria-invalid={Boolean(errors.phone)}
             />
@@ -139,7 +139,7 @@ export function DonationDonorForm({
               {errors.phone}
             </p>
           ) : (
-            <p className="text-[11px] text-[#78685D]">
+            <p className="text-[11px] text-[#75647B]">
               For transaction verification and queries.
             </p>
           )}
@@ -150,7 +150,7 @@ export function DonationDonorForm({
           <div className="flex items-center justify-between">
             <label
               htmlFor="donor-pan"
-              className="block text-xs font-bold uppercase tracking-wider text-[#492A22]"
+              className="block text-xs font-bold uppercase tracking-wider text-[#35123F]"
             >
               PAN (Permanent Account Number)
             </label>
@@ -159,7 +159,7 @@ export function DonationDonorForm({
             </span>
           </div>
           <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#78685D]">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#75647B]">
               <FileText className="h-4 w-4" />
             </div>
             <input
@@ -172,10 +172,10 @@ export function DonationDonorForm({
                 onChange("panNumber", e.target.value.toUpperCase())
               }
               className={cn(
-                "block w-full uppercase rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-semibold tracking-wider text-[#492A22] placeholder:text-stone-400 placeholder:normal-case placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#F52232] transition-colors",
+                "block w-full uppercase rounded-xl border bg-white py-2.5 pl-10 pr-3 text-sm font-semibold tracking-wider text-[#35123F] placeholder:text-stone-400 placeholder:normal-case placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#9200A8] transition-colors",
                 errors.panNumber
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[#E8DFC9] hover:border-[#D6CBB8]"
+                  : "border-[#EADDED] hover:border-[#9200A8]/40"
               )}
               aria-invalid={Boolean(errors.panNumber)}
             />
@@ -185,7 +185,7 @@ export function DonationDonorForm({
               {errors.panNumber}
             </p>
           ) : (
-            <p className="text-[11px] text-[#78685D]">
+            <p className="text-[11px] text-[#75647B]">
               Applicable for Indian tax compliance records.
             </p>
           )}
@@ -197,7 +197,7 @@ export function DonationDonorForm({
         <button
           type="button"
           onClick={() => setShowAddressFields(!showAddressFields)}
-          className="text-xs font-bold text-[#F52232] hover:underline inline-flex items-center gap-1 cursor-pointer"
+          className="text-xs font-bold text-[#9200A8] hover:underline inline-flex items-center gap-1 cursor-pointer"
         >
           <MapPin className="w-3.5 h-3.5" />
           <span>
@@ -208,11 +208,11 @@ export function DonationDonorForm({
         </button>
 
         {showAddressFields && (
-          <div className="mt-3 p-4 rounded-xl bg-[#FFFDF9] border border-[#EFE8D8] grid grid-cols-1 sm:grid-cols-2 gap-3.5 animate-in fade-in-50 duration-200">
+          <div className="mt-3 p-4 rounded-xl bg-[#FAF5FF] border border-[#EADDED] grid grid-cols-1 sm:grid-cols-2 gap-3.5 animate-in fade-in-50 duration-200">
             <div className="sm:col-span-2 space-y-1">
               <label
                 htmlFor="donor-address1"
-                className="block text-xs font-semibold text-[#492A22]"
+                className="block text-xs font-semibold text-[#35123F]"
               >
                 Address Line 1
               </label>
@@ -222,14 +222,14 @@ export function DonationDonorForm({
                 placeholder="House / Flat / Street"
                 value={donor.addressLine1}
                 onChange={(e) => onChange("addressLine1", e.target.value)}
-                className="w-full rounded-lg border border-[#E8DFC9] px-3 py-2 text-sm text-[#492A22] focus:outline-none focus:ring-2 focus:ring-[#F52232]"
+                className="w-full rounded-lg border border-[#EADDED] px-3 py-2 text-sm text-[#35123F] focus:outline-none focus:ring-2 focus:ring-[#9200A8]"
               />
             </div>
 
             <div className="space-y-1">
               <label
                 htmlFor="donor-city"
-                className="block text-xs font-semibold text-[#492A22]"
+                className="block text-xs font-semibold text-[#35123F]"
               >
                 City
               </label>
@@ -239,14 +239,14 @@ export function DonationDonorForm({
                 placeholder="e.g. Bengaluru"
                 value={donor.city}
                 onChange={(e) => onChange("city", e.target.value)}
-                className="w-full rounded-lg border border-[#E8DFC9] px-3 py-2 text-sm text-[#492A22] focus:outline-none focus:ring-2 focus:ring-[#F52232]"
+                className="w-full rounded-lg border border-[#EADDED] px-3 py-2 text-sm text-[#35123F] focus:outline-none focus:ring-2 focus:ring-[#9200A8]"
               />
             </div>
 
             <div className="space-y-1">
               <label
                 htmlFor="donor-state"
-                className="block text-xs font-semibold text-[#492A22]"
+                className="block text-xs font-semibold text-[#35123F]"
               >
                 State
               </label>
@@ -256,14 +256,14 @@ export function DonationDonorForm({
                 placeholder="e.g. Karnataka"
                 value={donor.state}
                 onChange={(e) => onChange("state", e.target.value)}
-                className="w-full rounded-lg border border-[#E8DFC9] px-3 py-2 text-sm text-[#492A22] focus:outline-none focus:ring-2 focus:ring-[#F52232]"
+                className="w-full rounded-lg border border-[#EADDED] px-3 py-2 text-sm text-[#35123F] focus:outline-none focus:ring-2 focus:ring-[#9200A8]"
               />
             </div>
 
             <div className="space-y-1">
               <label
                 htmlFor="donor-pincode"
-                className="block text-xs font-semibold text-[#492A22]"
+                className="block text-xs font-semibold text-[#35123F]"
               >
                 PIN Code
               </label>
@@ -275,8 +275,8 @@ export function DonationDonorForm({
                 value={donor.pincode}
                 onChange={(e) => onChange("pincode", e.target.value)}
                 className={cn(
-                  "w-full rounded-lg border px-3 py-2 text-sm text-[#492A22] focus:outline-none focus:ring-2 focus:ring-[#F52232]",
-                  errors.pincode ? "border-red-500" : "border-[#E8DFC9]"
+                  "w-full rounded-lg border px-3 py-2 text-sm text-[#35123F] focus:outline-none focus:ring-2 focus:ring-[#9200A8]",
+                  errors.pincode ? "border-red-500" : "border-[#EADDED]"
                 )}
               />
               {errors.pincode && (
@@ -287,7 +287,7 @@ export function DonationDonorForm({
             <div className="space-y-1">
               <label
                 htmlFor="donor-country"
-                className="block text-xs font-semibold text-[#492A22]"
+                className="block text-xs font-semibold text-[#35123F]"
               >
                 Country
               </label>
@@ -297,7 +297,7 @@ export function DonationDonorForm({
                 placeholder="India"
                 value={donor.country}
                 onChange={(e) => onChange("country", e.target.value)}
-                className="w-full rounded-lg border border-[#E8DFC9] px-3 py-2 text-sm text-[#492A22] focus:outline-none focus:ring-2 focus:ring-[#F52232]"
+                className="w-full rounded-lg border border-[#EADDED] px-3 py-2 text-sm text-[#35123F] focus:outline-none focus:ring-2 focus:ring-[#9200A8]"
               />
             </div>
           </div>
@@ -308,7 +308,7 @@ export function DonationDonorForm({
       <div className="space-y-1.5 pt-1">
         <label
           htmlFor="donor-message"
-          className="block text-xs font-bold uppercase tracking-wider text-[#492A22]"
+          className="block text-xs font-bold uppercase tracking-wider text-[#35123F]"
         >
           Personal Message or Dedication (Optional)
         </label>
@@ -318,25 +318,25 @@ export function DonationDonorForm({
           placeholder="Share why you are supporting Samartha Trust, or dedicate this gift in honor of a loved one..."
           value={donor.message}
           onChange={(e) => onChange("message", e.target.value)}
-          className="block w-full rounded-xl border border-[#E8DFC9] bg-white p-3 text-sm text-[#492A22] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F52232] transition-colors"
+          className="block w-full rounded-xl border border-[#EADDED] bg-white p-3 text-sm text-[#35123F] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#9200A8] transition-colors"
         />
       </div>
 
       {/* Preferences & Privacy Checkboxes */}
-      <div className="space-y-3 pt-2 border-t border-[#EFE8D8]">
+      <div className="space-y-3 pt-2 border-t border-[#EADDED]">
         {/* Anonymous Checkbox */}
         <label className="flex items-start gap-3 cursor-pointer group">
           <input
             type="checkbox"
             checked={donor.isAnonymous}
             onChange={(e) => onChange("isAnonymous", e.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-[#D6CBB8] text-[#F52232] focus:ring-[#F52232] cursor-pointer"
+            className="mt-0.5 h-4 w-4 rounded border-[#EADDED] text-[#9200A8] focus:ring-[#9200A8] cursor-pointer"
           />
-          <div className="text-xs text-[#492A22] leading-relaxed">
-            <span className="font-semibold group-hover:text-[#F52232] transition-colors">
+          <div className="text-xs text-[#35123F] leading-relaxed">
+            <span className="font-semibold group-hover:text-[#9200A8] transition-colors">
               Make this donation anonymously
             </span>
-            <p className="text-[11px] text-[#78685D]">
+            <p className="text-[11px] text-[#75647B]">
               Your name will remain private and will not appear in public donor
               acknowledgements.
             </p>
@@ -349,13 +349,13 @@ export function DonationDonorForm({
             type="checkbox"
             checked={donor.consentUpdates}
             onChange={(e) => onChange("consentUpdates", e.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-[#D6CBB8] text-[#F52232] focus:ring-[#F52232] cursor-pointer"
+            className="mt-0.5 h-4 w-4 rounded border-[#EADDED] text-[#9200A8] focus:ring-[#9200A8] cursor-pointer"
           />
-          <div className="text-xs text-[#492A22] leading-relaxed">
-            <span className="font-semibold group-hover:text-[#F52232] transition-colors">
+          <div className="text-xs text-[#35123F] leading-relaxed">
+            <span className="font-semibold group-hover:text-[#9200A8] transition-colors">
               Keep me updated on Samartha Trust&apos;s impact
             </span>
-            <p className="text-[11px] text-[#78685D]">
+            <p className="text-[11px] text-[#75647B]">
               Receive occasional stories and reports showing how community
               support is transforming lives.
             </p>

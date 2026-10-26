@@ -6,27 +6,27 @@ import { Button } from "@/components/ui/button";
 
 export function WorksCollaboration() {
   return (
-    <section className="border-t border-[#F0E5D9] bg-white py-14 sm:py-18 lg:py-20">
+    <section className="border-t border-[#EADDED] bg-white py-14 sm:py-18 lg:py-20">
       <Container>
-        <div className="relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-[#EADCCB] bg-white px-6 py-10 text-center sm:px-12 sm:py-14">
+        <div className="relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-[#EADDED] bg-white px-6 py-10 text-center sm:px-12 sm:py-14">
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C]"
+            className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078]"
           />
 
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#F0DFCF] bg-[#FFF5E9] text-[#F4510B]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#EADDED] bg-[#FCE7F3]/60 text-[#9200A8]">
             <Handshake className="h-7 w-7" />
           </div>
 
-          <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C54B20]">
+          <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C00083]">
             Let’s Work Together
           </p>
 
-          <h2 className="mx-auto mt-3 max-w-2xl text-2xl font-extrabold tracking-tight text-[#492A22] sm:text-3xl lg:text-4xl">
+          <h2 className="mx-auto mt-3 max-w-2xl text-2xl font-extrabold tracking-tight text-[#35123F] sm:text-3xl lg:text-4xl">
             Have a Community Collaboration in Mind?
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#78685D] sm:text-base">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#75647B] sm:text-base">
             We welcome collaborative proposals from fellow non-profits, CSR
             foundations, and passionate civic volunteers to amplify grassroots
             impact.

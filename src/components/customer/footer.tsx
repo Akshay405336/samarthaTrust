@@ -35,7 +35,7 @@ export function CustomerFooter() {
       {/* Subtle background decoration */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#F4510B]/[0.07] blur-3xl"
+        className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#9200A8]/[0.08] blur-3xl"
       />
       <div
         aria-hidden="true"
@@ -62,7 +62,7 @@ export function CustomerFooter() {
                   <span className="text-lg font-bold tracking-tight text-white">
                     Samartha Trust
                   </span>
-                  <p className="mt-0.5 text-xs font-medium text-[#FF895A]">
+                  <p className="mt-0.5 text-xs font-medium text-[#E90078]">
                     We Believe In Abilities
                   </p>
                 </div>
@@ -75,7 +75,7 @@ export function CustomerFooter() {
               </p>
 
               <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2">
-                <span className="h-2 w-2 rounded-full bg-[#FF7547]" />
+                <span className="h-2 w-2 rounded-full bg-[#E90078]" />
                 <span className="text-xs font-medium text-[#D5D6D8]">
                   Registered Public Charitable Trust
                 </span>
@@ -88,7 +88,7 @@ export function CustomerFooter() {
                 Quick Links
               </h3>
 
-              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#FF8A26] to-[#E73528]" />
+              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078]" />
 
               <ul className="mt-5 space-y-3">
                 {quickLinks.map((link) => (
@@ -111,7 +111,7 @@ export function CustomerFooter() {
                 Focus Areas
               </h3>
 
-              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#FF8A26] to-[#E73528]" />
+              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078]" />
 
               <ul className="mt-5 space-y-3">
                 {focusAreas.map((area) => (
@@ -134,12 +134,12 @@ export function CustomerFooter() {
                 Contact Information
               </h3>
 
-              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#FF8A26] to-[#E73528]" />
+              <div className="mt-3 h-0.5 w-8 rounded-full bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078]" />
 
               <ul className="mt-5 space-y-4 text-sm text-[#B7BABE]">
                 <li className="flex items-start gap-3">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
-                    <MapPin className="h-4 w-4 text-[#FF895A]" />
+                    <MapPin className="h-4 w-4 text-[#E90078]" />
                   </div>
                   <span className="pt-1.5 leading-6">
                     Samartha Trust Office, Bengaluru, Karnataka, India
@@ -148,7 +148,7 @@ export function CustomerFooter() {
 
                 <li className="flex items-start gap-3">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
-                    <Mail className="h-4 w-4 text-[#FF895A]" />
+                    <Mail className="h-4 w-4 text-[#E90078]" />
                   </div>
                   <a
                     href="mailto:info@samarthatrust.org"
@@ -160,7 +160,7 @@ export function CustomerFooter() {
 
                 <li className="flex items-start gap-3">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
-                    <Phone className="h-4 w-4 text-[#FF895A]" />
+                    <Phone className="h-4 w-4 text-[#E90078]" />
                   </div>
                   <a
                     href="tel:+918023456789"
@@ -183,7 +183,7 @@ export function CustomerFooter() {
             <span className="hidden text-white/30 sm:inline">•</span>
             <span className="inline-flex items-center gap-1.5">
               Made with care
-              <Heart className="h-3 w-3 fill-[#F4510B] text-[#F4510B]" />
+              <Heart className="h-3 w-3 fill-[#E90078] text-[#E90078]" />
             </span>
           </p>
 
@@ -195,7 +195,7 @@ export function CustomerFooter() {
             <Link
               href="/admin/login"
               prefetch={false}
-              className="inline-flex items-center gap-1.5 font-medium text-[#B7BABE] transition-colors hover:text-[#FF895A]"
+              className="inline-flex items-center gap-1.5 font-medium text-[#B7BABE] transition-colors hover:text-[#E90078]"
             >
               Admin Portal
               <ExternalLink className="h-3 w-3" />

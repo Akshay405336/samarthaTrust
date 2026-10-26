@@ -8,12 +8,12 @@ export function TrusteesHero() {
       {/* Soft warm glow, matching the homepage */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-0 -z-10 h-full w-[32%] bg-gradient-to-l from-[#FFF3D8] via-[#FFF9EE]/60 to-transparent"
+        className="pointer-events-none absolute right-0 top-0 -z-10 h-full w-[32%] bg-gradient-to-l from-[#FCE7F3]/40 via-[#FAF5FF]/60 to-transparent"
       />
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-16 top-0 -z-10 h-72 w-72 rounded-full bg-[#FFD21C]/15 blur-3xl"
+        className="pointer-events-none absolute -right-16 top-0 -z-10 h-72 w-72 rounded-full bg-[#E90078]/15 blur-3xl"
       />
 
       <Container>
@@ -21,19 +21,19 @@ export function TrusteesHero() {
           {/* Left content */}
           <div className="relative z-10 flex min-w-0 flex-col gap-5 sm:gap-6">
             {/* Eyebrow */}
-            <p className="text-[11px] font-semibold tracking-[0.12em] text-[#78685D] sm:text-xs sm:tracking-[0.15em]">
+            <p className="text-[11px] font-semibold tracking-[0.12em] text-[#75647B] sm:text-xs sm:tracking-[0.15em]">
               Leadership <span className="px-1">·</span> Trust
               <span className="px-1">·</span> Community
               <span className="px-1">·</span> A Brighter Tomorrow
             </p>
 
             {/* Main heading */}
-            <h1 className="text-[clamp(2.5rem,4vw,4rem)] font-extrabold leading-[1.08] tracking-[-0.045em] text-[#492A22]">
+            <h1 className="text-[clamp(2.5rem,4vw,4rem)] font-extrabold leading-[1.08] tracking-[-0.045em] text-[#35123F]">
               <span className="block">Meet the People</span>
 
               <span className="mt-1 block">
                 <span className="relative inline-block">
-                  <span className="bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C] bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
                     Behind
                   </span>
 
@@ -53,9 +53,9 @@ export function TrusteesHero() {
                         y2="0"
                         gradientUnits="userSpaceOnUse"
                       >
-                        <stop stopColor="#F52232" />
-                        <stop offset=".52" stopColor="#FF8A00" />
-                        <stop offset="1" stopColor="#FFD21C" />
+                        <stop stopColor="#7100A8" />
+                        <stop offset=".48" stopColor="#9200A8" />
+                        <stop offset="1" stopColor="#E90078" />
                       </linearGradient>
                     </defs>
 
@@ -72,7 +72,7 @@ export function TrusteesHero() {
             </h1>
 
             {/* Description */}
-            <p className="max-w-[580px] text-[15px] leading-7 text-[#78685D] sm:text-base lg:text-[17px]">
+            <p className="max-w-[580px] text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]">
               Meet the dedicated leaders guiding Samartha Trust with compassion,
               integrity, and a shared commitment to a brighter future for every
               child and community.
@@ -95,18 +95,18 @@ export function TrusteesHero() {
               {/* Soft fade at the image edges */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#FF8A00]/15 via-transparent to-white/10"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#9200A8]/15 via-transparent to-white/10"
               />
             </div>
 
             {/* Decorative accent */}
             <div
               aria-hidden="true"
-              className="absolute -bottom-3 -left-3 -z-10 h-20 w-20 rounded-bl-[28px] rounded-tr-[28px] bg-gradient-to-br from-[#F52232] to-[#FFD21C] opacity-80"
+              className="absolute -bottom-3 -left-3 -z-10 h-20 w-20 rounded-bl-[28px] rounded-tr-[28px] bg-gradient-to-br from-[#7100A8] to-[#E90078] opacity-80"
             />
             <div
               aria-hidden="true"
-              className="absolute -right-3 -top-3 -z-10 h-16 w-16 rounded-full bg-[#FFD21C]/30 blur-xl"
+              className="absolute -right-3 -top-3 -z-10 h-16 w-16 rounded-full bg-[#E90078]/30 blur-xl"
             />
           </div>
         </div>

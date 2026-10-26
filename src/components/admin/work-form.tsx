@@ -6,7 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Upload,
-  X,
   Sparkles,
   ArrowLeft,
   Save,
@@ -29,10 +28,6 @@ import {
   ShieldCheck,
   Award,
   Check,
-  Tag,
-  Layers,
-  Globe,
-  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -443,7 +438,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
             asChild
             variant="outline"
             size="sm"
-            className="border-[#EADCCB] text-[#492A22] hover:bg-[#FFF5E6]"
+            className="border-[#EADDED] text-[#35123F] hover:bg-[#FAF5FF]"
           >
             <Link href="/admin/works">
               <ArrowLeft className="mr-1.5 h-4 w-4" />
@@ -451,7 +446,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
             </Link>
           </Button>
 
-          <span className="text-xs font-semibold text-[#78685D]">
+          <span className="text-xs font-semibold text-[#75647B]">
             {mode === "create"
               ? "New Initiative"
               : `Editing: ${initialData?.title}`}
@@ -464,14 +459,14 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
             variant="ghost"
             onClick={() => router.push("/admin/works")}
             disabled={saving}
-            className="text-[#78685D] hover:text-[#492A22]"
+            className="text-[#75647B] hover:text-[#35123F]"
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={saving || uploadingImage}
-            className="bg-gradient-to-r from-[#F52232] to-[#FF8A00] font-semibold text-white shadow-sm hover:opacity-95"
+            className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] hover:from-[#5E008C] hover:via-[#7D0090] hover:to-[#D0006B] font-semibold text-white shadow-sm hover:opacity-95"
           >
             {saving ? (
               <>
@@ -508,12 +503,12 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
         {/* Left Column: Core Fields */}
         <div className="space-y-6 lg:col-span-8">
           {/* Card: Basic Information */}
-          <Card className="border-[#EADCCB] shadow-2xs">
-            <CardHeader className="border-b border-[#EADCCB]/60 pb-4">
-              <h2 className="text-base font-bold text-[#492A22]">
+          <Card className="border-[#EADDED] shadow-2xs">
+            <CardHeader className="border-b border-[#EADDED]/60 pb-4">
+              <h2 className="text-base font-bold text-[#35123F]">
                 Initiative Details
               </h2>
-              <p className="text-xs text-[#78685D]">
+              <p className="text-xs text-[#75647B]">
                 Enter the primary title, category, badge, and description for
                 this initiative.
               </p>
@@ -523,9 +518,9 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
               <div className="space-y-2">
                 <Label
                   htmlFor="title"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
-                  Work Title <span className="text-[#F52232]">*</span>
+                  Work Title <span className="text-red-600">*</span>
                 </Label>
                 <Input
                   id="title"
@@ -533,7 +528,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   onChange={handleTitleChange}
                   placeholder="e.g. Child Education & Scholarship Assistance"
                   className={
-                    errors.title ? "border-red-400" : "border-[#EADCCB]"
+                    errors.title ? "border-red-400" : "border-[#EADDED]"
                   }
                 />
                 {errors.title && (
@@ -546,11 +541,11 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                 <div className="flex items-center justify-between">
                   <Label
                     htmlFor="slug"
-                    className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                    className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                   >
                     URL Slug
                   </Label>
-                  <span className="text-[11px] text-[#78685D]">
+                  <span className="text-[11px] text-[#75647B]">
                     Auto-generated from title or custom
                   </span>
                 </div>
@@ -560,7 +555,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                     value={slug}
                     onChange={handleSlugChange}
                     placeholder="child-education-scholarship-assistance"
-                    className="border-[#EADCCB] font-mono text-xs text-[#78685D]"
+                    className="border-[#EADDED] font-mono text-xs text-[#75647B]"
                   />
                 </div>
                 {errors.slug && (
@@ -574,9 +569,9 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                 <div className="space-y-2">
                   <Label
                     htmlFor="category"
-                    className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                    className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                   >
-                    Category <span className="text-[#F52232]">*</span>
+                    Category <span className="text-red-600">*</span>
                   </Label>
                   <div className="space-y-2">
                     <Input
@@ -585,7 +580,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                       onChange={(e) => setCategory(e.target.value)}
                       placeholder="e.g. Education"
                       className={
-                        errors.category ? "border-red-400" : "border-[#EADCCB]"
+                        errors.category ? "border-red-400" : "border-[#EADDED]"
                       }
                     />
                     <div className="flex flex-wrap gap-1.5 pt-1">
@@ -596,8 +591,8 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                           onClick={() => setCategory(cat)}
                           className={`rounded-md px-2 py-0.5 text-[11px] font-medium transition-colors ${
                             category === cat
-                              ? "bg-[#FFF0DF] text-[#C54B20] border border-[#FF8A00]"
-                              : "bg-[#F7EFE6] text-[#78685D] hover:bg-[#FFF0DF]"
+                              ? "bg-[#FCE7F3] text-[#9200A8] border border-[#9200A8]"
+                              : "bg-[#FAF5FF] text-[#75647B] hover:bg-[#FCE7F3]/60"
                           }`}
                         >
                           {cat}
@@ -614,7 +609,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                 <div className="space-y-2">
                   <Label
                     htmlFor="badge"
-                    className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                    className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                   >
                     Card Badge Tag
                   </Label>
@@ -623,9 +618,9 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                     value={badge}
                     onChange={(e) => setBadge(e.target.value)}
                     placeholder="e.g. Education First, Health & Well-being"
-                    className="border-[#EADCCB]"
+                    className="border-[#EADDED]"
                   />
-                  <p className="text-[11px] text-[#78685D]">
+                  <p className="text-[11px] text-[#75647B]">
                     Appears as a prominent warm pill at the top of the card.
                   </p>
                 </div>
@@ -637,7 +632,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                 <div className="space-y-2">
                   <Label
                     htmlFor="programStatus"
-                    className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                    className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                   >
                     Operational Program Status
                   </Label>
@@ -646,7 +641,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                     value={programStatus}
                     onChange={(e) => setProgramStatus(e.target.value)}
                     placeholder="Active & Ongoing"
-                    className="border-[#EADCCB]"
+                    className="border-[#EADDED]"
                   />
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {PROGRAM_STATUS_PRESETS.map((st) => (
@@ -656,8 +651,8 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                         onClick={() => setProgramStatus(st)}
                         className={`rounded-md px-2 py-0.5 text-[11px] font-medium transition-colors ${
                           programStatus === st
-                            ? "bg-[#FFF0DF] text-[#C54B20] border border-[#FF8A00]"
-                            : "bg-[#F7EFE6] text-[#78685D] hover:bg-[#FFF0DF]"
+                            ? "bg-[#FCE7F3] text-[#9200A8] border border-[#9200A8]"
+                            : "bg-[#FAF5FF] text-[#75647B] hover:bg-[#FCE7F3]/60"
                         }`}
                       >
                         {st}
@@ -670,7 +665,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                 <div className="space-y-2">
                   <Label
                     htmlFor="beneficiaries"
-                    className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                    className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                   >
                     Target Beneficiaries
                   </Label>
@@ -679,9 +674,9 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                     value={beneficiaries}
                     onChange={(e) => setBeneficiaries(e.target.value)}
                     placeholder="e.g. Rural families, elders, and young children"
-                    className="border-[#EADCCB]"
+                    className="border-[#EADDED]"
                   />
-                  <p className="text-[11px] text-[#78685D]">
+                  <p className="text-[11px] text-[#75647B]">
                     Displayed prominently in the action aside card.
                   </p>
                 </div>
@@ -691,7 +686,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
               <div className="space-y-2">
                 <Label
                   htmlFor="shortDescription"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
                   Short Summary (Optional)
                 </Label>
@@ -700,7 +695,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   value={shortDescription}
                   onChange={(e) => setShortDescription(e.target.value)}
                   placeholder="A one-sentence summary for previews or teasers"
-                  className="border-[#EADCCB]"
+                  className="border-[#EADDED]"
                 />
               </div>
 
@@ -708,9 +703,9 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
               <div className="space-y-2">
                 <Label
                   htmlFor="description"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
-                  Detailed Description <span className="text-[#F52232]">*</span>
+                  Detailed Description <span className="text-red-600">*</span>
                 </Label>
                 <Textarea
                   id="description"
@@ -719,7 +714,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Comprehensive narrative of this program's mission, impact, and activities..."
                   className={
-                    errors.description ? "border-red-400" : "border-[#EADCCB]"
+                    errors.description ? "border-red-400" : "border-[#EADDED]"
                   }
                 />
                 {errors.description && (
@@ -730,14 +725,14 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
           </Card>
 
           {/* Card: Repeatable Deliverables / Features */}
-          <Card className="border-[#EADCCB] shadow-2xs">
-            <CardHeader className="border-b border-[#EADCCB]/60 pb-4">
+          <Card className="border-[#EADDED] shadow-2xs">
+            <CardHeader className="border-b border-[#EADDED]/60 pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-base font-bold text-[#492A22]">
+                  <h2 className="text-base font-bold text-[#35123F]">
                     Key Deliverables & Action Items
                   </h2>
-                  <p className="text-xs text-[#78685D]">
+                  <p className="text-xs text-[#75647B]">
                     Bullet points highlighted with checkmarks under this
                     initiative.
                   </p>
@@ -760,12 +755,12 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                     }
                   }}
                   placeholder="Type deliverable (e.g. Free general physician consultations) and press Add..."
-                  className="border-[#EADCCB]"
+                  className="border-[#EADDED]"
                 />
                 <Button
                   type="button"
                   onClick={handleAddFeature}
-                  className="shrink-0 bg-[#FF8A00] text-white hover:bg-[#E07900]"
+                  className="shrink-0 bg-[#9200A8] text-white hover:bg-[#7100A8]"
                 >
                   <Plus className="mr-1.5 h-4 w-4" />
                   Add
@@ -774,7 +769,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
 
               {/* Items list */}
               {features.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-[#EADCCB] p-6 text-center text-xs text-[#78685D]">
+                <div className="rounded-xl border border-dashed border-[#EADDED] p-6 text-center text-xs text-[#75647B]">
                   No deliverables added yet. Add at least one action point
                   above.
                 </div>
@@ -783,9 +778,9 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   {features.map((feature, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 rounded-xl border border-[#EADCCB] bg-[#FFFDF9] p-2.5 transition-all hover:border-[#FF8A00]/40"
+                      className="flex items-center gap-2 rounded-xl border border-[#EADDED] bg-[#FDF8FF] p-2.5 transition-all hover:border-[#9200A8]/40"
                     >
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFF5E6] text-[#F4510B] border border-[#F0DFCF]">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FAF5FF] text-[#9200A8] border border-[#EADDED]">
                         <Check className="h-3.5 w-3.5" />
                       </div>
 
@@ -794,7 +789,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                         onChange={(e) =>
                           handleUpdateFeature(idx, e.target.value)
                         }
-                        className="h-8 flex-1 border-transparent bg-transparent text-sm focus-visible:border-[#FF8A00] focus-visible:bg-white"
+                        className="h-8 flex-1 border-transparent bg-transparent text-sm focus-visible:border-[#9200A8] focus-visible:bg-white"
                       />
 
                       <div className="flex items-center gap-1">
@@ -805,7 +800,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                           onClick={() => handleMoveFeatureUp(idx)}
                           disabled={idx === 0}
                           title="Move up"
-                          className="h-7 w-7 text-[#78685D] hover:text-[#492A22]"
+                          className="h-7 w-7 text-[#75647B] hover:text-[#35123F]"
                         >
                           <MoveUp className="h-3.5 w-3.5" />
                         </Button>
@@ -816,7 +811,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                           onClick={() => handleMoveFeatureDown(idx)}
                           disabled={idx === features.length - 1}
                           title="Move down"
-                          className="h-7 w-7 text-[#78685D] hover:text-[#492A22]"
+                          className="h-7 w-7 text-[#75647B] hover:text-[#35123F]"
                         >
                           <MoveDown className="h-3.5 w-3.5" />
                         </Button>
@@ -839,12 +834,12 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
           </Card>
 
           {/* Card: Call to Action Details */}
-          <Card className="border-[#EADCCB] shadow-2xs">
-            <CardHeader className="border-b border-[#EADCCB]/60 pb-4">
-              <h2 className="text-base font-bold text-[#492A22]">
+          <Card className="border-[#EADDED] shadow-2xs">
+            <CardHeader className="border-b border-[#EADDED]/60 pb-4">
+              <h2 className="text-base font-bold text-[#35123F]">
                 Support & Call To Action (CTA)
               </h2>
-              <p className="text-xs text-[#78685D]">
+              <p className="text-xs text-[#75647B]">
                 Configure the donor/volunteer call-to-action button rendered on
                 the card.
               </p>
@@ -853,7 +848,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
               <div className="space-y-2">
                 <Label
                   htmlFor="ctaText"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
                   Button Text
                 </Label>
@@ -862,14 +857,14 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   value={ctaText}
                   onChange={(e) => setCtaText(e.target.value)}
                   placeholder="Support This Work"
-                  className="border-[#EADCCB]"
+                  className="border-[#EADDED]"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label
                   htmlFor="ctaLink"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
                   Destination URL
                 </Label>
@@ -878,19 +873,19 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   value={ctaLink}
                   onChange={(e) => setCtaLink(e.target.value)}
                   placeholder="/contact"
-                  className="border-[#EADCCB]"
+                  className="border-[#EADDED]"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Card: SEO Settings */}
-          <Card className="border-[#EADCCB] shadow-2xs">
-            <CardHeader className="border-b border-[#EADCCB]/60 pb-4">
-              <h2 className="text-base font-bold text-[#492A22]">
+          <Card className="border-[#EADDED] shadow-2xs">
+            <CardHeader className="border-b border-[#EADDED]/60 pb-4">
+              <h2 className="text-base font-bold text-[#35123F]">
                 Search Engine Optimization (SEO)
               </h2>
-              <p className="text-xs text-[#78685D]">
+              <p className="text-xs text-[#75647B]">
                 Optional metadata for search indexers and social sharing.
               </p>
             </CardHeader>
@@ -898,7 +893,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
               <div className="space-y-2">
                 <Label
                   htmlFor="metaTitle"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
                   Meta Title
                 </Label>
@@ -907,14 +902,14 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   placeholder="Child Education Initiatives | Samartha Trust"
-                  className="border-[#EADCCB]"
+                  className="border-[#EADDED]"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label
                   htmlFor="metaDescription"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
                   Meta Description
                 </Label>
@@ -924,7 +919,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   value={metaDescription}
                   onChange={(e) => setMetaDescription(e.target.value)}
                   placeholder="Discover how Samartha Trust empowers underserved youth with scholarships and schools."
-                  className="border-[#EADCCB]"
+                  className="border-[#EADDED]"
                 />
               </div>
             </CardContent>
@@ -934,16 +929,16 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
         {/* Right Column: Settings, Visuals & Status */}
         <div className="space-y-6 lg:col-span-4">
           {/* Card: Publication & Status */}
-          <Card className="border-[#EADCCB] shadow-2xs">
-            <CardHeader className="border-b border-[#EADCCB]/60 pb-4">
-              <h2 className="text-base font-bold text-[#492A22]">
+          <Card className="border-[#EADDED] shadow-2xs">
+            <CardHeader className="border-b border-[#EADDED]/60 pb-4">
+              <h2 className="text-base font-bold text-[#35123F]">
                 Status & Visibility
               </h2>
             </CardHeader>
             <CardContent className="space-y-5 pt-6">
               {/* Publication Status */}
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider text-[#492A22]">
+                <Label className="text-xs font-bold uppercase tracking-wider text-[#35123F]">
                   Publication Status
                 </Label>
                 <div className="grid grid-cols-3 gap-2">
@@ -959,27 +954,27 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                             : s === "DRAFT"
                               ? "border-amber-500 bg-amber-50 text-amber-800 shadow-xs"
                               : "border-slate-500 bg-slate-50 text-slate-800 shadow-xs"
-                          : "border-[#EADCCB] bg-white text-[#78685D] hover:bg-[#FFF5E6]"
+                          : "border-[#EADDED] bg-white text-[#75647B] hover:bg-[#FAF5FF]"
                       }`}
                     >
                       {s}
                     </button>
                   ))}
                 </div>
-                <p className="text-[11px] text-[#78685D]">
+                <p className="text-[11px] text-[#75647B]">
                   Only <strong>PUBLISHED</strong> works appear on the public
                   website.
                 </p>
               </div>
 
               {/* Featured toggle */}
-              <div className="flex items-center justify-between rounded-xl border border-[#EADCCB] bg-[#FFFDF9] p-3">
+              <div className="flex items-center justify-between rounded-xl border border-[#EADDED] bg-[#FDF8FF] p-3">
                 <div className="space-y-0.5">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#492A22]">
-                    <Sparkles className="h-3.5 w-3.5 text-[#FF8A00]" />
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#35123F]">
+                    <Sparkles className="h-3.5 w-3.5 text-[#C00083]" />
                     Featured Initiative
                   </div>
-                  <p className="text-[11px] text-[#78685D]">
+                  <p className="text-[11px] text-[#75647B]">
                     Highlight this work with extra prominence.
                   </p>
                 </div>
@@ -988,7 +983,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   id="isFeatured"
                   checked={isFeatured}
                   onChange={(e) => setIsFeatured(e.target.checked)}
-                  className="h-4 w-4 accent-[#F52232] cursor-pointer"
+                  className="h-4 w-4 accent-[#9200A8] cursor-pointer"
                 />
               </div>
 
@@ -996,7 +991,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
               <div className="space-y-2">
                 <Label
                   htmlFor="displayOrder"
-                  className="text-xs font-bold uppercase tracking-wider text-[#492A22]"
+                  className="text-xs font-bold uppercase tracking-wider text-[#35123F]"
                 >
                   Display Order
                 </Label>
@@ -1008,9 +1003,9 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   onChange={(e) =>
                     setDisplayOrder(parseInt(e.target.value) || 0)
                   }
-                  className="border-[#EADCCB]"
+                  className="border-[#EADDED]"
                 />
-                <p className="text-[11px] text-[#78685D]">
+                <p className="text-[11px] text-[#75647B]">
                   Lower numbers display first (e.g. 1, 2, 3).
                 </p>
               </div>
@@ -1018,18 +1013,18 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
           </Card>
 
           {/* Card: Icon Selection */}
-          <Card className="border-[#EADCCB] shadow-2xs">
-            <CardHeader className="border-b border-[#EADCCB]/60 pb-4">
+          <Card className="border-[#EADDED] shadow-2xs">
+            <CardHeader className="border-b border-[#EADDED]/60 pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-base font-bold text-[#492A22]">
+                  <h2 className="text-base font-bold text-[#35123F]">
                     Card Icon
                   </h2>
-                  <p className="text-xs text-[#78685D]">
+                  <p className="text-xs text-[#75647B]">
                     Icon displayed next to the work title.
                   </p>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#F0DFCF] bg-[#FFF5E9] text-[#F4510B]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#EADDED] bg-[#FAF5FF] text-[#9200A8]">
                   <SelectedIcon className="h-5 w-5" />
                 </div>
               </div>
@@ -1047,8 +1042,8 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                       title={item.label}
                       className={`flex flex-col items-center justify-center rounded-xl border p-2.5 transition-all ${
                         isSelected
-                          ? "border-[#FF8A00] bg-[#FFF0DF] text-[#F4510B] shadow-2xs"
-                          : "border-[#EADCCB] bg-white text-[#78685D] hover:border-[#FF8A00]/50 hover:bg-[#FFFDF9]"
+                          ? "border-[#9200A8] bg-[#FCE7F3] text-[#9200A8] shadow-2xs"
+                          : "border-[#EADDED] bg-white text-[#75647B] hover:border-[#9200A8]/50 hover:bg-[#FDF8FF]"
                       }`}
                     >
                       <Icon className="h-5 w-5" />
@@ -1063,19 +1058,19 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
           </Card>
 
           {/* Card: Featured Image */}
-          <Card className="border-[#EADCCB] shadow-2xs">
-            <CardHeader className="border-b border-[#EADCCB]/60 pb-4">
-              <h2 className="text-base font-bold text-[#492A22]">
+          <Card className="border-[#EADDED] shadow-2xs">
+            <CardHeader className="border-b border-[#EADDED]/60 pb-4">
+              <h2 className="text-base font-bold text-[#35123F]">
                 Initiative Image (Optional)
               </h2>
-              <p className="text-xs text-[#78685D]">
+              <p className="text-xs text-[#75647B]">
                 Upload an image or paste a URL for this work.
               </p>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
               {featuredImage ? (
                 <div className="space-y-3">
-                  <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[#EADCCB] bg-[#FFF9F2]">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[#EADDED] bg-[#FAF5FF]">
                     <Image
                       src={featuredImage}
                       alt="Work initiative visual"
@@ -1085,7 +1080,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="truncate text-xs font-mono text-[#78685D] max-w-[200px]">
+                    <span className="truncate text-xs font-mono text-[#75647B] max-w-[200px]">
                       {featuredImage}
                     </span>
                     <Button
@@ -1105,7 +1100,7 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                   {/* File upload button */}
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#EADCCB] p-6 text-center transition-colors hover:border-[#FF8A00] hover:bg-[#FFFDF9]"
+                    className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#EADDED] p-6 text-center transition-colors hover:border-[#9200A8] hover:bg-[#FDF8FF]"
                   >
                     <input
                       ref={fileInputRef}
@@ -1114,26 +1109,26 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                       onChange={handleFileUpload}
                       className="hidden"
                     />
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF5E6] text-[#FF8A00]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FAF5FF] text-[#9200A8]">
                       {uploadingImage ? (
                         <Loader2 className="h-5 w-5 animate-spin" />
                       ) : (
                         <Upload className="h-5 w-5" />
                       )}
                     </div>
-                    <span className="mt-2 text-xs font-bold text-[#492A22]">
+                    <span className="mt-2 text-xs font-bold text-[#35123F]">
                       {uploadingImage
                         ? "Uploading Image..."
                         : "Click to Upload Image"}
                     </span>
-                    <span className="mt-1 text-[11px] text-[#78685D]">
+                    <span className="mt-1 text-[11px] text-[#75647B]">
                       JPG, PNG, WebP up to 5MB
                     </span>
                   </div>
 
                   {/* Or paste URL */}
                   <div className="space-y-2">
-                    <Label className="text-[11px] font-semibold text-[#78685D]">
+                    <Label className="text-[11px] font-semibold text-[#75647B]">
                       Or paste an external Image URL:
                     </Label>
                     <div className="flex gap-2">
@@ -1141,14 +1136,14 @@ export function WorkForm({ initialData, mode }: WorkFormProps) {
                         value={imageUrlInput}
                         onChange={(e) => setImageUrlInput(e.target.value)}
                         placeholder="https://example.com/image.jpg"
-                        className="border-[#EADCCB] text-xs"
+                        className="border-[#EADDED] text-xs"
                       />
                       <Button
                         type="button"
                         variant="outline"
                         size="sm"
                         onClick={handleApplyImageUrl}
-                        className="border-[#EADCCB] text-xs"
+                        className="border-[#EADDED] text-xs"
                       >
                         Apply
                       </Button>

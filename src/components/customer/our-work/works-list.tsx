@@ -61,28 +61,28 @@ export function WorksListSkeleton() {
           {Array.from({ length: 3 }).map((_, idx) => (
             <div
               key={idx}
-              className="overflow-hidden rounded-[26px] border border-[#EFE4DA] bg-white"
+              className="overflow-hidden rounded-[26px] border border-[#EADDED] bg-white"
             >
-              <div className="h-1 bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C]" />
+              <div className="h-1 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078]" />
 
               <div className="grid animate-pulse lg:grid-cols-[1fr_320px]">
                 <div className="space-y-5 p-5 sm:p-8 lg:p-9">
-                  <div className="h-6 w-36 rounded-full bg-[#F4E9DF]" />
-                  <div className="h-8 w-4/5 rounded-lg bg-[#F4E9DF]" />
-                  <div className="h-4 w-full rounded bg-[#F8F1EA]" />
-                  <div className="h-4 w-3/4 rounded bg-[#F8F1EA]" />
+                  <div className="h-6 w-36 rounded-full bg-[#FCE7F3]/60" />
+                  <div className="h-8 w-4/5 rounded-lg bg-[#FCE7F3]/60" />
+                  <div className="h-4 w-full rounded bg-[#FAF5FF]" />
+                  <div className="h-4 w-3/4 rounded bg-[#FAF5FF]" />
                   <div className="grid gap-4 pt-5 sm:grid-cols-2">
-                    <div className="h-5 rounded bg-[#F8F1EA]" />
-                    <div className="h-5 rounded bg-[#F8F1EA]" />
-                    <div className="h-5 rounded bg-[#F8F1EA]" />
-                    <div className="h-5 rounded bg-[#F8F1EA]" />
+                    <div className="h-5 rounded bg-[#FAF5FF]" />
+                    <div className="h-5 rounded bg-[#FAF5FF]" />
+                    <div className="h-5 rounded bg-[#FAF5FF]" />
+                    <div className="h-5 rounded bg-[#FAF5FF]" />
                   </div>
                 </div>
 
-                <div className="space-y-5 border-t border-[#EFE4DA] p-5 sm:p-7 lg:border-l lg:border-t-0">
-                  <div className="aspect-[16/9] rounded-2xl bg-[#F8F1EA]" />
-                  <div className="h-24 rounded-2xl bg-[#F8F1EA]" />
-                  <div className="h-11 rounded-xl bg-[#F4E9DF]" />
+                <div className="space-y-5 border-t border-[#EADDED] p-5 sm:p-7 lg:border-l lg:border-t-0">
+                  <div className="aspect-[16/9] rounded-2xl bg-[#FAF5FF]" />
+                  <div className="h-24 rounded-2xl bg-[#FAF5FF]" />
+                  <div className="h-11 rounded-xl bg-[#FCE7F3]/60" />
                 </div>
               </div>
             </div>
@@ -105,20 +105,20 @@ export function WorksList({
     return (
       <section className="bg-white px-4 py-16 sm:py-24">
         <Container>
-          <div className="mx-auto max-w-xl rounded-[28px] border border-[#EFE4DA] bg-white px-6 py-12 text-center sm:px-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-[#F0DFCF] bg-[#FFF5E9] text-[#F4510B]">
+          <div className="mx-auto max-w-xl rounded-[28px] border border-[#EADDED] bg-white px-6 py-12 text-center sm:px-10">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-[#EADDED] bg-[#FCE7F3]/60 text-[#9200A8]">
               <Layers className="h-7 w-7" />
             </div>
 
-            <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C54B20]">
+            <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C00083]">
               Our Community Initiatives
             </p>
 
-            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-[#492A22] sm:text-3xl">
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-[#35123F] sm:text-3xl">
               New Stories of Impact Are on Their Way
             </h2>
 
-            <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-[#78685D]">
+            <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-[#75647B]">
               We are updating our community initiatives. Connect with our team
               to learn more about our work and ways to get involved.
             </p>
@@ -144,38 +144,38 @@ export function WorksList({
     <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
       <Container>
         {/* Listing introduction */}
-        <div className="mb-8 flex flex-col justify-between gap-4 border-b border-[#EFE6DD] pb-6 sm:mb-10 sm:flex-row sm:items-end">
+        <div className="mb-8 flex flex-col justify-between gap-4 border-b border-[#EADDED] pb-6 sm:mb-10 sm:flex-row sm:items-end">
           <div>
             <div className="mb-3 flex items-center gap-2">
-              <span className="h-1.5 w-7 rounded-full bg-gradient-to-r from-[#F52232] to-[#FFD21C]" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#80685F] sm:text-[11px]">
+              <span className="h-1.5 w-7 rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#75647B] sm:text-[11px]">
                 Where Our Efforts Make a Difference
               </span>
             </div>
 
-            <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-[#492A22] sm:text-3xl">
+            <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-[#35123F] sm:text-3xl">
               Our Areas of{" "}
-              <span className="bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
                 Impact
               </span>
             </h2>
 
-            <p className="mt-2 max-w-xl text-sm leading-6 text-[#78685D]">
+            <p className="mt-2 max-w-xl text-sm leading-6 text-[#75647B]">
               Explore the initiatives supporting children, families, and
               communities.
             </p>
           </div>
 
-          <div className="flex w-fit items-center gap-3 rounded-xl border border-[#EFE4DA] bg-white px-4 py-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#FFF3E8] text-[#F4510B]">
+          <div className="flex w-fit items-center gap-3 rounded-xl border border-[#EADDED] bg-white px-4 py-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#FCE7F3]/60 text-[#9200A8]">
               <HeartHandshake className="h-[18px] w-[18px]" />
             </div>
 
             <div>
-              <p className="text-xl font-extrabold leading-none text-[#492A22]">
+              <p className="text-xl font-extrabold leading-none text-[#35123F]">
                 {String(totalCount).padStart(2, "0")}
               </p>
-              <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-[#80685F]">
+              <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-[#75647B]">
                 Initiatives
               </p>
             </div>
@@ -191,10 +191,10 @@ export function WorksList({
               <article
                 key={work.id}
                 id={work.slug}
-                className="group relative scroll-mt-24 overflow-hidden rounded-[24px] border border-[#EDE2D8] bg-white transition-all duration-300 hover:border-[#E9C9B0] hover:shadow-[0_16px_45px_rgba(73,42,34,0.075)] sm:rounded-[28px]"
+                className="group relative scroll-mt-24 overflow-hidden rounded-[24px] border border-[#EADDED] bg-white transition-all duration-300 hover:border-[#C00083]/40 hover:shadow-[0_16px_45px_rgba(113,0,168,0.08)] sm:rounded-[28px]"
               >
                 {/* Brand accent */}
-                <div className="h-[3px] w-full bg-gradient-to-r from-[#F52232] via-[#FF8A00] to-[#FFD21C]" />
+                <div className="h-[3px] w-full bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078]" />
 
                 <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_350px]">
                   {/* Main content */}
@@ -204,7 +204,7 @@ export function WorksList({
                       {work.badge && <Badge variant="warm">{work.badge}</Badge>}
 
                       {work.category && (
-                        <span className="inline-flex items-center rounded-lg border border-[#EFE2D5] bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.09em] text-[#80685F]">
+                        <span className="inline-flex items-center rounded-lg border border-[#EADDED] bg-[#FAF5FF] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.09em] text-[#75647B]">
                           {work.category}
                         </span>
                       )}
@@ -219,7 +219,7 @@ export function WorksList({
 
                     {/* Title */}
                     <div className="flex items-start gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#F0E1D3] bg-[#FFF6EC] text-[#F4510B] transition-all duration-300 group-hover:border-[#F7D3B8] group-hover:bg-[#FFF0E0] sm:h-[54px] sm:w-[54px]">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#EADDED] bg-[#FCE7F3]/60 text-[#9200A8] transition-all duration-300 group-hover:border-[#C00083]/30 group-hover:bg-[#FCE7F3] sm:h-[54px] sm:w-[54px]">
                         <WorkIcon
                           name={work.iconName}
                           className="h-[22px] w-[22px] sm:h-6 sm:w-6"
@@ -227,32 +227,32 @@ export function WorksList({
                       </div>
 
                       <div className="min-w-0 flex-1 pt-0.5">
-                        <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#B18B73]">
+                        <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#9200A8]">
                           Initiative {String(index + 1).padStart(2, "0")}
                         </p>
 
-                        <h3 className="text-xl font-extrabold leading-snug tracking-[-0.035em] text-[#492A22] sm:text-2xl lg:text-[27px]">
+                        <h3 className="text-xl font-extrabold leading-snug tracking-[-0.035em] text-[#35123F] sm:text-2xl lg:text-[27px]">
                           {work.title}
                         </h3>
                       </div>
                     </div>
 
                     {/* Description */}
-                    <p className="mt-5 text-sm leading-7 text-[#78685D] sm:text-[15px] sm:leading-[1.9]">
+                    <p className="mt-5 text-sm leading-7 text-[#75647B] sm:text-[15px] sm:leading-[1.9]">
                       {work.description}
                     </p>
 
                     {/* Deliverables */}
                     {work.features && work.features.length > 0 && (
-                      <div className="mt-8 border-t border-[#F0E7DF] pt-6">
+                      <div className="mt-8 border-t border-[#EADDED] pt-6">
                         <div className="mb-4 flex items-center gap-2.5">
-                          <div className="h-5 w-1 rounded-full bg-gradient-to-b from-[#F52232] to-[#FF8A00]" />
+                          <div className="h-5 w-1 rounded-full bg-gradient-to-b from-[#7100A8] to-[#E90078]" />
 
-                          <h4 className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#492A22]">
+                          <h4 className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#35123F]">
                             What We Do
                           </h4>
 
-                          <span className="text-[10px] font-medium text-[#A58D7B]">
+                          <span className="text-[10px] font-medium text-[#75647B]">
                             ({work.features.length} activities)
                           </span>
                         </div>
@@ -263,11 +263,11 @@ export function WorksList({
                               key={`${work.id}-feature-${featureIndex}`}
                               className="flex items-start gap-3"
                             >
-                              <span className="mt-0.5 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full bg-[#FFF3E7] text-[#E85A27]">
+                              <span className="mt-0.5 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full bg-[#FCE7F3] text-[#9200A8]">
                                 <Check className="h-3 w-3" strokeWidth={2.5} />
                               </span>
 
-                              <span className="text-sm leading-6 text-[#78685D]">
+                              <span className="text-sm leading-6 text-[#75647B]">
                                 {feature}
                               </span>
                             </div>
@@ -278,9 +278,9 @@ export function WorksList({
                   </div>
 
                   {/* Supporting panel */}
-                  <aside className="flex min-w-0 flex-col border-t border-[#EFE4DA] bg-white p-5 sm:p-7 lg:border-l lg:border-t-0 lg:p-6 xl:p-7">
+                  <aside className="flex min-w-0 flex-col border-t border-[#EADDED] bg-white p-5 sm:p-7 lg:border-l lg:border-t-0 lg:p-6 xl:p-7">
                     {hasImage && work.featuredImage ? (
-                      <div className="relative mb-5 aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#FAF3EC]">
+                      <div className="relative mb-5 aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#FAF5FF]">
                         <Image
                           src={work.featuredImage}
                           alt={work.title}
@@ -290,17 +290,17 @@ export function WorksList({
                           unoptimized={work.featuredImage.startsWith("http")}
                         />
 
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#492A22]/20 via-transparent to-transparent" />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#35123F]/30 via-transparent to-transparent" />
 
-                        <span className="absolute bottom-3 left-3 rounded-full border border-white/70 bg-white/95 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#492A22]">
+                        <span className="absolute bottom-3 left-3 rounded-full border border-white/70 bg-white/95 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#35123F]">
                           Our Work
                         </span>
                       </div>
                     ) : (
-                      <div className="relative mb-5 flex aspect-[16/7] items-center justify-center overflow-hidden rounded-2xl border border-[#F0E5D9] bg-white lg:aspect-[16/8]">
-                        <div className="absolute -right-5 -top-8 h-28 w-28 rounded-full bg-[#FFD21C]/10 blur-2xl" />
+                      <div className="relative mb-5 flex aspect-[16/7] items-center justify-center overflow-hidden rounded-2xl border border-[#EADDED] bg-white lg:aspect-[16/8]">
+                        <div className="absolute -right-5 -top-8 h-28 w-28 rounded-full bg-[#E90078]/10 blur-2xl" />
 
-                        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-[#F0DFCF] bg-[#FFF6EC] text-[#F4510B]">
+                        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-[#EADDED] bg-[#FCE7F3]/60 text-[#9200A8]">
                           <WorkIcon name={work.iconName} className="h-7 w-7" />
                         </div>
                       </div>
@@ -308,18 +308,18 @@ export function WorksList({
 
                     {/* Beneficiaries */}
                     {work.beneficiaries && (
-                      <div className="rounded-2xl border border-[#EFE4DA] bg-white p-4 sm:p-5">
+                      <div className="rounded-2xl border border-[#EADDED] bg-white p-4 sm:p-5">
                         <div className="flex items-center gap-2">
-                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FFF3E7] text-[#F4510B]">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FCE7F3] text-[#9200A8]">
                             <Users className="h-4 w-4" />
                           </div>
 
-                          <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#80685F]">
+                          <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#75647B]">
                             Who We Support
                           </p>
                         </div>
 
-                        <p className="mt-3 text-sm font-semibold leading-6 text-[#492A22]">
+                        <p className="mt-3 text-sm font-semibold leading-6 text-[#35123F]">
                           {work.beneficiaries}
                         </p>
                       </div>
@@ -328,11 +328,11 @@ export function WorksList({
                     {/* Support CTA */}
                     <div className="mt-auto pt-6">
                       <div className="mb-4">
-                        <h4 className="text-base font-extrabold tracking-tight text-[#492A22]">
+                        <h4 className="text-base font-extrabold tracking-tight text-[#35123F]">
                           Be Part of the Change
                         </h4>
 
-                        <p className="mt-1.5 text-sm leading-6 text-[#78685D]">
+                        <p className="mt-1.5 text-sm leading-6 text-[#75647B]">
                           Your time, support, or partnership can help this
                           initiative reach more people.
                         </p>
@@ -348,7 +348,7 @@ export function WorksList({
                         </Link>
                       </Button>
 
-                      <p className="mt-3 flex items-center justify-center gap-1.5 text-[10px] font-medium text-[#A18A79]">
+                      <p className="mt-3 flex items-center justify-center gap-1.5 text-[10px] font-medium text-[#75647B]">
                         Every contribution matters
                         <MoveUpRight className="h-3 w-3" />
                       </p>
@@ -362,7 +362,7 @@ export function WorksList({
 
         {/* Pagination */}
         {pagination && pagination.totalPages > 1 && (
-          <div className="mt-10 border-t border-[#EFE6DD] pt-2">
+          <div className="mt-10 border-t border-[#EADDED] pt-2">
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.totalPages}

@@ -165,17 +165,17 @@ export function ContactFormSection() {
     return (
       <div
         id="contact-form"
-        className="rounded-2xl border border-[#EADCCB] bg-[#FFF5E6]/60 p-8 sm:p-10 text-center animate-in fade-in-50"
+        className="rounded-2xl border border-[#EADDED] bg-[#FCE7F3]/40 p-8 sm:p-10 text-center animate-in fade-in-50"
       >
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FFF5E6] text-[#F52232] border border-[#EADCCB] shadow-2xs">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FCE7F3] text-[#9200A8] border border-[#EADDED] shadow-2xs">
           <CheckCircle2 className="h-7 w-7" />
         </div>
 
-        <h3 className="mt-4 text-2xl font-bold text-[#492A22]">
+        <h3 className="mt-4 text-2xl font-bold text-[#35123F]">
           Message Sent Successfully!
         </h3>
 
-        <p className="mt-2 text-sm text-[#78685D] max-w-md mx-auto leading-relaxed">
+        <p className="mt-2 text-sm text-[#75647B] max-w-md mx-auto leading-relaxed">
           Thank you for reaching out to Samartha Trust. Your message has been
           received by our Bangalore headquarters team. A coordinator will
           contact you shortly.
@@ -186,7 +186,7 @@ export function ContactFormSection() {
             type="button"
             onClick={handleReset}
             variant="outline"
-            className="w-full sm:w-auto border-[#EADCCB] text-[#492A22] hover:bg-white"
+            className="w-full sm:w-auto border-[#EADDED] text-[#35123F] hover:bg-white"
           >
             <RefreshCw className="h-4 w-4 mr-2" />
             <span>Send Another Message</span>
@@ -199,13 +199,13 @@ export function ContactFormSection() {
   return (
     <div id="contact-form" className="space-y-6">
       <div>
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[#F52232]">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[#9200A8]">
           Write to Us
         </span>
-        <h2 className="text-2xl font-bold text-[#492A22] sm:text-3xl mt-1">
+        <h2 className="text-2xl font-bold text-[#35123F] sm:text-3xl mt-1">
           Send Us a Message
         </h2>
-        <p className="mt-1.5 text-sm text-[#78685D] leading-relaxed">
+        <p className="mt-1.5 text-sm text-[#75647B] leading-relaxed">
           Fill in your details below and our coordinator will respond to your
           inquiry as soon as possible.
         </p>
@@ -229,9 +229,9 @@ export function ContactFormSection() {
         <div>
           <Label
             htmlFor="fullName"
-            className="text-[#492A22] font-semibold text-xs uppercase tracking-wider"
+            className="text-[#35123F] font-semibold text-xs uppercase tracking-wider"
           >
-            Full Name <span className="text-[#F52232]">*</span>
+            Full Name <span className="text-[#9200A8]">*</span>
           </Label>
           <Input
             id="fullName"
@@ -240,14 +240,14 @@ export function ContactFormSection() {
             onChange={handleChange}
             placeholder="e.g. Ramesh Kumar"
             disabled={isSubmitting}
-            className="mt-1.5 border-[#EADCCB] bg-white focus-visible:ring-[#F52232]"
+            className="mt-1.5 border-[#EADDED] bg-white focus-visible:ring-[#9200A8]"
             aria-invalid={!!errors.fullName}
             aria-describedby={errors.fullName ? "fullName-error" : undefined}
           />
           {errors.fullName && (
             <p
               id="fullName-error"
-              className="mt-1 text-xs text-[#F52232] flex items-center gap-1 font-medium"
+              className="mt-1 text-xs text-[#DC2626] flex items-center gap-1 font-medium"
             >
               <AlertCircle className="h-3 w-3 shrink-0" />
               <span>{errors.fullName}</span>
@@ -261,9 +261,9 @@ export function ContactFormSection() {
           <div>
             <Label
               htmlFor="email"
-              className="text-[#492A22] font-semibold text-xs uppercase tracking-wider"
+              className="text-[#35123F] font-semibold text-xs uppercase tracking-wider"
             >
-              Email Address <span className="text-[#F52232]">*</span>
+              Email Address <span className="text-[#9200A8]">*</span>
             </Label>
             <Input
               id="email"
@@ -273,14 +273,14 @@ export function ContactFormSection() {
               onChange={handleChange}
               placeholder="ramesh@example.com"
               disabled={isSubmitting}
-              className="mt-1.5 border-[#EADCCB] bg-white focus-visible:ring-[#F52232]"
+              className="mt-1.5 border-[#EADDED] bg-white focus-visible:ring-[#9200A8]"
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "email-error" : undefined}
             />
             {errors.email && (
               <p
                 id="email-error"
-                className="mt-1 text-xs text-[#F52232] flex items-center gap-1 font-medium"
+                className="mt-1 text-xs text-[#DC2626] flex items-center gap-1 font-medium"
               >
                 <AlertCircle className="h-3 w-3 shrink-0" />
                 <span>{errors.email}</span>
@@ -292,7 +292,7 @@ export function ContactFormSection() {
           <div>
             <Label
               htmlFor="phone"
-              className="text-[#492A22] font-semibold text-xs uppercase tracking-wider"
+              className="text-[#35123F] font-semibold text-xs uppercase tracking-wider"
             >
               Mobile Number (Optional)
             </Label>
@@ -304,7 +304,7 @@ export function ContactFormSection() {
               onChange={handleChange}
               placeholder="+91 97409 19104"
               disabled={isSubmitting}
-              className="mt-1.5 border-[#EADCCB] bg-white focus-visible:ring-[#F52232]"
+              className="mt-1.5 border-[#EADDED] bg-white focus-visible:ring-[#9200A8]"
             />
           </div>
         </div>
@@ -315,9 +315,9 @@ export function ContactFormSection() {
           <div>
             <Label
               htmlFor="inquiryType"
-              className="text-[#492A22] font-semibold text-xs uppercase tracking-wider"
+              className="text-[#35123F] font-semibold text-xs uppercase tracking-wider"
             >
-              Inquiry Type <span className="text-[#F52232]">*</span>
+              Inquiry Type <span className="text-[#9200A8]">*</span>
             </Label>
             <div className="relative mt-1.5">
               <select
@@ -326,7 +326,7 @@ export function ContactFormSection() {
                 value={formData.inquiryType}
                 onChange={handleInquiryTypeChange}
                 disabled={isSubmitting}
-                className="w-full h-10 rounded-md border border-[#EADCCB] bg-white px-3 text-sm text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden focus:ring-2 focus:ring-[#F52232]/20"
+                className="w-full h-10 rounded-md border border-[#EADDED] bg-white px-3 text-sm text-[#35123F] focus:border-[#9200A8] focus:outline-hidden focus:ring-2 focus:ring-[#9200A8]/20"
               >
                 {INQUIRY_TYPES.map((type) => (
                   <option key={type} value={type}>
@@ -341,9 +341,9 @@ export function ContactFormSection() {
           <div>
             <Label
               htmlFor="subject"
-              className="text-[#492A22] font-semibold text-xs uppercase tracking-wider"
+              className="text-[#35123F] font-semibold text-xs uppercase tracking-wider"
             >
-              Subject / Topic <span className="text-[#F52232]">*</span>
+              Subject / Topic <span className="text-[#9200A8]">*</span>
             </Label>
             <Input
               id="subject"
@@ -352,14 +352,14 @@ export function ContactFormSection() {
               onChange={handleChange}
               placeholder="e.g. Volunteering for weekend health camp"
               disabled={isSubmitting}
-              className="mt-1.5 border-[#EADCCB] bg-white focus-visible:ring-[#F52232]"
+              className="mt-1.5 border-[#EADDED] bg-white focus-visible:ring-[#9200A8]"
               aria-invalid={!!errors.subject}
               aria-describedby={errors.subject ? "subject-error" : undefined}
             />
             {errors.subject && (
               <p
                 id="subject-error"
-                className="mt-1 text-xs text-[#F52232] flex items-center gap-1 font-medium"
+                className="mt-1 text-xs text-[#DC2626] flex items-center gap-1 font-medium"
               >
                 <AlertCircle className="h-3 w-3 shrink-0" />
                 <span>{errors.subject}</span>
@@ -372,9 +372,9 @@ export function ContactFormSection() {
         <div>
           <Label
             htmlFor="message"
-            className="text-[#492A22] font-semibold text-xs uppercase tracking-wider"
+            className="text-[#35123F] font-semibold text-xs uppercase tracking-wider"
           >
-            Message <span className="text-[#F52232]">*</span>
+            Message <span className="text-[#9200A8]">*</span>
           </Label>
           <Textarea
             id="message"
@@ -384,14 +384,14 @@ export function ContactFormSection() {
             onChange={handleChange}
             placeholder="Please describe how you would like to collaborate, volunteer, or what information you need..."
             disabled={isSubmitting}
-            className="mt-1.5 border-[#EADCCB] bg-white focus-visible:ring-[#F52232]"
+            className="mt-1.5 border-[#EADDED] bg-white focus-visible:ring-[#9200A8]"
             aria-invalid={!!errors.message}
             aria-describedby={errors.message ? "message-error" : undefined}
           />
           {errors.message && (
             <p
               id="message-error"
-              className="mt-1 text-xs text-[#F52232] flex items-center gap-1 font-medium"
+              className="mt-1 text-xs text-[#DC2626] flex items-center gap-1 font-medium"
             >
               <AlertCircle className="h-3 w-3 shrink-0" />
               <span>{errors.message}</span>

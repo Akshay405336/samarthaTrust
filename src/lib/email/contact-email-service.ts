@@ -73,16 +73,16 @@ export function buildContactEmailHtml(
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Website Inquiry - Samartha Trust</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #F8F5F0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #492A22; line-height: 1.6;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8F5F0; padding: 30px 15px;">
+<body style="margin: 0; padding: 0; background-color: #FAF5FF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #35123F; line-height: 1.6;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #FAF5FF; padding: 30px 15px;">
     <tr>
       <td align="center">
         <!-- Main Email Container -->
-        <table role="presentation" width="100%" style="max-width: 600px; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; border: 1px solid #EADCCB; box-shadow: 0 4px 12px rgba(73, 42, 34, 0.05);" cellspacing="0" cellpadding="0">
+        <table role="presentation" width="100%" style="max-width: 600px; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; border: 1px solid #EADDED; box-shadow: 0 4px 12px rgba(53, 18, 63, 0.05);" cellspacing="0" cellpadding="0">
           
           <!-- Top Header Strip -->
           <tr>
-            <td style="background: linear-gradient(135deg, #F52232 0%, #FF6B16 50%, #FF8A00 100%); padding: 28px 30px; text-align: left;">
+            <td style="background: linear-gradient(135deg, #7100A8 0%, #9200A8 50%, #E90078 100%); padding: 28px 30px; text-align: left;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                   <td>
@@ -103,13 +103,13 @@ export function buildContactEmailHtml(
 
           <!-- Reference & Metadata Banner -->
           <tr>
-            <td style="background-color: #FFF9F2; border-bottom: 1px solid #EADCCB; padding: 14px 30px;">
+            <td style="background-color: #FAF5FF; border-bottom: 1px solid #EADDED; padding: 14px 30px;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td style="font-size: 12px; color: #78685D;">
-                    <strong>Reference ID:</strong> <span style="font-family: monospace; color: #F52232; font-weight: bold;">${referenceId}</span>
+                  <td style="font-size: 12px; color: #75647B;">
+                    <strong>Reference ID:</strong> <span style="font-family: monospace; color: #9200A8; font-weight: bold;">${referenceId}</span>
                   </td>
-                  <td align="right" style="font-size: 12px; color: #78685D;">
+                  <td align="right" style="font-size: 12px; color: #75647B;">
                     ${submissionDate}
                   </td>
                 </tr>
@@ -120,65 +120,65 @@ export function buildContactEmailHtml(
           <!-- Body Content -->
           <tr>
             <td style="padding: 30px;">
-              <h2 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 700; color: #492A22;">
+              <h2 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 700; color: #35123F;">
                 Inquiry Details
               </h2>
 
               <!-- Details Table -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border: 1px solid #F0E6DD; border-radius: 10px; overflow: hidden; margin-bottom: 24px; background-color: #FFFCF9;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border: 1px solid #EADDED; border-radius: 10px; overflow: hidden; margin-bottom: 24px; background-color: #FDF8FF;">
                 <tr>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 13px; font-weight: 600; color: #78685D; width: 35%;">
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 13px; font-weight: 600; color: #75647B; width: 35%;">
                     Sender Name:
                   </td>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 14px; font-weight: 700; color: #492A22;">
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 14px; font-weight: 700; color: #35123F;">
                     ${safeName}
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 13px; font-weight: 600; color: #78685D;">
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 13px; font-weight: 600; color: #75647B;">
                     Email Address:
                   </td>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 14px; font-weight: 700; color: #F52232;">
-                    <a href="mailto:${safeEmail}" style="color: #F52232; text-decoration: none;">${safeEmail}</a>
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 14px; font-weight: 700; color: #9200A8;">
+                    <a href="mailto:${safeEmail}" style="color: #9200A8; text-decoration: none;">${safeEmail}</a>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 13px; font-weight: 600; color: #78685D;">
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 13px; font-weight: 600; color: #75647B;">
                     Mobile Number:
                   </td>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 14px; color: #492A22;">
-                    ${safePhone !== "Not provided" ? `<a href="tel:${safePhone}" style="color: #492A22; text-decoration: none; font-weight: 600;">${safePhone}</a>` : safePhone}
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 14px; color: #35123F;">
+                    ${safePhone !== "Not provided" ? `<a href="tel:${safePhone}" style="color: #35123F; text-decoration: none; font-weight: 600;">${safePhone}</a>` : safePhone}
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 13px; font-weight: 600; color: #78685D;">
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 13px; font-weight: 600; color: #75647B;">
                     Inquiry Type:
                   </td>
-                  <td style="padding: 10px 16px; border-bottom: 1px solid #F0E6DD; font-size: 13px; font-weight: 700; color: #FF8A00;">
+                  <td style="padding: 10px 16px; border-bottom: 1px solid #EADDED; font-size: 13px; font-weight: 700; color: #C00083;">
                     ${safeType}
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 10px 16px; font-size: 13px; font-weight: 600; color: #78685D;">
+                  <td style="padding: 10px 16px; font-size: 13px; font-weight: 600; color: #75647B;">
                     Subject / Topic:
                   </td>
-                  <td style="padding: 10px 16px; font-size: 14px; font-weight: 600; color: #492A22;">
+                  <td style="padding: 10px 16px; font-size: 14px; font-weight: 600; color: #35123F;">
                     ${safeSubject}
                   </td>
                 </tr>
               </table>
 
               <!-- Message Section -->
-              <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 700; color: #492A22;">
+              <h3 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 700; color: #35123F;">
                 Message Content:
               </h3>
-              <div style="background-color: #FFFFFF; border: 1px solid #EADCCB; border-left: 4px solid #F52232; border-radius: 8px; padding: 18px; font-size: 14px; color: #492A22; line-height: 1.7; margin-bottom: 24px;">
+              <div style="background-color: #FFFFFF; border: 1px solid #EADDED; border-left: 4px solid #9200A8; border-radius: 8px; padding: 18px; font-size: 14px; color: #35123F; line-height: 1.7; margin-bottom: 24px;">
                 ${safeMessage}
               </div>
 
               <!-- Reply Action Banner -->
-              <div style="background-color: #FFF5E6; border: 1px dashed #FF8A00; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 13px; color: #492A22; line-height: 1.5;">
+              <div style="background-color: #FAF5FF; border: 1px dashed #C00083; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;">
+                <p style="margin: 0; font-size: 13px; color: #35123F; line-height: 1.5;">
                   <strong>Reply-To Instruction:</strong> Simply click <em>Reply</em> in your email client to respond directly to <strong>${safeName}</strong> at <strong>${safeEmail}</strong>.
                 </p>
               </div>
@@ -187,12 +187,12 @@ export function buildContactEmailHtml(
 
           <!-- Footer -->
           <tr>
-            <td style="background-color: #F8F4EC; border-top: 1px solid #EADCCB; padding: 20px 30px; text-align: center; font-size: 12px; color: #78685D;">
+            <td style="background-color: #FDF8FF; border-top: 1px solid #EADDED; padding: 20px 30px; text-align: center; font-size: 12px; color: #75647B;">
               <p style="margin: 0 0 6px 0;">
                 <strong>Samartha Trust</strong> • No. 9, 6th Cross, B.K. Nagar, Yeshwanthpur, Bengaluru - 560022
               </p>
               <p style="margin: 0;">
-                Website: <a href="${appUrl}" style="color: #F52232; text-decoration: none; font-weight: 600;">${appUrl}</a> • Central Helpline: +91 97409 19104
+                Website: <a href="${appUrl}" style="color: #9200A8; text-decoration: none; font-weight: 600;">${appUrl}</a> • Central Helpline: +91 97409 19104
               </p>
             </td>
           </tr>

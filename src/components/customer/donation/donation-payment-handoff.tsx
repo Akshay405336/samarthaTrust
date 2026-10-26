@@ -44,29 +44,29 @@ export function DonationPaymentHandoff({
         </div>
 
         <div className="space-y-1.5 max-w-lg mx-auto">
-          <span className="inline-block px-3 py-1 rounded-full bg-[#FFE7CC] text-[#492A22] text-xs font-bold uppercase tracking-wider">
+          <span className="inline-block px-3 py-1 rounded-full bg-[#FFE7CC] text-[#35123F] text-xs font-bold uppercase tracking-wider">
             Payment Handoff Ready
           </span>
-          <h3 className="text-xl sm:text-2xl font-black text-[#492A22]">
+          <h3 className="text-xl sm:text-2xl font-black text-[#35123F]">
             Donation Details Prepared
           </h3>
-          <p className="text-xs sm:text-sm text-[#78685D] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#75647B] leading-relaxed">
             Your donation details are ready. Online payment will be available
             once our secure payment gateway is connected.
           </p>
         </div>
 
         {/* Reference ID Pill */}
-        <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-[#E8DFC9] shadow-xs">
-          <span className="text-xs text-[#78685D] font-medium">Reference:</span>
-          <code className="text-xs sm:text-sm font-mono font-bold text-[#492A22]">
+        <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-[#EADDED] shadow-xs">
+          <span className="text-xs text-[#75647B] font-medium">Reference:</span>
+          <code className="text-xs sm:text-sm font-mono font-bold text-[#35123F]">
             {payload.referenceId}
           </code>
           <button
             type="button"
             onClick={copyReference}
             aria-label="Copy reference ID"
-            className="text-stone-500 hover:text-[#F52232] transition-colors p-1"
+            className="text-stone-500 hover:text-[#9200A8] transition-colors p-1"
           >
             {copied ? (
               <Check className="w-4 h-4 text-emerald-600" />
@@ -78,44 +78,44 @@ export function DonationPaymentHandoff({
       </div>
 
       {/* Summary of Prepared Details */}
-      <div className="rounded-2xl border border-[#EFE8D8] bg-white p-5 sm:p-6 space-y-4 shadow-xs">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-[#78685D] border-b border-[#EFE8D8] pb-3">
+      <div className="rounded-2xl border border-[#EADDED] bg-white p-5 sm:p-6 space-y-4 shadow-xs">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-[#75647B] border-b border-[#EADDED] pb-3">
           Summary of Prepared Contribution
         </h4>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
           <div>
-            <span className="text-[#78685D] block text-xs">Target Cause:</span>
-            <span className="font-bold text-[#492A22]">
+            <span className="text-[#75647B] block text-xs">Target Cause:</span>
+            <span className="font-bold text-[#35123F]">
               {payload.causeTitle}
             </span>
           </div>
 
           <div>
-            <span className="text-[#78685D] block text-xs">Donation Type:</span>
-            <span className="font-bold text-[#492A22]">One-Time Gift</span>
+            <span className="text-[#75647B] block text-xs">Donation Type:</span>
+            <span className="font-bold text-[#35123F]">One-Time Gift</span>
           </div>
 
           <div>
-            <span className="text-[#78685D] block text-xs">Amount:</span>
-            <span className="text-lg font-black text-[#F52232]">
+            <span className="text-[#75647B] block text-xs">Amount:</span>
+            <span className="text-lg font-black text-[#9200A8]">
               {formatINR(payload.amount)}
             </span>
           </div>
 
           <div>
-            <span className="text-[#78685D] block text-xs">Donor:</span>
-            <span className="font-bold text-[#492A22]">
+            <span className="text-[#75647B] block text-xs">Donor:</span>
+            <span className="font-bold text-[#35123F]">
               {payload.donor.fullName}
               {payload.donor.isAnonymous && " (Anonymous)"}
             </span>
           </div>
 
-          <div className="sm:col-span-2 pt-2 border-t border-[#EFE8D8]">
-            <span className="text-[#78685D] block text-xs">
+          <div className="sm:col-span-2 pt-2 border-t border-[#EADDED]">
+            <span className="text-[#75647B] block text-xs">
               Receipt Destination:
             </span>
-            <span className="font-medium text-[#492A22]">
+            <span className="font-medium text-[#35123F]">
               {payload.donor.email} · {payload.donor.phone}
             </span>
           </div>
@@ -137,7 +137,7 @@ export function DonationPaymentHandoff({
           provide bank coordinates and issue an official receipt.
         </p>
 
-        <div className="pt-2 flex flex-wrap gap-4 text-xs font-semibold text-[#492A22]">
+        <div className="pt-2 flex flex-wrap gap-4 text-xs font-semibold text-[#35123F]">
           <a
             href="mailto:info@samarthatrust.org?subject=Donation%20Inquiry%20Ref:%20"
             className="inline-flex items-center gap-1.5 text-[#2E7D32] hover:underline"
@@ -161,7 +161,7 @@ export function DonationPaymentHandoff({
           type="button"
           variant="outline"
           onClick={onModify}
-          className="w-full sm:w-auto flex-1 gap-2 border-[#D6CBB8]"
+          className="w-full sm:w-auto flex-1 gap-2 border-[#EADDED]"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Modify Donation Details</span>

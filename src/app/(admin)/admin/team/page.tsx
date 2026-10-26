@@ -400,10 +400,10 @@ export default function AdminTeamPage() {
               { label: "Team Management" },
             ]}
           />
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#492A22]">
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#35123F]">
             Team Management
           </h1>
-          <p className="text-sm text-[#78685D]">
+          <p className="text-sm text-[#75647B]">
             Manage trustees, leadership, and team profiles displayed on the
             Samartha Trust website.
           </p>
@@ -412,7 +412,7 @@ export default function AdminTeamPage() {
         <div className="flex items-center gap-3">
           <Button
             asChild
-            className="gap-2 bg-[#F52232] text-white hover:bg-[#D91B29] shadow-xs"
+            className="gap-2 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] hover:from-[#5E008C] hover:via-[#7D0090] hover:to-[#D0006B] text-white shadow-xs"
           >
             <Link href="/admin/team/new">
               <Plus className="h-4 w-4" />
@@ -423,12 +423,12 @@ export default function AdminTeamPage() {
       </div>
 
       {/* Search and Filters panel */}
-      <Card className="border-[#EADCCB] bg-white shadow-2xs">
+      <Card className="border-[#EADDED] bg-white shadow-2xs">
         <CardContent className="p-4 sm:p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             {/* Search Input */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#78685D]" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#75647B]" />
               <Input
                 type="text"
                 placeholder="Search by name, designation, or bio..."
@@ -437,13 +437,13 @@ export default function AdminTeamPage() {
                   setSearch(e.target.value);
                   setPagination((p) => ({ ...p, page: 1 }));
                 }}
-                className="pl-9 bg-white border-[#EADCCB] text-[#492A22] placeholder:text-[#78685D]/60 focus-visible:ring-[#FF8A00]"
+                className="pl-9 bg-white border-[#EADDED] text-[#35123F] placeholder:text-[#75647B]/60 focus-visible:ring-[#9200A8]"
               />
               {search && (
                 <button
                   type="button"
                   onClick={() => setSearch("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#78685D] hover:text-[#492A22]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#75647B] hover:text-[#35123F]"
                 >
                   Clear
                 </button>
@@ -453,14 +453,14 @@ export default function AdminTeamPage() {
             {/* Filter controls */}
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               {/* Status Filter */}
-              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
+              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
                 <select
                   value={statusFilter}
                   onChange={(e) => {
                     setStatusFilter(e.target.value);
                     setPagination((p) => ({ ...p, page: 1 }));
                   }}
-                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
+                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
                 >
                   <option value="ALL">All Statuses</option>
                   <option value="ACTIVE">Active Only</option>
@@ -469,15 +469,15 @@ export default function AdminTeamPage() {
               </div>
 
               {/* Featured Filter */}
-              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
-                <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
+                <Sparkles className="h-3.5 w-3.5 text-[#C00083]" />
                 <select
                   value={featuredFilter}
                   onChange={(e) => {
                     setFeaturedFilter(e.target.value);
                     setPagination((p) => ({ ...p, page: 1 }));
                   }}
-                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
+                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
                 >
                   <option value="ALL">All Featured</option>
                   <option value="true">Featured Only</option>
@@ -486,15 +486,15 @@ export default function AdminTeamPage() {
               </div>
 
               {/* Sort Order */}
-              <div className="flex items-center gap-1.5 text-xs text-[#78685D]">
-                <ArrowUpDown className="h-3.5 w-3.5" />
+              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
+                <ArrowUpDown className="h-3.5 w-3.5 text-[#9200A8]" />
                 <select
                   value={sortOrder}
                   onChange={(e) => {
                     setSortOrder(e.target.value);
                     setPagination((p) => ({ ...p, page: 1 }));
                   }}
-                  className="rounded-md border border-[#EADCCB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#492A22] focus:border-[#FF8A00] focus:outline-hidden"
+                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
                 >
                   <option value="order_asc">Display Order (1 → 99)</option>
                   <option value="order_desc">Display Order (99 → 1)</option>
@@ -511,11 +511,11 @@ export default function AdminTeamPage() {
                 size="sm"
                 onClick={handleRefresh}
                 disabled={isRefreshing}
-                className="h-8 border-[#EADCCB] text-[#78685D] hover:bg-[#FFF5E6] hover:text-[#492A22]"
+                className="h-8 border-[#EADDED] text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
                 title="Refresh team members"
               >
                 <RefreshCw
-                  className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin text-[#F52232]" : ""}`}
+                  className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin text-[#9200A8]" : ""}`}
                 />
               </Button>
             </div>
@@ -524,17 +524,17 @@ export default function AdminTeamPage() {
       </Card>
 
       {/* Team Members Table */}
-      <Card className="border-[#EADCCB] bg-white shadow-2xs overflow-hidden">
-        <CardHeader className="border-b border-[#EADCCB]/70 bg-[#FFFCF5] px-6 py-4">
+      <Card className="border-[#EADDED] bg-white shadow-2xs overflow-hidden">
+        <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-[#F52232]" />
-              <span className="font-semibold text-sm text-[#492A22]">
+              <Users className="h-4 w-4 text-[#9200A8]" />
+              <span className="font-semibold text-sm text-[#35123F]">
                 Team Profiles ({pagination.total})
               </span>
             </div>
             {pagination.total > 0 && (
-              <span className="text-xs text-[#78685D]">
+              <span className="text-xs text-[#75647B]">
                 Page {pagination.page} of {pagination.totalPages}
               </span>
             )}
@@ -542,8 +542,8 @@ export default function AdminTeamPage() {
         </CardHeader>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-[#492A22]">
-            <thead className="bg-[#FFFDF9] border-b border-[#EADCCB] text-xs font-bold uppercase tracking-wider text-[#78685D]">
+          <table className="w-full text-left text-sm text-[#35123F]">
+            <thead className="bg-[#FDF8FF] border-b border-[#EADDED] text-xs font-bold uppercase tracking-wider text-[#75647B]">
               <tr>
                 <th scope="col" className="px-6 py-3.5">
                   Member
@@ -565,34 +565,34 @@ export default function AdminTeamPage() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EADCCB]/60">
+            <tbody className="divide-y divide-[#EADDED]/60">
               {initialLoading ? (
                 // Skeletons
                 Array.from({ length: 4 }).map((_, idx) => (
                   <tr key={idx} className="animate-pulse">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-[#EADCCB]/40" />
+                        <div className="h-10 w-10 rounded-full bg-[#FCE7F3]/60" />
                         <div className="space-y-2">
-                          <div className="h-4 w-32 rounded bg-[#EADCCB]/40" />
-                          <div className="h-3 w-24 rounded bg-[#EADCCB]/30" />
+                          <div className="h-4 w-32 rounded bg-[#FCE7F3]/60" />
+                          <div className="h-3 w-24 rounded bg-[#EADDED]" />
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="h-4 w-8 mx-auto rounded bg-[#EADCCB]/30" />
+                      <div className="h-4 w-8 mx-auto rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="h-5 w-16 mx-auto rounded bg-[#EADCCB]/30" />
+                      <div className="h-5 w-16 mx-auto rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="h-5 w-16 mx-auto rounded bg-[#EADCCB]/30" />
+                      <div className="h-5 w-16 mx-auto rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4">
-                      <div className="h-4 w-20 rounded bg-[#EADCCB]/30" />
+                      <div className="h-4 w-20 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="h-8 w-24 ml-auto rounded bg-[#EADCCB]/30" />
+                      <div className="h-8 w-24 ml-auto rounded bg-[#EADDED]" />
                     </td>
                   </tr>
                 ))
@@ -600,13 +600,13 @@ export default function AdminTeamPage() {
                 // Empty state
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center">
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF5E6] text-[#FF8A00] border border-[#EADCCB]">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF5FF] text-[#C00083] border border-[#EADDED]">
                       <Users className="h-6 w-6" />
                     </div>
-                    <h3 className="mt-4 text-base font-bold text-[#492A22]">
+                    <h3 className="mt-4 text-base font-bold text-[#35123F]">
                       No team profiles found
                     </h3>
-                    <p className="mt-1 text-xs text-[#78685D] max-w-sm mx-auto">
+                    <p className="mt-1 text-xs text-[#75647B] max-w-sm mx-auto">
                       {search ||
                       statusFilter !== "ALL" ||
                       featuredFilter !== "ALL"
@@ -617,7 +617,7 @@ export default function AdminTeamPage() {
                       <Button
                         asChild
                         size="sm"
-                        className="gap-2 bg-[#F52232] text-white hover:bg-[#D91B29]"
+                        className="gap-2 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] text-white"
                       >
                         <Link href="/admin/team/new">
                           <Plus className="h-4 w-4" />
@@ -637,12 +637,12 @@ export default function AdminTeamPage() {
                   return (
                     <tr
                       key={member.id}
-                      className="hover:bg-[#FFFDF9] transition-colors"
+                      className="hover:bg-[#FDF8FF] transition-colors"
                     >
                       {/* Member Info */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[#EADCCB] bg-[#FFF5E6]">
+                          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[#EADDED] bg-[#FAF5FF]">
                             {member.profileImage ? (
                               <Image
                                 src={member.profileImage}
@@ -652,7 +652,7 @@ export default function AdminTeamPage() {
                                 className="h-full w-full object-cover"
                               />
                             ) : (
-                              <div className="flex h-full w-full items-center justify-center text-[#78685D]">
+                              <div className="flex h-full w-full items-center justify-center text-[#75647B]">
                                 <UserIcon className="h-5 w-5" />
                               </div>
                             )}
@@ -660,15 +660,15 @@ export default function AdminTeamPage() {
                           <div className="min-w-0">
                             <Link
                               href={`/admin/team/${member.id}/edit`}
-                              className="font-bold text-[#492A22] hover:text-[#F52232] transition-colors text-sm line-clamp-1"
+                              className="font-bold text-[#35123F] hover:text-[#9200A8] transition-colors text-sm line-clamp-1"
                             >
                               {member.name}
                             </Link>
-                            <p className="text-xs text-[#78685D] line-clamp-1 mt-0.5">
+                            <p className="text-xs text-[#75647B] line-clamp-1 mt-0.5">
                               {member.designation}
                             </p>
                             {/* Contact icons preview */}
-                            <div className="flex items-center gap-2 mt-1 text-[11px] text-[#78685D]/70">
+                            <div className="flex items-center gap-2 mt-1 text-[11px] text-[#75647B]/70">
                               {member.email && (
                                 <span
                                   title={member.email}
@@ -729,7 +729,7 @@ export default function AdminTeamPage() {
                               size="sm"
                               variant="ghost"
                               onClick={() => setEditingOrderId(null)}
-                              className="h-7 w-7 p-0 text-[#78685D] hover:bg-stone-100"
+                              className="h-7 w-7 p-0 text-[#75647B] hover:bg-stone-100"
                               title="Cancel"
                             >
                               <X className="h-3.5 w-3.5" />
@@ -742,11 +742,11 @@ export default function AdminTeamPage() {
                               setEditingOrderId(member.id);
                               setEditingOrderVal(member.displayOrder);
                             }}
-                            className="inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-xs font-semibold text-[#492A22] bg-[#FFF5E6]/80 hover:bg-[#FFF5E6] border border-[#EADCCB]/60 transition-colors"
+                            className="inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-xs font-semibold text-[#35123F] bg-[#FCE7F3]/60 hover:bg-[#FCE7F3] border border-[#EADDED] transition-colors"
                             title="Click to edit display order"
                           >
                             <span>#{member.displayOrder}</span>
-                            <Edit className="h-2.5 w-2.5 text-[#78685D]" />
+                            <Edit className="h-2.5 w-2.5 text-[#75647B]" />
                           </button>
                         )}
                       </td>
@@ -818,9 +818,9 @@ export default function AdminTeamPage() {
                       </td>
 
                       {/* Updated Date */}
-                      <td className="px-6 py-4 text-xs text-[#78685D]">
+                      <td className="px-6 py-4 text-xs text-[#75647B]">
                         <div className="flex items-center gap-1.5">
-                          <Calendar className="h-3.5 w-3.5 text-[#FF8A00]" />
+                          <Calendar className="h-3.5 w-3.5 text-[#C00083]" />
                           <span>
                             {new Date(member.updatedAt).toLocaleDateString(
                               "en-US",
@@ -842,7 +842,7 @@ export default function AdminTeamPage() {
                             asChild
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 p-0 text-[#78685D] hover:bg-[#FFF5E6] hover:text-[#492A22]"
+                            className="h-8 w-8 p-0 text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
                             title="View on About page"
                           >
                             <Link href="/about" target="_blank">
@@ -855,7 +855,7 @@ export default function AdminTeamPage() {
                             asChild
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 p-0 text-[#78685D] hover:bg-[#FFF5E6] hover:text-[#492A22]"
+                            className="h-8 w-8 p-0 text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
                             title="Edit profile"
                           >
                             <Link href={`/admin/team/${member.id}/edit`}>
@@ -888,7 +888,7 @@ export default function AdminTeamPage() {
 
         {/* Pagination controls */}
         {!initialLoading && pagination.total > 0 && (
-          <div className="border-t border-[#EADCCB] bg-[#FFFDF9] px-6">
+          <div className="border-t border-[#EADDED] bg-[#FDF8FF] px-6">
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
@@ -914,24 +914,24 @@ export default function AdminTeamPage() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-md rounded-xl border border-[#EADCCB] bg-white p-6 shadow-xl space-y-4">
+          <div className="w-full max-w-md rounded-xl border border-[#EADDED] bg-white p-6 shadow-xl space-y-4">
             <div className="flex items-center gap-3 text-red-600">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
                 <AlertTriangle className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-[#492A22]">
+                <h3 className="text-base font-bold text-[#35123F]">
                   Delete Team Member
                 </h3>
-                <p className="text-xs text-[#78685D]">
+                <p className="text-xs text-[#75647B]">
                   This action cannot be undone.
                 </p>
               </div>
             </div>
 
-            <p className="text-sm text-[#78685D] leading-relaxed">
+            <p className="text-sm text-[#75647B] leading-relaxed">
               Are you sure you want to permanently delete{" "}
-              <strong className="text-[#492A22]">
+              <strong className="text-[#35123F]">
                 &ldquo;{deletingName}&rdquo;
               </strong>
               ? Their public profile will no longer appear on the Samartha Trust
@@ -946,7 +946,7 @@ export default function AdminTeamPage() {
                   setDeletingName("");
                 }}
                 disabled={isDeleting}
-                className="border-[#EADCCB]"
+                className="border-[#EADDED]"
               >
                 Cancel
               </Button>
