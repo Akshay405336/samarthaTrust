@@ -15,8 +15,8 @@ import {
   Loader2,
   AlertTriangle,
   ExternalLink,
-  Check,
-  X,
+  Power,
+  PowerOff,
   GraduationCap,
   HeartPulse,
   Users,
@@ -28,13 +28,16 @@ import {
   ShieldCheck,
   Award,
 } from "lucide-react";
-import { Breadcrumbs } from "@/components/admin/breadcrumbs";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  AdminPage,
+  AdminPageHeader,
+  AdminTableCard,
+  AdminToolbar,
+} from "@/components/admin/admin-page";
+import { CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Pagination } from "@/components/shared/pagination";
-
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   GraduationCap,
   HeartPulse,
@@ -111,19 +114,13 @@ export default function AdminWorksPage() {
   // Loading & Action states
   const [initialLoading, setInitialLoading] = React.useState(true);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
-  const [actionInProgress, setActionInProgress] = React.useState<string | null>(
-    null
-  );
+  const [actionLoadingIds, setActionLoadingIds] = React.useState<
+    Record<string, string>
+  >({});
 
   // Delete modal state
   const [workToDelete, setWorkToDelete] = React.useState<WorkItem | null>(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
-
-  // Inline order editing
-  const [editingOrderId, setEditingOrderId] = React.useState<string | null>(
-    null
-  );
-  const [editingOrderVal, setEditingOrderVal] = React.useState<number>(0);
 
   // Toast feedback
   const [toast, setToast] = React.useState<ToastState | null>(null);
@@ -256,14 +253,15 @@ export default function AdminWorksPage() {
     void fetchWorks();
   };
 
-  // Toggle publish / unpublish
   const handleTogglePublish = async (work: WorkItem) => {
-    const isCurrentlyPublished = work.status === "PUBLISHED";
-    const endpoint = isCurrentlyPublished
+    if (actionLoadingIds[work.id]) return;
+
+    setActionLoadingIds((prev) => ({ ...prev, [work.id]: "publish" }));
+    const isPublished = work.status === "PUBLISHED";
+    const endpoint = isPublished
       ? `/api/admin/works/${work.id}/unpublish`
       : `/api/admin/works/${work.id}/publish`;
 
-    setActionInProgress(work.id);
     try {
       const res = await fetch(endpoint, { method: "POST" });
       const json = await res.json();
@@ -272,70 +270,43 @@ export default function AdminWorksPage() {
         throw new Error(json.error || "Action failed");
       }
 
+      const updatedStatus =
+        (json.work?.status as WorkItem["status"] | undefined) ??
+        (isPublished ? "DRAFT" : "PUBLISHED");
+
+      if (statusFilter !== "ALL" && statusFilter !== updatedStatus) {
+        setWorks((prev) => prev.filter((w) => w.id !== work.id));
+        setPagination((prev) => {
+          const newTotal = Math.max(0, prev.total - 1);
+          return {
+            ...prev,
+            total: newTotal,
+            totalPages: Math.max(1, Math.ceil(newTotal / prev.limit)),
+          };
+        });
+      } else {
+        setWorks((prev) =>
+          prev.map((w) =>
+            w.id === work.id ? { ...w, status: updatedStatus } : w
+          )
+        );
+      }
+
       showToast(
-        isCurrentlyPublished
-          ? `"${work.title}" unpublished to Draft`
-          : `"${work.title}" published to Live site!`
+        updatedStatus === "PUBLISHED"
+          ? "Work initiative activated (published)."
+          : "Work initiative deactivated (unpublished)."
       );
-      void fetchWorks();
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Failed to toggle status";
       showToast(msg, "error");
     } finally {
-      setActionInProgress(null);
-    }
-  };
-
-  // Toggle featured
-  const handleToggleFeatured = async (work: WorkItem) => {
-    setActionInProgress(work.id);
-    try {
-      const res = await fetch(`/api/admin/works/${work.id}/feature`, {
-        method: "POST",
+      setActionLoadingIds((prev) => {
+        const next = { ...prev };
+        delete next[work.id];
+        return next;
       });
-      const json = await res.json();
-
-      if (!res.ok || !json.success) {
-        throw new Error(json.error || "Failed to toggle featured status");
-      }
-
-      showToast(
-        work.isFeatured
-          ? `Removed "${work.title}" from featured`
-          : `"${work.title}" marked as featured!`
-      );
-      void fetchWorks();
-    } catch (err) {
-      const msg =
-        err instanceof Error ? err.message : "Error updating featured status";
-      showToast(msg, "error");
-    } finally {
-      setActionInProgress(null);
-    }
-  };
-
-  // Save inline order
-  const handleSaveOrder = async (id: string) => {
-    setActionInProgress(id);
-    try {
-      const res = await fetch(`/api/admin/works/${id}/order`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayOrder: editingOrderVal }),
-      });
-      const json = await res.json();
-      if (!res.ok || !json.success) {
-        throw new Error(json.error || "Failed to update display order");
-      }
-      showToast("Display order updated");
-      setEditingOrderId(null);
-      void fetchWorks();
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Order update failed";
-      showToast(msg, "error");
-    } finally {
-      setActionInProgress(null);
     }
   };
 
@@ -365,14 +336,8 @@ export default function AdminWorksPage() {
     }
   };
 
-  // Metrics summary
-  const totalCount = pagination.total;
-  const publishedCount = works.filter((w) => w.status === "PUBLISHED").length;
-  const draftCount = works.filter((w) => w.status === "DRAFT").length;
-  const featuredCount = works.filter((w) => w.isFeatured).length;
-
   return (
-    <div className="space-y-6 pb-12">
+    <AdminPage>
       {/* Toast Notification */}
       {toast && (
         <div
@@ -437,7 +402,7 @@ export default function AdminWorksPage() {
                     Deleting...
                   </>
                 ) : (
-                  "Yes, Delete Work"
+                  "Delete Permanently"
                 )}
               </Button>
             </div>
@@ -445,109 +410,29 @@ export default function AdminWorksPage() {
         </div>
       )}
 
-      {/* Breadcrumbs */}
-      <Breadcrumbs items={[{ label: "Our Works" }]} />
+      <AdminPageHeader
+        breadcrumbs={[{ label: "Our Works" }]}
+        title="Our Works Management"
+        description="Manage grassroots initiatives, deliverables, beneficiaries, and public status."
+        actions={
+          <>
+            <Button asChild variant="outline" size="sm" className="rounded-lg">
+              <Link href="/our-works" target="_blank" className="flex items-center gap-1.5">
+                <ExternalLink className="h-4 w-4" />
+                Public page
+              </Link>
+            </Button>
+            <Button asChild size="sm" className="rounded-lg">
+              <Link href="/admin/works/new" className="flex items-center gap-1.5">
+                <Plus className="h-4 w-4" />
+                Add work entry
+              </Link>
+            </Button>
+          </>
+        }
+      />
 
-      {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-extrabold tracking-tight text-[#35123F] sm:text-3xl">
-              Our Works Management
-            </h1>
-            <Badge variant="warm" className="text-xs font-semibold">
-              {totalCount} Total
-            </Badge>
-          </div>
-          <p className="mt-1 text-sm text-[#75647B]">
-            Manage grassroots initiatives, deliverables, beneficiaries, and
-            public status.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2.5">
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="border-[#EADDED] text-[#35123F] hover:bg-[#FAF5FF]"
-          >
-            <Link
-              href="/our-works"
-              target="_blank"
-              className="flex items-center gap-1.5"
-            >
-              <ExternalLink className="h-4 w-4 text-[#C00083]" />
-              <span>View Public Page</span>
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] hover:from-[#5E008C] hover:via-[#7D0090] hover:to-[#D0006B] font-semibold text-white shadow-xs hover:opacity-95"
-          >
-            <Link href="/admin/works/new" className="flex items-center gap-1.5">
-              <Plus className="h-4 w-4" />
-              <span>Add New Work</span>
-            </Link>
-          </Button>
-        </div>
-      </div>
-
-      {/* Metrics Row */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#75647B]">
-            Total Works
-          </span>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-[#35123F]">
-              {totalCount}
-            </span>
-            <span className="text-xs text-[#75647B]">initiatives</span>
-          </div>
-        </Card>
-
-        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
-          <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-            Published Live
-          </span>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-emerald-600">
-              {publishedCount}
-            </span>
-            <span className="text-xs text-[#75647B]">active</span>
-          </div>
-        </Card>
-
-        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
-            Drafts
-          </span>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-amber-600">
-              {draftCount}
-            </span>
-            <span className="text-xs text-[#75647B]">pending</span>
-          </div>
-        </Card>
-
-        <Card className="border-[#EADDED] bg-white p-4 shadow-2xs">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#9200A8]">
-            Featured
-          </span>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-[#9200A8]">
-              {featuredCount}
-            </span>
-            <span className="text-xs text-[#75647B]">highlighted</span>
-          </div>
-        </Card>
-      </div>
-
-      {/* Filter and Search Bar */}
-      <Card className="border-[#EADDED] bg-white shadow-2xs">
-        <CardContent className="p-4 sm:p-5">
+      <AdminToolbar>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             {/* Search */}
             <div className="relative flex-1">
@@ -625,11 +510,9 @@ export default function AdminWorksPage() {
               </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+      </AdminToolbar>
 
-      {/* Works Table */}
-      <Card className="overflow-hidden border-[#EADDED] bg-white shadow-2xs">
+      <AdminTableCard>
         <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -647,7 +530,7 @@ export default function AdminWorksPage() {
         </CardHeader>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-[#35123F]">
+          <table className="admin-table w-full text-left text-sm text-[#35123F]">
             <thead className="border-b border-[#EADDED] bg-[#FDF8FF] text-xs font-bold uppercase tracking-wider text-[#75647B]">
               <tr>
                 <th scope="col" className="px-6 py-3.5">
@@ -657,15 +540,6 @@ export default function AdminWorksPage() {
                   Category
                 </th>
                 <th scope="col" className="px-6 py-3.5">
-                  Program Status
-                </th>
-                <th scope="col" className="px-6 py-3.5 text-center">
-                  Deliverables
-                </th>
-                <th scope="col" className="px-6 py-3.5 text-center">
-                  Display Order
-                </th>
-                <th scope="col" className="px-6 py-3.5 text-center">
                   Status
                 </th>
                 <th scope="col" className="px-6 py-3.5 text-right">
@@ -690,15 +564,6 @@ export default function AdminWorksPage() {
                       <div className="h-4 w-24 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4">
-                      <div className="h-4 w-28 rounded bg-[#EADDED]" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="mx-auto h-4 w-8 rounded bg-[#EADDED]" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="mx-auto h-4 w-10 rounded bg-[#EADDED]" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
                       <div className="mx-auto h-5 w-16 rounded bg-[#EADDED]" />
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -708,7 +573,7 @@ export default function AdminWorksPage() {
                 ))
               ) : works.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-12 text-center">
+                  <td colSpan={4} className="px-6 py-12 text-center">
                     <div className="mx-auto max-w-sm space-y-3">
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF5FF] text-[#9200A8]">
                         <Briefcase className="h-6 w-6" />
@@ -736,7 +601,10 @@ export default function AdminWorksPage() {
                 works.map((work) => {
                   const Icon =
                     (work.iconName && ICON_MAP[work.iconName]) || GraduationCap;
-                  const isActioning = actionInProgress === work.id;
+                  const isPublished = work.status === "PUBLISHED";
+                  const isDraft = work.status === "DRAFT";
+                  const isRowBusy = !!actionLoadingIds[work.id];
+                  const currentAction = actionLoadingIds[work.id];
 
                   return (
                     <tr
@@ -786,152 +654,81 @@ export default function AdminWorksPage() {
                         </span>
                       </td>
 
-                      {/* Program Status */}
+                      {/* Publication status (read-only) */}
                       <td className="px-6 py-4">
-                        <span className="text-xs font-medium text-[#35123F]">
-                          {work.programStatus || "Active & Ongoing"}
-                        </span>
-                      </td>
-
-                      {/* Deliverables Count */}
-                      <td className="px-6 py-4 text-center">
-                        <Badge
-                          variant="outline"
-                          className="text-xs border-[#EADDED]"
-                        >
-                          {work.features?.length || 0} items
-                        </Badge>
-                      </td>
-
-                      {/* Display Order with inline editor */}
-                      <td className="px-6 py-4 text-center">
-                        {editingOrderId === work.id ? (
-                          <div className="inline-flex items-center gap-1">
-                            <Input
-                              type="number"
-                              value={editingOrderVal}
-                              onChange={(e) =>
-                                setEditingOrderVal(
-                                  parseInt(e.target.value) || 0
-                                )
-                              }
-                              className="h-7 w-16 text-center text-xs"
-                            />
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              onClick={() => handleSaveOrder(work.id)}
-                              disabled={isActioning}
-                              className="h-7 w-7 text-emerald-600 hover:bg-emerald-50"
-                            >
-                              <Check className="h-3.5 w-3.5" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              onClick={() => setEditingOrderId(null)}
-                              className="h-7 w-7 text-red-500 hover:bg-red-50"
-                            >
-                              <X className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setEditingOrderId(work.id);
-                              setEditingOrderVal(work.displayOrder);
-                            }}
-                            title="Click to change display order"
-                            className="group inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-[#35123F] hover:bg-[#FCE7F3]/60"
-                          >
-                            <span>#{work.displayOrder}</span>
-                            <Edit className="h-3 w-3 opacity-0 group-hover:opacity-100 text-[#75647B]" />
-                          </button>
+                        {isPublished && (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                            Published
+                          </span>
                         )}
-                      </td>
-
-                      {/* Publication Status */}
-                      <td className="px-6 py-4 text-center">
-                        <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold ${
-                            work.status === "PUBLISHED"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : work.status === "DRAFT"
-                                ? "bg-amber-100 text-amber-800"
-                                : "bg-slate-100 text-slate-800"
-                          }`}
-                        >
-                          {work.status}
-                        </span>
+                        {isDraft && (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+                            <span className="h-1.5 w-1.5 rounded-full bg-amber-600" />
+                            Draft
+                          </span>
+                        )}
+                        {work.status === "ARCHIVED" && (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-stone-200 bg-stone-100 px-2.5 py-0.5 text-xs font-semibold text-stone-700">
+                            <span className="h-1.5 w-1.5 rounded-full bg-stone-500" />
+                            Archived
+                          </span>
+                        )}
                       </td>
 
                       {/* Actions */}
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          {/* Featured toggle */}
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleToggleFeatured(work)}
-                            disabled={isActioning}
-                            className={`h-8 w-8 ${
-                              work.isFeatured
-                                ? "text-amber-600 hover:bg-amber-50"
-                                : "text-[#75647B] hover:bg-[#FAF5FF]"
-                            }`}
-                            title={
-                              work.isFeatured
-                                ? "Remove from featured"
-                                : "Mark as featured"
-                            }
-                          >
-                            <Sparkles className="h-3.5 w-3.5" />
-                          </Button>
-
-                          {/* Publish/Unpublish toggle */}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleTogglePublish(work)}
-                            disabled={isActioning}
-                            className={`h-8 text-xs font-semibold ${
-                              work.status === "PUBLISHED"
-                                ? "text-amber-700 hover:bg-amber-50"
-                                : "text-emerald-700 hover:bg-emerald-50"
-                            }`}
-                          >
-                            {isActioning ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                            ) : work.status === "PUBLISHED" ? (
-                              "Unpublish"
-                            ) : (
-                              "Publish"
-                            )}
-                          </Button>
-
-                          {/* Edit button */}
+                        <div className="flex items-center justify-end gap-0.5">
                           <Button
                             asChild
-                            variant="outline"
+                            variant="ghost"
                             size="icon"
-                            className="h-8 w-8 border-[#EADDED] text-[#35123F] hover:bg-[#FAF5FF]"
-                            title="Edit Work"
+                            className="h-8 w-8 text-[#75647B] hover:text-[#9200A8]"
+                            title="Edit work initiative"
                           >
                             <Link href={`/admin/works/${work.id}/edit`}>
-                              <Edit className="h-3.5 w-3.5" />
+                              <Edit className="h-4 w-4" />
                             </Link>
                           </Button>
 
-                          {/* Delete button */}
                           <Button
-                            variant="outline"
+                            type="button"
+                            variant="ghost"
                             size="icon"
-                            onClick={() => setWorkToDelete(work)}
-                            className="h-8 w-8 border-[#EADDED] text-red-600 hover:bg-red-50 hover:text-red-700"
-                            title="Delete Work"
+                            disabled={isRowBusy}
+                            onClick={() => handleTogglePublish(work)}
+                            className="h-8 w-8 text-[#75647B] hover:text-emerald-600 disabled:opacity-60"
+                            title={
+                              isPublished
+                                ? "Deactivate (unpublish)"
+                                : "Activate (publish)"
+                            }
+                            aria-label={
+                              isPublished
+                                ? "Deactivate work initiative"
+                                : "Activate work initiative"
+                            }
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            {currentAction === "publish" ? (
+                              <Loader2 className="h-4 w-4 animate-spin text-[#9200A8]" />
+                            ) : isPublished ? (
+                              <PowerOff className="h-4 w-4 text-emerald-600" />
+                            ) : (
+                              <Power className="h-4 w-4" />
+                            )}
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            disabled={isRowBusy}
+                            onClick={() => setWorkToDelete(work)}
+                            className="h-8 w-8 text-[#75647B] hover:text-red-600 disabled:opacity-60"
+                            title="Delete permanently"
+                            aria-label="Delete permanently"
+                          >
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       </td>
@@ -943,26 +740,77 @@ export default function AdminWorksPage() {
           </table>
         </div>
 
-        {/* Pagination footer */}
         {!initialLoading && pagination.total > 0 && (
-          <div className="border-t border-[#EADDED] bg-[#FDF8FF] px-6">
-            <Pagination
-              currentPage={pagination.page}
-              totalPages={pagination.totalPages}
-              totalRecords={pagination.total}
-              limit={pagination.limit}
-              recordLabel="initiatives"
-              disabled={isRefreshing}
-              onPageChange={(page) =>
-                setPagination((prev) => ({
-                  ...prev,
-                  page: Math.max(1, Math.min(page, prev.totalPages)),
-                }))
-              }
-            />
+          <div className="flex flex-col items-center justify-between gap-3 border-t border-[#EADDED]/70 px-6 py-4 text-xs text-[#75647B] sm:flex-row">
+            <div>
+              Showing page{" "}
+              <span className="font-bold text-[#35123F]">{pagination.page}</span> of{" "}
+              <span className="font-bold text-[#35123F]">
+                {pagination.totalPages}
+              </span>{" "}
+              ({pagination.total} total initiatives)
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={!pagination.hasPrevPage || isRefreshing}
+                onClick={() =>
+                  setPagination((prev) => ({
+                    ...prev,
+                    page: Math.max(1, prev.page - 1),
+                  }))
+                }
+                className="h-8 text-xs"
+              >
+                Previous
+              </Button>
+
+              <div className="flex items-center gap-1">
+                {Array.from(
+                  { length: pagination.totalPages },
+                  (_, i) => i + 1
+                ).map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    disabled={isRefreshing}
+                    onClick={() =>
+                      setPagination((prev) => ({ ...prev, page: p }))
+                    }
+                    className={`h-8 w-8 rounded-md text-xs font-semibold transition-colors ${
+                      pagination.page === p
+                        ? "bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] text-white shadow-2xs"
+                        : "text-[#75647B] hover:bg-[#FCE7F3]/60 hover:text-[#35123F]"
+                    }`}
+                    aria-current={pagination.page === p ? "page" : undefined}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={!pagination.hasNextPage || isRefreshing}
+                onClick={() =>
+                  setPagination((prev) => ({
+                    ...prev,
+                    page: Math.min(prev.totalPages, prev.page + 1),
+                  }))
+                }
+                className="h-8 text-xs"
+              >
+                Next
+              </Button>
+            </div>
           </div>
         )}
-      </Card>
-    </div>
+      </AdminTableCard>
+    </AdminPage>
   );
 }

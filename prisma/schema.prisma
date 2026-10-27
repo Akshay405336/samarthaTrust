@@ -201,3 +201,30 @@ model Donation {
   @@index([razorpayPaymentId])
   @@map("donations")
 }
+
+enum GalleryStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model GalleryPhoto {
+  id           String        @id @default(cuid())
+  url          String
+  altText      String
+  linkUrl      String?
+  displayOrder Int           @default(0)
+  status       GalleryStatus @default(DRAFT)
+  publishedAt  DateTime?
+  fileSize     Int?
+  mimeType     String?
+  width        Int?
+  height       Int?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([status])
+  @@index([displayOrder])
+  @@index([publishedAt])
+  @@map("gallery_photos")
+}

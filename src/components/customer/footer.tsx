@@ -17,6 +17,8 @@ export function CustomerFooter() {
   const quickLinks = [
     { label: "Home", href: "/" },
     { label: "About Samartha Trust", href: "/about" },
+    { label: "Our Works", href: "/our-works" },
+    { label: "Photo Gallery", href: "/gallery" },
     { label: "Our Programs & Initiatives", href: "/programs" },
     { label: "Make a Donation", href: "/donate" },
     { label: "Blog & Impact Stories", href: "/blog" },

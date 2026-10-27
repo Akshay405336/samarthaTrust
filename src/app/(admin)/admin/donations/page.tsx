@@ -19,6 +19,7 @@ import {
   User,
   ShieldCheck,
 } from "lucide-react";
+import { AdminPage, AdminPageHeader } from "@/components/admin/admin-page";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatINR } from "@/components/customer/donation/donation-validation";
@@ -234,33 +235,27 @@ export default function AdminDonationsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-[#35123F] tracking-tight flex items-center gap-2.5">
-            <HeartHandshake className="w-7 h-7 text-[#9200A8]" />
-            <span>Donations Management</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-[#75647B] mt-1">
-            Audit, verify, and inspect all genuine donation records and live
-            Razorpay transactions.
-          </p>
-        </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="border-[#EADDED] text-xs font-semibold gap-1.5"
-        >
-          <RefreshCw
-            className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`}
-          />
-          <span>Refresh Records</span>
-        </Button>
-      </div>
+    <AdminPage>
+      <AdminPageHeader
+        breadcrumbs={[{ label: "Donations" }]}
+        title="Donations Management"
+        description="Audit, verify, and inspect donation records and Razorpay transactions."
+        actions={
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="gap-1.5 rounded-lg"
+          >
+            <RefreshCw
+              className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+            Refresh records
+          </Button>
+        }
+      />
 
       {/* Metrics Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -726,6 +721,6 @@ export default function AdminDonationsPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPage>
   );
 }

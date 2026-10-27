@@ -9,22 +9,23 @@ import {
   Search,
   Edit,
   Trash2,
-  Calendar,
-  User,
-  Sparkles,
-  CheckCircle2,
+  Power,
+  PowerOff,
   AlertCircle,
-  Archive,
-  ArchiveRestore,
+  CheckCircle2,
   ArrowUpDown,
   RefreshCw,
   Loader2,
   AlertTriangle,
-  ExternalLink,
   Tag,
 } from "lucide-react";
-import { Breadcrumbs } from "@/components/admin/breadcrumbs";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  AdminPage,
+  AdminPageHeader,
+  AdminTableCard,
+  AdminToolbar,
+} from "@/components/admin/admin-page";
+import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -220,8 +221,8 @@ export default function AdminBlogsPage() {
 
         showToast(
           updatedBlog.status === "PUBLISHED"
-            ? "Story published live to public site!"
-            : "Story unpublished back to draft.",
+            ? "Article activated (published)."
+            : "Article deactivated (unpublished).",
           "success"
         );
       } else {
@@ -229,105 +230,6 @@ export default function AdminBlogsPage() {
       }
     } catch {
       showToast("Network error updating publication status.", "error");
-    } finally {
-      setActionLoadingIds((prev) => {
-        const next = { ...prev };
-        delete next[blog.id];
-        return next;
-      });
-    }
-  };
-
-  // Toggle featured status with targeted row update
-  const handleToggleFeature = async (blog: BlogItem) => {
-    if (actionLoadingIds[blog.id]) return;
-
-    setActionLoadingIds((prev) => ({ ...prev, [blog.id]: "feature" }));
-
-    try {
-      const res = await fetch(`/api/admin/blogs/${blog.id}/feature`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isFeatured: !blog.isFeatured }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.success && data.blog) {
-        setBlogs((prev) =>
-          prev.map((b) =>
-            b.id === blog.id ? { ...b, isFeatured: data.blog.isFeatured } : b
-          )
-        );
-        showToast(
-          data.blog.isFeatured
-            ? `"${blog.title}" is now featured on the homepage.`
-            : "Removed from featured stories.",
-          "success"
-        );
-      } else {
-        showToast(data.error || "Action failed.", "error");
-      }
-    } catch {
-      showToast("Network error updating featured state.", "error");
-    } finally {
-      setActionLoadingIds((prev) => {
-        const next = { ...prev };
-        delete next[blog.id];
-        return next;
-      });
-    }
-  };
-
-  // Archive or restore blog with targeted row update
-  const handleArchive = async (blog: BlogItem) => {
-    if (actionLoadingIds[blog.id]) return;
-
-    const isArchived = blog.status === "ARCHIVED";
-    const actionType = isArchived ? "restore" : "archive";
-    setActionLoadingIds((prev) => ({ ...prev, [blog.id]: actionType }));
-
-    // Unpublish endpoint restores archived blogs back to draft; archive endpoint sets to ARCHIVED
-    const endpoint = isArchived
-      ? `/api/admin/blogs/${blog.id}/unpublish`
-      : `/api/admin/blogs/${blog.id}/archive`;
-
-    try {
-      const res = await fetch(endpoint, { method: "POST" });
-      const data = await res.json();
-
-      if (res.ok && data.success && data.blog) {
-        const updatedBlog: BlogItem = {
-          ...blog,
-          ...data.blog,
-        };
-
-        if (statusFilter !== "ALL" && statusFilter !== updatedBlog.status) {
-          setBlogs((prev) => prev.filter((b) => b.id !== blog.id));
-          setPagination((prev) => {
-            const newTotal = Math.max(0, prev.total - 1);
-            return {
-              ...prev,
-              total: newTotal,
-              totalPages: Math.max(1, Math.ceil(newTotal / prev.limit)),
-            };
-          });
-        } else {
-          setBlogs((prev) =>
-            prev.map((b) => (b.id === blog.id ? updatedBlog : b))
-          );
-        }
-
-        showToast(
-          isArchived
-            ? `"${blog.title}" restored from archive to draft.`
-            : `"${blog.title}" has been moved to archive.`,
-          "success"
-        );
-      } else {
-        showToast(data.error || "Action failed.", "error");
-      }
-    } catch {
-      showToast("Network error updating archive status.", "error");
     } finally {
       setActionLoadingIds((prev) => {
         const next = { ...prev };
@@ -383,31 +285,20 @@ export default function AdminBlogsPage() {
   );
 
   return (
-    <div className="space-y-6">
-      {/* Breadcrumbs */}
-      <Breadcrumbs items={[{ label: "Blogs & Articles" }]} />
-
-      {/* Header and CTA */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#35123F] sm:text-3xl">
-            Blog & Article Management
-          </h1>
-          <p className="text-sm text-[#75647B] mt-0.5">
-            Create, edit, organize, and publish stories and community outreach
-            reports.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Button asChild className="gap-1.5 shadow-sm">
+    <AdminPage>
+      <AdminPageHeader
+        breadcrumbs={[{ label: "Blogs & Articles" }]}
+        title="Blog & Article Management"
+        description="Create, edit, organize, and publish stories and community outreach reports."
+        actions={
+          <Button asChild size="sm" className="gap-1.5 rounded-lg">
             <Link href="/admin/blogs/new">
               <Plus className="h-4 w-4" />
-              <span>Create New Article</span>
+              Create new article
             </Link>
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Feedback Toast */}
       {toast && (
@@ -438,98 +329,113 @@ export default function AdminBlogsPage() {
         </div>
       )}
 
-      {/* Main Table Card (Search, Filter, Table, and Pagination) */}
-      <Card className="border border-[#EADDED] bg-white shadow-2xs overflow-hidden">
-        {/* Subtle progress indicator when background refresh is active */}
+      <AdminToolbar>
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#75647B]" />
+            <Input
+              placeholder="Search by title, excerpt, content..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPagination((prev) => ({ ...prev, page: 1 }));
+              }}
+              className="border-[#EADDED] pl-9 text-sm"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <select
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setPagination((prev) => ({ ...prev, page: 1 }));
+              }}
+              className="h-9 rounded-lg border border-[#EADDED] bg-white px-3 text-xs font-semibold text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
+              aria-label="Filter by status"
+            >
+              <option value="ALL">All Statuses</option>
+              <option value="PUBLISHED">Published</option>
+              <option value="DRAFT">Draft</option>
+              <option value="ARCHIVED">Archived</option>
+            </select>
+
+            <div className="flex items-center gap-1.5">
+              <Tag className="h-3.5 w-3.5 text-[#9200A8]" aria-hidden="true" />
+              <select
+                value={categoryFilter}
+                onChange={(e) => {
+                  setCategoryFilter(e.target.value);
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
+                className="h-9 rounded-lg border border-[#EADDED] bg-white px-3 text-xs font-semibold text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
+                aria-label="Filter by category"
+              >
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c === "ALL" ? "All Categories" : c}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <ArrowUpDown
+                className="h-3.5 w-3.5 text-[#C00083]"
+                aria-hidden="true"
+              />
+              <select
+                value={sortOrder}
+                onChange={(e) => {
+                  setSortOrder(e.target.value);
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
+                className="h-9 rounded-lg border border-[#EADDED] bg-white px-3 text-xs font-semibold text-[#35123F] focus:border-[#9200A8] focus:outline-hidden"
+                aria-label="Sort order"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="title">Alphabetical (A-Z)</option>
+                <option value="published">Publication Date</option>
+              </select>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={handleManualRefresh}
+              disabled={isRefreshing}
+              className="h-9 w-9 border-[#EADDED] text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
+              title="Refresh list"
+              aria-label="Refresh list"
+            >
+              <RefreshCw
+                className={`h-4 w-4 ${isRefreshing ? "animate-spin text-[#9200A8]" : ""}`}
+              />
+            </Button>
+          </div>
+        </div>
+      </AdminToolbar>
+
+      <AdminTableCard>
         {isRefreshing && (
           <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#9200A8] to-transparent animate-pulse" />
         )}
 
-        <CardHeader className="p-4 sm:p-5 border-b border-[#EADDED]/70">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            {/* Search Input */}
-            <div className="relative w-full sm:w-72">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#75647B]" />
-              <Input
-                placeholder="Search by title, excerpt, content..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setPagination((prev) => ({ ...prev, page: 1 }));
-                }}
-                className="pl-9 h-9 border-[#EADDED] text-xs focus-visible:ring-[#9200A8]"
-              />
+        <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-[#9200A8]" />
+              <span className="text-sm font-semibold text-[#35123F]">
+                Blog Posts ({pagination.total})
+              </span>
             </div>
-
-            {/* Filter controls */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              {/* Status Filter Dropdown */}
-              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
-                <span className="font-semibold text-[#35123F]">Status:</span>
-                <select
-                  value={statusFilter}
-                  onChange={(e) => {
-                    setStatusFilter(e.target.value);
-                    setPagination((prev) => ({ ...prev, page: 1 }));
-                  }}
-                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:ring-1 focus:ring-[#9200A8]"
-                >
-                  <option value="ALL">All Statuses</option>
-                  <option value="PUBLISHED">Published</option>
-                  <option value="DRAFT">Draft</option>
-                  <option value="ARCHIVED">Archived</option>
-                </select>
-              </div>
-
-              {/* Category Filter */}
-              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
-                <Tag className="h-3.5 w-3.5 text-[#9200A8]" />
-                <select
-                  value={categoryFilter}
-                  onChange={(e) => {
-                    setCategoryFilter(e.target.value);
-                    setPagination((prev) => ({ ...prev, page: 1 }));
-                  }}
-                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:ring-1 focus:ring-[#9200A8]"
-                >
-                  {categories.map((c) => (
-                    <option key={c} value={c}>
-                      {c === "ALL" ? "All Categories" : c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Sort Order */}
-              <div className="flex items-center gap-1.5 text-xs text-[#75647B]">
-                <ArrowUpDown className="h-3.5 w-3.5 text-[#C00083]" />
-                <select
-                  value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value)}
-                  className="rounded-md border border-[#EADDED] bg-white px-2.5 py-1.5 text-xs font-medium text-[#35123F] focus:ring-1 focus:ring-[#9200A8]"
-                >
-                  <option value="newest">Newest First</option>
-                  <option value="oldest">Oldest First</option>
-                  <option value="title">Alphabetical (A-Z)</option>
-                  <option value="published">Publication Date</option>
-                </select>
-              </div>
-
-              {/* Manual Refresh Button */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleManualRefresh}
-                disabled={isRefreshing}
-                className="h-8 gap-1 text-xs cursor-pointer"
-                title="Refresh list from database"
-              >
-                <RefreshCw
-                  className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin" : ""}`}
-                />
-                <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
-              </Button>
-            </div>
+            {pagination.total > 0 && (
+              <span className="text-xs text-[#75647B]">
+                Page {pagination.page} of {pagination.totalPages}
+              </span>
+            )}
           </div>
         </CardHeader>
 
@@ -562,7 +468,7 @@ export default function AdminBlogsPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+              <table className="admin-table w-full text-left text-sm">
                 <thead className="bg-[#FDF8FF] text-xs uppercase tracking-wider text-[#75647B] border-b border-[#EADDED]">
                   <tr>
                     <th scope="col" className="px-5 py-3.5 font-bold">
@@ -572,19 +478,7 @@ export default function AdminBlogsPage() {
                       Category
                     </th>
                     <th scope="col" className="px-4 py-3.5 font-bold">
-                      Author
-                    </th>
-                    <th scope="col" className="px-4 py-3.5 font-bold">
                       Status
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 font-bold text-center"
-                    >
-                      Featured
-                    </th>
-                    <th scope="col" className="px-4 py-3.5 font-bold">
-                      Published Date
                     </th>
                     <th
                       scope="col"
@@ -650,16 +544,6 @@ export default function AdminBlogsPage() {
                           </Badge>
                         </td>
 
-                        {/* Author */}
-                        <td className="px-4 py-3.5 text-xs text-[#75647B]">
-                          <span className="flex items-center gap-1.5 font-medium">
-                            <User className="h-3 w-3 text-[#C00083]" />
-                            <span className="truncate max-w-[120px]">
-                              {blog.authorName}
-                            </span>
-                          </span>
-                        </td>
-
                         {/* Status */}
                         <td className="px-4 py-3.5">
                           {isPublished && (
@@ -682,72 +566,9 @@ export default function AdminBlogsPage() {
                           )}
                         </td>
 
-                        {/* Featured Toggle */}
-                        <td className="px-3 py-3.5 text-center">
-                          <button
-                            type="button"
-                            disabled={isRowBusy}
-                            onClick={() => handleToggleFeature(blog)}
-                            className="cursor-pointer p-1 rounded hover:bg-[#FCE7F3]/60 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
-                            title={
-                              blog.isFeatured ? "Unfeature" : "Mark as featured"
-                            }
-                          >
-                            {currentAction === "feature" ? (
-                              <Loader2 className="h-4 w-4 mx-auto animate-spin text-[#C00083]" />
-                            ) : (
-                              <Sparkles
-                                className={`h-4 w-4 mx-auto ${
-                                  blog.isFeatured
-                                    ? "text-[#C00083] fill-[#C00083]"
-                                    : "text-[#EADDED] hover:text-[#C00083]"
-                                }`}
-                              />
-                            )}
-                          </button>
-                        </td>
-
-                        {/* Published Date */}
-                        <td className="px-4 py-3.5 text-xs text-[#75647B]">
-                          <span className="flex items-center gap-1.5">
-                            <Calendar className="h-3 w-3 text-[#9200A8]" />
-                            <span>
-                              {blog.publishedAt
-                                ? new Date(blog.publishedAt).toLocaleDateString(
-                                    "en-US",
-                                    {
-                                      month: "short",
-                                      day: "numeric",
-                                      year: "numeric",
-                                    }
-                                  )
-                                : "Not published"}
-                            </span>
-                          </span>
-                        </td>
-
                         {/* Row Actions */}
                         <td className="px-5 py-3.5 text-right">
-                          <div className="flex items-center justify-end gap-1">
-                            {/* Public Link */}
-                            {isPublished && (
-                              <Button
-                                asChild
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8 text-[#75647B] hover:text-[#35123F]"
-                                title="View public page"
-                              >
-                                <Link
-                                  href={`/blog/${blog.slug}`}
-                                  target="_blank"
-                                >
-                                  <ExternalLink className="h-3.5 w-3.5" />
-                                </Link>
-                              </Button>
-                            )}
-
-                            {/* Edit */}
+                          <div className="flex items-center justify-end gap-0.5">
                             <Button
                               asChild
                               variant="ghost"
@@ -756,59 +577,39 @@ export default function AdminBlogsPage() {
                               title="Edit article"
                             >
                               <Link href={`/admin/blogs/${blog.id}/edit`}>
-                                <Edit className="h-3.5 w-3.5" />
+                                <Edit className="h-4 w-4" />
                               </Link>
                             </Button>
 
-                            {/* Toggle Publish / Draft */}
                             <Button
+                              type="button"
                               variant="ghost"
                               size="icon"
                               disabled={isRowBusy}
                               onClick={() => handleTogglePublish(blog)}
-                              className="h-8 w-8 text-[#75647B] hover:text-[#10B981] disabled:cursor-not-allowed disabled:opacity-60"
+                              className="h-8 w-8 text-[#75647B] hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
                               title={
                                 isPublished
-                                  ? "Unpublish to draft"
-                                  : "Publish article"
+                                  ? "Deactivate (unpublish)"
+                                  : "Activate (publish)"
+                              }
+                              aria-label={
+                                isPublished
+                                  ? "Deactivate article"
+                                  : "Activate article"
                               }
                             >
                               {currentAction === "publish" ? (
-                                <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-600" />
+                                <Loader2 className="h-4 w-4 animate-spin text-[#9200A8]" />
+                              ) : isPublished ? (
+                                <PowerOff className="h-4 w-4 text-emerald-600" />
                               ) : (
-                                <CheckCircle2
-                                  className={`h-3.5 w-3.5 ${
-                                    isPublished ? "text-emerald-600" : ""
-                                  }`}
-                                />
+                                <Power className="h-4 w-4" />
                               )}
                             </Button>
 
-                            {/* Archive or Restore Button */}
                             <Button
-                              variant="ghost"
-                              size="icon"
-                              disabled={isRowBusy}
-                              onClick={() => handleArchive(blog)}
-                              className="h-8 w-8 text-[#75647B] hover:text-[#35123F] disabled:cursor-not-allowed disabled:opacity-60"
-                              title={
-                                blog.status === "ARCHIVED"
-                                  ? "Restore from archive to draft"
-                                  : "Move to archive"
-                              }
-                            >
-                              {currentAction === "archive" ||
-                              currentAction === "restore" ? (
-                                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#75647B]" />
-                              ) : blog.status === "ARCHIVED" ? (
-                                <ArchiveRestore className="h-3.5 w-3.5 text-stone-600" />
-                              ) : (
-                                <Archive className="h-3.5 w-3.5" />
-                              )}
-                            </Button>
-
-                            {/* Delete */}
-                            <Button
+                              type="button"
                               variant="ghost"
                               size="icon"
                               disabled={isRowBusy}
@@ -818,8 +619,9 @@ export default function AdminBlogsPage() {
                               }}
                               className="h-8 w-8 text-[#75647B] hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
                               title="Delete permanently"
+                              aria-label="Delete permanently"
                             >
-                              <Trash2 className="h-3.5 w-3.5" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
                         </td>
@@ -902,7 +704,7 @@ export default function AdminBlogsPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+      </AdminTableCard>
 
       {/* Delete Confirmation Modal */}
       {deletingId && (
@@ -956,6 +758,6 @@ export default function AdminBlogsPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPage>
   );
 }

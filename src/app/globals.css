@@ -306,6 +306,34 @@
 }
 
 @layer components {
+  .admin-shell {
+    --admin-header-height: 3.75rem;
+  }
+
+  .admin-header {
+    min-height: var(--admin-header-height);
+  }
+
+  .admin-main {
+    scroll-margin-top: var(--admin-header-height);
+  }
+
+  .admin-panel {
+    border-radius: 0.875rem;
+  }
+
+  .admin-table thead th {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #75647b;
+  }
+
+  .admin-table tbody tr:hover {
+    background-color: rgb(250 245 255 / 0.55);
+  }
+
   /* Top spacing: fixed header + comfortable gap (pt-8/10 mobile, pt-12/16 desktop) */
   .customer-page-top {
     padding-top: calc(var(--customer-header-height) + 2rem);

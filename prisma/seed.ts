@@ -247,6 +247,45 @@ async function main() {
       });
     }
     console.log("✅ Initial Our Works seeded/upserted successfully!");
+
+    const galleryCount = await prisma.galleryPhoto.count();
+    if (galleryCount === 0) {
+      console.log("🌱 Seeding initial published gallery photos...");
+      const publishedAt = new Date("2026-06-13T10:00:00Z");
+      await prisma.galleryPhoto.createMany({
+        data: [
+          {
+            url: "/images/programs/school-readiness.png",
+            altText: "Students with study materials and book kits",
+            displayOrder: 1,
+            status: "PUBLISHED",
+            publishedAt,
+          },
+          {
+            url: "/images/about/Joyful-Inclusive.png",
+            altText: "Inclusive learning session with rural children",
+            displayOrder: 2,
+            status: "PUBLISHED",
+            publishedAt,
+          },
+          {
+            url: "/images/programs/rehabilitation.png",
+            altText: "Child receiving physical therapy in care camp",
+            displayOrder: 3,
+            status: "PUBLISHED",
+            publishedAt,
+          },
+          {
+            url: "/images/programs/vocational.png",
+            altText: "Women participating in vocational tailoring workshop",
+            displayOrder: 4,
+            status: "PUBLISHED",
+            publishedAt,
+          },
+        ],
+      });
+      console.log("✅ Initial gallery photos seeded successfully!");
+    }
   } catch (error: unknown) {
     const message =
       error instanceof Error

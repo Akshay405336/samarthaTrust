@@ -9,28 +9,22 @@ import {
   Search,
   Edit,
   Trash2,
-  Calendar,
   Sparkles,
   CheckCircle2,
   AlertCircle,
   RefreshCw,
   Loader2,
   AlertTriangle,
-  ExternalLink,
   ArrowUpDown,
-  Check,
-  X,
+  Power,
+  PowerOff,
   User as UserIcon,
-  Globe,
-  Mail,
-  Phone,
 } from "lucide-react";
-import { Breadcrumbs } from "@/components/admin/breadcrumbs";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { AdminPage, AdminPageHeader, AdminTableCard, AdminToolbar } from "@/components/admin/admin-page";
+import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Pagination } from "@/components/shared/pagination";
-
 interface TeamMemberItem {
   id: string;
   name: string;
@@ -92,12 +86,6 @@ export default function AdminTeamPage() {
   const [deletingId, setDeletingId] = React.useState<string | null>(null);
   const [deletingName, setDeletingName] = React.useState<string>("");
   const [isDeleting, setIsDeleting] = React.useState(false);
-
-  // Quick edit display order state
-  const [editingOrderId, setEditingOrderId] = React.useState<string | null>(
-    null
-  );
-  const [editingOrderVal, setEditingOrderVal] = React.useState<number>(0);
 
   // Notification message
   const [toast, setToast] = React.useState<ToastState | null>(null);
@@ -228,104 +216,15 @@ export default function AdminTeamPage() {
           }));
         }
         showToast(
-          `${updated.name} ${updated.isActive ? "activated" : "deactivated"}.`
+          updated.isActive
+            ? `${updated.name} activated on the website.`
+            : `${updated.name} deactivated (hidden on the website).`
         );
       } else {
         showToast(data.error || "Failed to update member status.", "error");
       }
     } catch {
       showToast("Network error while updating status.", "error");
-    } finally {
-      setActionLoadingIds((prev) => {
-        const next = { ...prev };
-        delete next[member.id];
-        return next;
-      });
-    }
-  };
-
-  // Toggle featured status in place
-  const handleToggleFeatured = async (member: TeamMemberItem) => {
-    const actionKey = "featured";
-    if (actionLoadingIds[member.id]) return;
-
-    setActionLoadingIds((prev) => ({ ...prev, [member.id]: actionKey }));
-
-    try {
-      const res = await fetch(`/api/admin/team/${member.id}/feature`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isFeatured: !member.isFeatured }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.success && data.member) {
-        const updated = data.member as TeamMemberItem;
-        if (
-          featuredFilter === "ALL" ||
-          (featuredFilter === "true" && updated.isFeatured) ||
-          (featuredFilter === "false" && !updated.isFeatured)
-        ) {
-          setMembers((prev) =>
-            prev.map((m) => (m.id === member.id ? updated : m))
-          );
-        } else {
-          setMembers((prev) => prev.filter((m) => m.id !== member.id));
-          setPagination((prev) => ({
-            ...prev,
-            total: Math.max(0, prev.total - 1),
-            totalPages: Math.max(
-              1,
-              Math.ceil(Math.max(0, prev.total - 1) / prev.limit)
-            ),
-          }));
-        }
-        showToast(
-          `${updated.name} ${updated.isFeatured ? "featured" : "unfeatured"}.`
-        );
-      } else {
-        showToast(data.error || "Failed to toggle featured status.", "error");
-      }
-    } catch {
-      showToast("Network error while toggling featured status.", "error");
-    } finally {
-      setActionLoadingIds((prev) => {
-        const next = { ...prev };
-        delete next[member.id];
-        return next;
-      });
-    }
-  };
-
-  // Save quick display order
-  const handleSaveOrder = async (member: TeamMemberItem) => {
-    const actionKey = "order";
-    if (actionLoadingIds[member.id]) return;
-
-    setActionLoadingIds((prev) => ({ ...prev, [member.id]: actionKey }));
-
-    try {
-      const res = await fetch(`/api/admin/team/${member.id}/order`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayOrder: editingOrderVal }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.success && data.member) {
-        const updated = data.member as TeamMemberItem;
-        setMembers((prev) =>
-          prev.map((m) => (m.id === member.id ? updated : m))
-        );
-        setEditingOrderId(null);
-        showToast(
-          `Display order for ${updated.name} updated to ${updated.displayOrder}.`
-        );
-      } else {
-        showToast(data.error || "Failed to update display order.", "error");
-      }
-    } catch {
-      showToast("Network error while updating display order.", "error");
     } finally {
       setActionLoadingIds((prev) => {
         const next = { ...prev };
@@ -370,7 +269,7 @@ export default function AdminTeamPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <AdminPage>
       {/* Toast banner */}
       {toast && (
         <div
@@ -391,41 +290,25 @@ export default function AdminTeamPage() {
         </div>
       )}
 
-      {/* Header and Actions */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <Breadcrumbs
-            items={[
-              { label: "Dashboard", href: "/admin" },
-              { label: "Team Management" },
-            ]}
-          />
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#35123F]">
-            Team Management
-          </h1>
-          <p className="text-sm text-[#75647B]">
-            Manage trustees, leadership, and team profiles displayed on the
-            Samartha Trust website.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Button
-            asChild
-            className="gap-2 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] hover:from-[#5E008C] hover:via-[#7D0090] hover:to-[#D0006B] text-white shadow-xs"
-          >
+      <AdminPageHeader
+        breadcrumbs={[
+          { label: "Dashboard", href: "/admin" },
+          { label: "Team Management" },
+        ]}
+        title="Team Management"
+        description="Manage trustees, leadership, and team profiles displayed on the Samartha Trust website."
+        actions={
+          <Button asChild size="sm" className="gap-2 rounded-lg">
             <Link href="/admin/team/new">
               <Plus className="h-4 w-4" />
-              <span>Add Team Member</span>
+              Add team member
             </Link>
           </Button>
-        </div>
-      </div>
+        }
+      />
 
-      {/* Search and Filters panel */}
-      <Card className="border-[#EADDED] bg-white shadow-2xs">
-        <CardContent className="p-4 sm:p-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <AdminToolbar>
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             {/* Search Input */}
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#75647B]" />
@@ -507,24 +390,24 @@ export default function AdminTeamPage() {
 
               {/* In-place Refresh button */}
               <Button
+                type="button"
                 variant="outline"
-                size="sm"
+                size="icon"
                 onClick={handleRefresh}
                 disabled={isRefreshing}
-                className="h-8 border-[#EADDED] text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
+                className="h-9 w-9 border-[#EADDED] text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
                 title="Refresh team members"
+                aria-label="Refresh team members"
               >
                 <RefreshCw
-                  className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin text-[#9200A8]" : ""}`}
+                  className={`h-4 w-4 ${isRefreshing ? "animate-spin text-[#9200A8]" : ""}`}
                 />
               </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+      </AdminToolbar>
 
-      {/* Team Members Table */}
-      <Card className="border-[#EADDED] bg-white shadow-2xs overflow-hidden">
+      <AdminTableCard>
         <CardHeader className="border-b border-[#EADDED]/70 bg-[#FDF8FF] px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -541,371 +424,260 @@ export default function AdminTeamPage() {
           </div>
         </CardHeader>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-[#35123F]">
-            <thead className="bg-[#FDF8FF] border-b border-[#EADDED] text-xs font-bold uppercase tracking-wider text-[#75647B]">
-              <tr>
-                <th scope="col" className="px-6 py-3.5">
-                  Member
-                </th>
-                <th scope="col" className="px-6 py-3.5 text-center">
-                  Display Order
-                </th>
-                <th scope="col" className="px-6 py-3.5 text-center">
-                  Featured
-                </th>
-                <th scope="col" className="px-6 py-3.5 text-center">
-                  Status
-                </th>
-                <th scope="col" className="px-6 py-3.5">
-                  Updated
-                </th>
-                <th scope="col" className="px-6 py-3.5 text-right">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#EADDED]/60">
-              {initialLoading ? (
-                // Skeletons
-                Array.from({ length: 4 }).map((_, idx) => (
-                  <tr key={idx} className="animate-pulse">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-[#FCE7F3]/60" />
-                        <div className="space-y-2">
-                          <div className="h-4 w-32 rounded bg-[#FCE7F3]/60" />
-                          <div className="h-3 w-24 rounded bg-[#EADDED]" />
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="h-4 w-8 mx-auto rounded bg-[#EADDED]" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="h-5 w-16 mx-auto rounded bg-[#EADDED]" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="h-5 w-16 mx-auto rounded bg-[#EADDED]" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="h-4 w-20 rounded bg-[#EADDED]" />
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="h-8 w-24 ml-auto rounded bg-[#EADDED]" />
-                    </td>
-                  </tr>
-                ))
-              ) : members.length === 0 ? (
-                // Empty state
-                <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center">
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF5FF] text-[#C00083] border border-[#EADDED]">
-                      <Users className="h-6 w-6" />
-                    </div>
-                    <h3 className="mt-4 text-base font-bold text-[#35123F]">
-                      No team profiles found
-                    </h3>
-                    <p className="mt-1 text-xs text-[#75647B] max-w-sm mx-auto">
-                      {search ||
-                      statusFilter !== "ALL" ||
-                      featuredFilter !== "ALL"
-                        ? "No team members matched your active search or filter criteria. Try clearing filters."
-                        : "No team members have been added to the database yet. Click below to add the first profile."}
-                    </p>
-                    <div className="mt-5">
-                      <Button
-                        asChild
-                        size="sm"
-                        className="gap-2 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] text-white"
-                      >
-                        <Link href="/admin/team/new">
-                          <Plus className="h-4 w-4" />
-                          <span>Add First Team Member</span>
-                        </Link>
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                // Real rows
-                members.map((member) => {
-                  const isActionLoading = Boolean(actionLoadingIds[member.id]);
-                  const activeAction = actionLoadingIds[member.id];
-                  const isEditingOrder = editingOrderId === member.id;
-
-                  return (
-                    <tr
-                      key={member.id}
-                      className="hover:bg-[#FDF8FF] transition-colors"
+        <CardContent className="p-0">
+          {initialLoading ? (
+            <div className="flex flex-col items-center justify-center space-y-3 p-12">
+              <Loader2 className="h-8 w-8 animate-spin text-[#9200A8]" />
+              <p className="text-xs text-[#75647B]">
+                Loading team members from database...
+              </p>
+            </div>
+          ) : members.length === 0 ? (
+            <div className="flex flex-col items-center justify-center space-y-3 p-12 text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#EADDED] bg-[#FAF5FF] text-[#9200A8]">
+                <Users className="h-6 w-6" />
+              </div>
+              <h3 className="text-base font-bold text-[#35123F]">
+                No team profiles found
+              </h3>
+              <p className="max-w-sm text-xs text-[#75647B]">
+                {search || statusFilter !== "ALL" || featuredFilter !== "ALL"
+                  ? "No team members match your search and filter criteria. Try clearing filters."
+                  : "Add your first team profile to show on the About page."}
+              </p>
+              <Button asChild size="sm" className="mt-2 gap-1.5">
+                <Link href="/admin/team/new">
+                  <Plus className="h-4 w-4" />
+                  <span>Add First Team Member</span>
+                </Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="admin-table w-full text-left text-sm">
+                <thead className="border-b border-[#EADDED] bg-[#FDF8FF] text-xs uppercase tracking-wider text-[#75647B]">
+                  <tr>
+                    <th scope="col" className="px-5 py-3.5 font-bold">
+                      Member & Slug
+                    </th>
+                    <th scope="col" className="px-4 py-3.5 font-bold">
+                      Designation
+                    </th>
+                    <th scope="col" className="px-4 py-3.5 font-bold">
+                      Status
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-5 py-3.5 text-right font-bold"
                     >
-                      {/* Member Info */}
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[#EADDED] bg-[#FAF5FF]">
-                            {member.profileImage ? (
-                              <Image
-                                src={member.profileImage}
-                                alt={member.name}
-                                width={40}
-                                height={40}
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center text-[#75647B]">
-                                <UserIcon className="h-5 w-5" />
-                              </div>
-                            )}
-                          </div>
-                          <div className="min-w-0">
-                            <Link
-                              href={`/admin/team/${member.id}/edit`}
-                              className="font-bold text-[#35123F] hover:text-[#9200A8] transition-colors text-sm line-clamp-1"
-                            >
-                              {member.name}
-                            </Link>
-                            <p className="text-xs text-[#75647B] line-clamp-1 mt-0.5">
-                              {member.designation}
-                            </p>
-                            {/* Contact icons preview */}
-                            <div className="flex items-center gap-2 mt-1 text-[11px] text-[#75647B]/70">
-                              {member.email && (
-                                <span
-                                  title={member.email}
-                                  className="inline-flex items-center gap-0.5"
-                                >
-                                  <Mail className="h-3 w-3" />
-                                </span>
-                              )}
-                              {member.phone && (
-                                <span
-                                  title={member.phone}
-                                  className="inline-flex items-center gap-0.5"
-                                >
-                                  <Phone className="h-3 w-3" />
-                                </span>
-                              )}
-                              {member.websiteUrl && (
-                                <span
-                                  title={member.websiteUrl}
-                                  className="inline-flex items-center gap-0.5"
-                                >
-                                  <Globe className="h-3 w-3" />
-                                </span>
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#EADDED]/60">
+                  {members.map((member) => {
+                    const isRowBusy = !!actionLoadingIds[member.id];
+                    const currentAction = actionLoadingIds[member.id];
+
+                    return (
+                      <tr
+                        key={member.id}
+                        className={`group transition-colors hover:bg-[#FAF5FF] ${
+                          isRowBusy ? "opacity-75" : ""
+                        }`}
+                      >
+                        <td className="px-5 py-3.5">
+                          <div className="flex items-center gap-3">
+                            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[#EADDED] bg-[#FAF5FF]">
+                              {member.profileImage ? (
+                                <Image
+                                  src={member.profileImage}
+                                  alt={member.name}
+                                  width={48}
+                                  height={48}
+                                  className="h-full w-full object-cover"
+                                />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center text-[#75647B]">
+                                  <UserIcon className="h-5 w-5" />
+                                </div>
                               )}
                             </div>
+                            <div className="min-w-0 max-w-xs sm:max-w-sm">
+                              <Link
+                                href={`/admin/team/${member.id}/edit`}
+                                className="line-clamp-1 block text-sm font-bold text-[#35123F] transition-colors hover:text-[#9200A8]"
+                              >
+                                {member.name}
+                              </Link>
+                              <span className="block truncate font-mono text-[11px] text-[#75647B]">
+                                /about#{member.slug}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </td>
+                        </td>
 
-                      {/* Display Order */}
-                      <td className="px-6 py-4 text-center">
-                        {isEditingOrder ? (
-                          <div className="inline-flex items-center gap-1">
-                            <Input
-                              type="number"
-                              value={editingOrderVal}
-                              onChange={(e) =>
-                                setEditingOrderVal(Number(e.target.value))
-                              }
-                              className="h-7 w-16 text-center text-xs p-1"
-                              autoFocus
-                            />
+                        <td className="px-4 py-3.5">
+                          <Badge
+                            variant="secondary"
+                            className="text-xs font-semibold"
+                          >
+                            {member.designation}
+                          </Badge>
+                        </td>
+
+                        <td className="px-4 py-3.5">
+                          {member.isActive ? (
+                            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
+                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                              Active
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 rounded-full border border-stone-200 bg-stone-100 px-2.5 py-0.5 text-xs font-semibold text-stone-600">
+                              <span className="h-1.5 w-1.5 rounded-full bg-stone-400" />
+                              Inactive
+                            </span>
+                          )}
+                        </td>
+
+                        <td className="px-5 py-3.5 text-right">
+                          <div className="flex items-center justify-end gap-0.5">
                             <Button
-                              size="sm"
+                              asChild
                               variant="ghost"
-                              onClick={() => handleSaveOrder(member)}
-                              disabled={isActionLoading}
-                              className="h-7 w-7 p-0 text-emerald-600 hover:bg-emerald-50"
-                              title="Save order"
+                              size="icon"
+                              className="h-8 w-8 text-[#75647B] hover:text-[#9200A8]"
+                              title="Edit profile"
                             >
-                              {isActionLoading && activeAction === "order" ? (
-                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              <Link href={`/admin/team/${member.id}/edit`}>
+                                <Edit className="h-4 w-4" />
+                              </Link>
+                            </Button>
+
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              disabled={isRowBusy}
+                              onClick={() => handleToggleActive(member)}
+                              className="h-8 w-8 text-[#75647B] hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                              title={
+                                member.isActive
+                                  ? "Deactivate (hide on site)"
+                                  : "Activate (show on site)"
+                              }
+                              aria-label={
+                                member.isActive
+                                  ? "Deactivate team member"
+                                  : "Activate team member"
+                              }
+                            >
+                              {currentAction === "status" ? (
+                                <Loader2 className="h-4 w-4 animate-spin text-[#9200A8]" />
+                              ) : member.isActive ? (
+                                <PowerOff className="h-4 w-4 text-emerald-600" />
                               ) : (
-                                <Check className="h-3.5 w-3.5" />
+                                <Power className="h-4 w-4" />
                               )}
                             </Button>
+
                             <Button
-                              size="sm"
+                              type="button"
                               variant="ghost"
-                              onClick={() => setEditingOrderId(null)}
-                              className="h-7 w-7 p-0 text-[#75647B] hover:bg-stone-100"
-                              title="Cancel"
+                              size="icon"
+                              disabled={isRowBusy}
+                              onClick={() => {
+                                setDeletingId(member.id);
+                                setDeletingName(member.name);
+                              }}
+                              className="h-8 w-8 text-[#75647B] hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                              title="Delete permanently"
+                              aria-label="Delete permanently"
                             >
-                              <X className="h-3.5 w-3.5" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setEditingOrderId(member.id);
-                              setEditingOrderVal(member.displayOrder);
-                            }}
-                            className="inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-xs font-semibold text-[#35123F] bg-[#FCE7F3]/60 hover:bg-[#FCE7F3] border border-[#EADDED] transition-colors"
-                            title="Click to edit display order"
-                          >
-                            <span>#{member.displayOrder}</span>
-                            <Edit className="h-2.5 w-2.5 text-[#75647B]" />
-                          </button>
-                        )}
-                      </td>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-                      {/* Featured Toggle */}
-                      <td className="px-6 py-4 text-center">
-                        <button
-                          type="button"
-                          onClick={() => handleToggleFeatured(member)}
-                          disabled={isActionLoading}
-                          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium border transition-colors ${
-                            member.isFeatured
-                              ? "border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100"
-                              : "border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100"
-                          }`}
-                          title={
-                            member.isFeatured
-                              ? "Click to unfeature"
-                              : "Click to feature"
-                          }
-                        >
-                          {isActionLoading && activeAction === "featured" ? (
-                            <Loader2 className="h-3 w-3 animate-spin text-amber-600" />
-                          ) : (
-                            <Sparkles
-                              className={`h-3 w-3 ${
-                                member.isFeatured
-                                  ? "text-amber-500 fill-amber-500"
-                                  : "text-stone-400"
-                              }`}
-                            />
-                          )}
-                          <span>
-                            {member.isFeatured ? "Featured" : "Standard"}
-                          </span>
-                        </button>
-                      </td>
+          {!initialLoading && members.length > 0 && (
+            <div className="flex flex-col items-center justify-between gap-3 border-t border-[#EADDED]/70 px-6 py-4 text-xs text-[#75647B] sm:flex-row">
+              <div>
+                Showing Page{" "}
+                <span className="font-bold text-[#35123F]">
+                  {pagination.page}
+                </span>{" "}
+                of{" "}
+                <span className="font-bold text-[#35123F]">
+                  {pagination.totalPages}
+                </span>{" "}
+                ({pagination.total} total members)
+              </div>
 
-                      {/* Active Status Toggle */}
-                      <td className="px-6 py-4 text-center">
-                        <button
-                          type="button"
-                          onClick={() => handleToggleActive(member)}
-                          disabled={isActionLoading}
-                          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium border transition-colors ${
-                            member.isActive
-                              ? "border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
-                              : "border-stone-300 bg-stone-100 text-stone-600 hover:bg-stone-200"
-                          }`}
-                          title={
-                            member.isActive
-                              ? "Click to deactivate"
-                              : "Click to activate"
-                          }
-                        >
-                          {isActionLoading && activeAction === "status" ? (
-                            <Loader2 className="h-3 w-3 animate-spin" />
-                          ) : (
-                            <span
-                              className={`h-1.5 w-1.5 rounded-full ${
-                                member.isActive
-                                  ? "bg-emerald-600"
-                                  : "bg-stone-400"
-                              }`}
-                            />
-                          )}
-                          <span>{member.isActive ? "Active" : "Inactive"}</span>
-                        </button>
-                      </td>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!pagination.hasPrevPage || isRefreshing}
+                  onClick={() =>
+                    setPagination((prev) => ({
+                      ...prev,
+                      page: Math.max(1, prev.page - 1),
+                    }))
+                  }
+                  className="h-8 cursor-pointer text-xs"
+                >
+                  Previous
+                </Button>
 
-                      {/* Updated Date */}
-                      <td className="px-6 py-4 text-xs text-[#75647B]">
-                        <div className="flex items-center gap-1.5">
-                          <Calendar className="h-3.5 w-3.5 text-[#C00083]" />
-                          <span>
-                            {new Date(member.updatedAt).toLocaleDateString(
-                              "en-US",
-                              {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              }
-                            )}
-                          </span>
-                        </div>
-                      </td>
+                <div className="flex items-center gap-1">
+                  {Array.from(
+                    { length: pagination.totalPages },
+                    (_, i) => i + 1
+                  ).map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      disabled={isRefreshing}
+                      onClick={() =>
+                        setPagination((prev) => ({ ...prev, page: p }))
+                      }
+                      className={`h-8 w-8 cursor-pointer rounded-md text-xs font-semibold transition-colors ${
+                        pagination.page === p
+                          ? "bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] text-white shadow-2xs"
+                          : "text-[#75647B] hover:bg-[#FCE7F3]/60 hover:text-[#35123F]"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
 
-                      {/* Actions */}
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          {/* View on About page */}
-                          <Button
-                            asChild
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0 text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
-                            title="View on About page"
-                          >
-                            <Link href="/about" target="_blank">
-                              <ExternalLink className="h-3.5 w-3.5" />
-                            </Link>
-                          </Button>
-
-                          {/* Edit button */}
-                          <Button
-                            asChild
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0 text-[#75647B] hover:bg-[#FAF5FF] hover:text-[#35123F]"
-                            title="Edit profile"
-                          >
-                            <Link href={`/admin/team/${member.id}/edit`}>
-                              <Edit className="h-3.5 w-3.5" />
-                            </Link>
-                          </Button>
-
-                          {/* Delete button */}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setDeletingId(member.id);
-                              setDeletingName(member.name);
-                            }}
-                            className="h-8 w-8 p-0 text-red-500 hover:bg-red-50 hover:text-red-700"
-                            title="Delete profile"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination controls */}
-        {!initialLoading && pagination.total > 0 && (
-          <div className="border-t border-[#EADDED] bg-[#FDF8FF] px-6">
-            <Pagination
-              currentPage={pagination.page}
-              totalPages={pagination.totalPages}
-              totalRecords={pagination.total}
-              limit={pagination.limit}
-              recordLabel="members"
-              disabled={isRefreshing}
-              onPageChange={(page) =>
-                setPagination((p) => ({
-                  ...p,
-                  page: Math.max(1, Math.min(page, p.totalPages)),
-                }))
-              }
-            />
-          </div>
-        )}
-      </Card>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!pagination.hasNextPage || isRefreshing}
+                  onClick={() =>
+                    setPagination((prev) => ({
+                      ...prev,
+                      page: Math.min(prev.totalPages, prev.page + 1),
+                    }))
+                  }
+                  className="h-8 cursor-pointer text-xs"
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </AdminTableCard>
 
       {/* Delete Confirmation Modal */}
       {deletingId && (
@@ -971,6 +743,6 @@ export default function AdminTeamPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPage>
   );
 }
