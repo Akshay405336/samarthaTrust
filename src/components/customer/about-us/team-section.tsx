@@ -6,6 +6,8 @@ import { Users, User as UserIcon, Sparkles } from "lucide-react";
 import { LinkedInIcon } from "@/components/shared/social-icons";
 import { Container } from "@/components/shared/container";
 import { Pagination } from "@/components/shared/pagination";
+import { useScrollInView } from "@/hooks/use-scroll-in-view";
+import { cn } from "@/lib/utils";
 
 export interface TeamMemberPublicItem {
   id: string;
@@ -117,37 +119,68 @@ export function TeamSection({
     return filteredMembers.slice(start, start + pageSize);
   }, [filteredMembers, safePage, pageSize]);
 
+  const { ref: sectionRef, revealVariant } = useScrollInView<HTMLElement>({
+    threshold: 0.1,
+  });
+
   if (!isLoading && members.length === 0 && hideIfEmpty) {
     return null;
   }
 
   return (
     <section
+      ref={sectionRef}
       id="team"
       aria-labelledby="team-heading"
-      className="relative overflow-hidden bg-white py-10 text-[#35123F] sm:py-12 lg:py-14"
+      className="relative overflow-hidden bg-gradient-to-b from-white to-[#FAF5FF]/80 py-10 text-[#35123F] sm:py-12 lg:py-14"
     >
-      <Container>
-        {/* Section heading */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-20 top-0 h-48 w-48 rounded-full bg-[#FCE7F3]/50 blur-3xl"
+      />
+      <Container className="relative">
         <div className="mb-8 flex flex-col gap-4 sm:mb-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <div className="mb-3 inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#9200A8] sm:text-xs">
-              <span className="h-1.5 w-6 rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078]" />
-              {badge}
+            <div
+              className={cn(
+                revealVariant("slide-left"),
+                "mb-3 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.2em] sm:text-xs"
+              )}
+            >
+              <span className="h-1.5 w-6 animate-pulse rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078]" />
+              <span className="bg-gradient-to-r from-[#7100A8] to-[#9200A8] bg-clip-text text-transparent">
+                {badge}
+              </span>
             </div>
 
             <h2
               id="team-heading"
-              className="text-3xl font-extrabold leading-tight tracking-tight text-[#35123F] sm:text-4xl lg:text-5xl"
+              className={cn(
+                revealVariant("scale-in"),
+                "text-3xl font-extrabold leading-tight tracking-tight text-[#35123F] sm:text-4xl lg:text-5xl"
+              )}
+              style={{ animationDelay: "100ms" }}
             >
               {title}{" "}
-              <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
-                {highlight}
+              <span className="relative inline-block">
+                <span className="help-team-wave bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
+                  {highlight}
+                </span>
+                <span
+                  className="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078] opacity-70"
+                  aria-hidden="true"
+                />
               </span>
             </h2>
           </div>
 
-          <p className="max-w-xl text-sm leading-6 text-[#75647B] sm:text-base sm:leading-7 lg:max-w-md">
+          <p
+            className={cn(
+              revealVariant("blur-in"),
+              "max-w-xl text-sm leading-6 text-[#75647B] sm:text-base sm:leading-7 lg:max-w-md"
+            )}
+            style={{ animationDelay: "180ms" }}
+          >
             {description}
           </p>
         </div>
@@ -194,8 +227,12 @@ export function TeamSection({
                 return (
                   <article
                     key={member.id}
-                    className="group relative flex flex-col overflow-hidden rounded-[24px] border border-[#EADDED] bg-white shadow-[0_8px_25px_rgba(53,18,63,0.07)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(53,18,63,0.13)]"
+                    className="motion-card-tilt home-card-hover group relative flex flex-col overflow-hidden rounded-[24px] border border-[#EADDED] bg-white shadow-[0_8px_25px_rgba(53,18,63,0.07)] hover:border-[#9200A8]/35 hover:shadow-[0_16px_34px_rgba(113,0,168,0.12)]"
                   >
+                    <div
+                      className="absolute inset-x-0 top-0 z-10 h-1 scale-x-0 bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] transition-transform duration-500 group-hover:scale-x-100"
+                      aria-hidden="true"
+                    />
                     {/* Profile image */}
                     <div className="relative h-[250px] overflow-hidden bg-[#FAF5FF] sm:h-[270px]">
                       {member.profileImage ? (
@@ -205,7 +242,7 @@ export function TeamSection({
                           fill
                           unoptimized
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                          className="home-img-zoom object-cover object-top"
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#FAF5FF] to-[#FCE7F3]">

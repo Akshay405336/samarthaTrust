@@ -6,6 +6,8 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, Heart, UserRound, Tag } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
+import { useScrollInView } from "@/hooks/use-scroll-in-view";
+import { cn } from "@/lib/utils";
 
 export interface FormattedHomeBlogItem {
   id: string;
@@ -24,6 +26,10 @@ export interface HomeBlogCarouselProps {
 
 export function HomeBlogCarousel({ blogs }: HomeBlogCarouselProps) {
   const carouselRef = React.useRef<HTMLDivElement>(null);
+  const { ref: sectionRef, isInView, revealVariant } =
+    useScrollInView<HTMLElement>({
+      threshold: 0.12,
+    });
 
   const scrollCarousel = (direction: -1 | 1) => {
     const container = carouselRef.current;
@@ -44,6 +50,7 @@ export function HomeBlogCarousel({ blogs }: HomeBlogCarouselProps) {
 
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="home-blog-heading"
       className="overflow-hidden bg-white py-14 sm:py-16 lg:py-20"
     >
@@ -52,7 +59,12 @@ export function HomeBlogCarousel({ blogs }: HomeBlogCarouselProps) {
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.28fr)] lg:gap-12 xl:gap-16">
           {/* Left heading and desktop navigation */}
           <div className="flex flex-col items-start pt-1">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white px-4 py-2 shadow-xs">
+            <div
+              className={cn(
+                "mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white px-4 py-2 shadow-xs",
+                revealVariant("slide-left")
+              )}
+            >
               <Heart
                 className="h-4 w-4 fill-[#E90078] text-[#E90078]"
                 aria-hidden="true"
@@ -64,18 +76,34 @@ export function HomeBlogCarousel({ blogs }: HomeBlogCarouselProps) {
 
             <h2
               id="home-blog-heading"
-              className="text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#35123F]"
+              className={cn(
+                "text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#35123F]",
+                revealVariant("clip-up")
+              )}
+              style={{ animationDelay: "100ms" }}
             >
               Read Our <span className="text-brand-gradient">Latest News</span>
             </h2>
 
-            <p className="mt-4 max-w-md text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]">
+            <p
+              className={cn(
+                "motion-blur-in mt-4 max-w-md text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]",
+                isInView && "motion-active"
+              )}
+              style={{ animationDelay: "220ms" }}
+            >
               Stories of hope, transparent updates, and community impact
               directly from our field initiatives.
             </p>
 
             {/* Desktop navigation controls */}
-            <div className="mt-8 hidden items-center gap-3 lg:flex">
+            <div
+              className={cn(
+                "mt-8 hidden items-center gap-3 lg:flex",
+                revealVariant("fade-up")
+              )}
+              style={{ animationDelay: "280ms" }}
+            >
               <button
                 type="button"
                 onClick={() => scrollCarousel(-1)}
@@ -103,10 +131,14 @@ export function HomeBlogCarousel({ blogs }: HomeBlogCarouselProps) {
             aria-label="Latest blog articles"
             tabIndex={0}
           >
-            {blogs.map((blog) => (
+            {blogs.map((blog, index) => (
               <article
                 key={blog.id}
-                className="group flex h-full w-[min(100%,360px)] shrink-0 snap-start flex-col overflow-hidden rounded-[24px] border border-[#EADDED] bg-white transition-all duration-300 hover:border-[#9200A8]/50 hover:shadow-lg sm:w-[380px]"
+                className={cn(
+                  "help-blog-card-enter home-card-hover group flex h-full w-[min(100%,360px)] shrink-0 snap-start flex-col overflow-hidden rounded-[24px] border border-[#EADDED] bg-white hover:border-[#9200A8]/50 hover:shadow-lg sm:w-[380px]",
+                  isInView && "help-blog-card-enter-active"
+                )}
+                style={{ animationDelay: `${320 + index * 90}ms` }}
               >
                 {/* Cover image and date badge */}
                 <Link
@@ -121,7 +153,7 @@ export function HomeBlogCarousel({ blogs }: HomeBlogCarouselProps) {
                       fill
                       unoptimized
                       sizes="(max-width: 640px) 90vw, 380px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      className="home-img-zoom object-cover"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#FAF5FF] via-[#FCE7F3] to-[#F3E8FF]">

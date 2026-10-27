@@ -221,15 +221,6 @@ async function DonationSuccessContent({ params }: SuccessPageProps) {
 
               <div>
                 <span className="text-[#75647B] block text-xs">
-                  Designated Cause:
-                </span>
-                <span className="font-bold text-[#35123F]">
-                  {donation.causeTitle}
-                </span>
-              </div>
-
-              <div>
-                <span className="text-[#75647B] block text-xs">
                   Donation Reference:
                 </span>
                 <code className="font-mono font-bold text-[#35123F]">

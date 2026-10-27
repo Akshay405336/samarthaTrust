@@ -12,7 +12,6 @@ import {
   Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DONATION_CAUSES } from "./donation-constants";
 import { formatINR } from "./donation-validation";
 import type { DonationState } from "./donation-types";
 
@@ -35,9 +34,6 @@ export function DonationReview({
   isSubmitting = false,
   submittingText = "Opening Secure Checkout...",
 }: DonationReviewProps) {
-  const cause =
-    DONATION_CAUSES.find((c) => c.id === state.causeId) || DONATION_CAUSES[0];
-
   return (
     <div className="space-y-6">
       {/* Step Header */}
@@ -67,23 +63,11 @@ export function DonationReview({
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
-          <div>
-            <span className="text-[#75647B] block text-xs">
-              Selected Cause:
-            </span>
-            <p className="font-bold text-[#35123F] mt-0.5">{cause.title}</p>
-          </div>
-          <div>
-            <span className="text-[#75647B] block text-xs">Donation Type:</span>
-            <p className="font-bold text-[#35123F] mt-0.5">One-Time Gift</p>
-          </div>
-          <div className="sm:col-span-2 pt-2 border-t border-[#EADDED] flex items-baseline justify-between">
-            <span className="text-[#75647B] font-medium">Total Amount:</span>
-            <span className="text-xl font-extrabold text-[#9200A8]">
-              {formatINR(state.amount)}
-            </span>
-          </div>
+        <div className="flex items-baseline justify-between gap-4 border-t border-[#EADDED] pt-3 text-xs sm:text-sm">
+          <span className="font-medium text-[#75647B]">Total Amount:</span>
+          <span className="text-xl font-extrabold tabular-nums text-[#9200A8]">
+            {formatINR(state.amount)}
+          </span>
         </div>
       </div>
 

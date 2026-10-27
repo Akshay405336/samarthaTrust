@@ -58,44 +58,30 @@ describe("Donation Module & Razorpay Integration", () => {
   });
 
   describe("Step 1: One-Time Exclusivity & Amount Validation", () => {
-    it("accepts valid one-time donation parameters for all causes", () => {
-      const validCauses = [
-        "general",
-        "education",
-        "special-needs",
-        "healthcare",
-        "child-care",
-      ];
-      for (const causeId of validCauses) {
-        const errorsOneTime = validateStep1("one-time", causeId, 2000);
-        expect(Object.keys(errorsOneTime)).toHaveLength(0);
-      }
+    it("accepts valid one-time donation amount", () => {
+      const errorsOneTime = validateStep1(2000, "one-time");
+      expect(Object.keys(errorsOneTime)).toHaveLength(0);
     });
 
     it("strictly rejects monthly and non-one-time frequencies", () => {
       // @ts-expect-error Testing removal of monthly frequency
-      const errorsMonthly = validateStep1("monthly", "general", 1000);
+      const errorsMonthly = validateStep1(1000, "monthly");
       expect(errorsMonthly.frequency).toBe(
         "Only one-time contributions are supported."
       );
 
       // @ts-expect-error Testing invalid frequency input
-      const errorsAnnual = validateStep1("annually", "general", 1000);
+      const errorsAnnual = validateStep1(1000, "annually");
       expect(errorsAnnual.frequency).toBe(
         "Only one-time contributions are supported."
       );
     });
 
-    it("rejects nonexistent causeId", () => {
-      const errors = validateStep1("one-time", "nonexistent-cause", 1000);
-      expect(errors.causeId).toBeDefined();
-    });
-
     it("rejects amounts below MIN_AMOUNT and above MAX_AMOUNT", () => {
-      const errorsBelow = validateStep1("one-time", "general", MIN_AMOUNT - 1);
+      const errorsBelow = validateStep1(MIN_AMOUNT - 1);
       expect(errorsBelow.amount).toContain("Minimum contribution");
 
-      const errorsAbove = validateStep1("one-time", "general", MAX_AMOUNT + 1);
+      const errorsAbove = validateStep1(MAX_AMOUNT + 1);
       expect(errorsAbove.amount).toContain("Maximum contribution");
     });
 
@@ -403,14 +389,9 @@ describe("Donation Module & Razorpay Integration", () => {
   });
 
   describe("Constants & Configuration Integrity", () => {
-    it("contains 5 designated causes with required properties", () => {
-      expect(DONATION_CAUSES).toHaveLength(5);
-      for (const cause of DONATION_CAUSES) {
-        expect(cause.id).toBeDefined();
-        expect(cause.title).toBeDefined();
-        expect(cause.shortDescription).toBeDefined();
-        expect(cause.iconName).toBeDefined();
-      }
+    it("uses a single default general support cause for all donations", () => {
+      expect(DONATION_CAUSES).toHaveLength(1);
+      expect(DONATION_CAUSES[0].id).toBe("general");
     });
 
     it("contains standard preset amounts", () => {
@@ -456,12 +437,11 @@ describe("Donation Module & Razorpay Integration", () => {
       }
     });
 
-    it("ensures custom amount overrides any default preset cleanly", () => {
+    it("defaults causeId to general when omitted from order payload", () => {
       const customAmount = 3500;
       const parsed = createDonationOrderSchema.safeParse({
         amount: customAmount,
         frequency: "one-time",
-        causeId: "education",
         donor: {
           fullName: "Donor User",
           email: "donor@example.com",
@@ -471,7 +451,22 @@ describe("Donation Module & Razorpay Integration", () => {
       expect(parsed.success).toBe(true);
       if (parsed.success) {
         expect(parsed.data.amount).toBe(3500);
+        expect(parsed.data.causeId).toBe("general");
       }
+    });
+
+    it("rejects legacy per-cause ids no longer offered on the public form", () => {
+      const parsed = createDonationOrderSchema.safeParse({
+        amount: 1000,
+        frequency: "one-time",
+        causeId: "education",
+        donor: {
+          fullName: "Donor User",
+          email: "donor@example.com",
+          phone: "9876543210",
+        },
+      });
+      expect(parsed.success).toBe(false);
     });
   });
 

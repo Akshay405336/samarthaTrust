@@ -1,3 +1,6 @@
+"use client";
+
+import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,6 +18,43 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/shared/pagination";
 import { WorkIcon } from "./work-icon";
+import { useScrollInView } from "@/hooks/use-scroll-in-view";
+import { cn } from "@/lib/utils";
+
+const CARD_ENTERS = ["help-card-rise", "help-card-sway", "help-card-pop"] as const;
+
+const CARD_THEMES = [
+  {
+    border: "border-[#9200A8]/25",
+    main: "bg-gradient-to-br from-[#FCE7F3]/95 via-[#FAF5FF] to-[#EDE9FE]/40",
+    aside: "bg-gradient-to-br from-[#EDE9FE]/70 via-[#FDF8FF] to-[#FCE7F3]/50",
+    bar: "from-[#7100A8] via-[#9200A8] to-[#6366F1]",
+    chip: "border-[#C4B5FD]/50 bg-gradient-to-r from-[#EDE9FE] to-[#FAF5FF] text-[#6D28D9]",
+    check: "bg-gradient-to-br from-[#FCE7F3] to-[#EDE9FE] text-[#9200A8]",
+    beneficiary:
+      "border-[#C4B5FD]/40 bg-gradient-to-br from-white/90 to-[#EDE9FE]/50",
+  },
+  {
+    border: "border-[#E90078]/25",
+    main: "bg-gradient-to-br from-[#FDF2F8]/95 via-[#FAF5FF] to-[#FCE7F3]/45",
+    aside: "bg-gradient-to-br from-[#FCE7F3]/65 via-[#FDF2F8]/50 to-[#FAF5FF]",
+    bar: "from-[#E90078] via-[#9200A8] to-[#EC4899]",
+    chip: "border-[#FBCFE8]/60 bg-gradient-to-r from-[#FDF2F8] to-[#FCE7F3] text-[#BE185D]",
+    check: "bg-gradient-to-br from-[#FDF2F8] to-[#FCE7F3] text-[#E90078]",
+    beneficiary:
+      "border-[#FBCFE8]/50 bg-gradient-to-br from-white/90 to-[#FDF2F8]/55",
+  },
+  {
+    border: "border-[#6366F1]/25",
+    main: "bg-gradient-to-br from-[#EDE9FE]/90 via-[#FDF8FF] to-[#FCE7F3]/35",
+    aside: "bg-gradient-to-br from-[#FAF5FF] via-[#EDE9FE]/55 to-[#FDF2F8]/45",
+    bar: "from-[#6366F1] via-[#9200A8] to-[#7100A8]",
+    chip: "border-[#A5B4FC]/50 bg-gradient-to-r from-[#EDE9FE] to-[#FAF5FF] text-[#4338CA]",
+    check: "bg-gradient-to-br from-[#EDE9FE] to-[#FAF5FF] text-[#6366F1]",
+    beneficiary:
+      "border-[#A5B4FC]/45 bg-gradient-to-br from-white/90 to-[#EDE9FE]/45",
+  },
+] as const;
 
 export type { WorkPublicItem };
 
@@ -55,7 +95,7 @@ function buildWorksUrl(options: {
 
 export function WorksListSkeleton() {
   return (
-    <section className="bg-white py-10 sm:py-14 lg:py-16">
+    <section className="bg-gradient-to-br from-[#EDE9FE]/30 to-[#FCE7F3]/40 py-10 sm:py-14 lg:py-16">
       <Container>
         <div className="space-y-7">
           {Array.from({ length: 3 }).map((_, idx) => (
@@ -99,6 +139,9 @@ export function WorksList({
   currentCategory,
   search,
 }: WorksListProps) {
+  const { ref, isInView, revealVariant } = useScrollInView<HTMLElement>({
+    threshold: 0.06,
+  });
   const totalCount = pagination ? pagination.total : works.length;
 
   if (works.length === 0) {
@@ -141,36 +184,78 @@ export function WorksList({
   }
 
   return (
-    <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
-      <Container>
-        {/* Listing introduction */}
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-gradient-to-br from-[#EDE9FE]/35 via-[#FDF8FF] to-[#FCE7F3]/45 py-10 sm:py-14 lg:py-16"
+    >
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-90"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-24 top-20 h-64 w-64 rounded-full bg-[#9200A8]/15 blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-20 bottom-10 h-56 w-56 rounded-full bg-[#E90078]/12 blur-3xl"
+      />
+      <Container className="relative">
         <div className="mb-8 flex flex-col justify-between gap-4 border-b border-[#EADDED] pb-6 sm:mb-10 sm:flex-row sm:items-end">
           <div>
-            <div className="mb-3 flex items-center gap-2">
-              <span className="h-1.5 w-7 rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078]" />
+            <div
+              className={cn(
+                revealVariant("slide-left"),
+                "mb-3 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white px-3 py-1.5 shadow-sm"
+              )}
+            >
+              <span className="h-1.5 w-7 animate-pulse rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078]" />
               <span className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#75647B] sm:text-[11px]">
                 Where Our Efforts Make a Difference
               </span>
             </div>
 
-            <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-[#35123F] sm:text-3xl">
+            <h2
+              className={cn(
+                revealVariant("scale-in"),
+                "text-2xl font-extrabold tracking-[-0.035em] text-[#35123F] sm:text-3xl"
+              )}
+              style={{ animationDelay: "100ms" }}
+            >
               Our Areas of{" "}
-              <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
-                Impact
+              <span className="relative inline-block">
+                <span className="help-team-wave bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
+                  Impact
+                </span>
+                <span
+                  className="about-title-underline absolute -bottom-0.5 left-0 h-1 w-full rounded-full bg-gradient-to-r from-[#7100A8] to-[#E90078]"
+                  aria-hidden="true"
+                />
               </span>
             </h2>
 
-            <p className="mt-2 max-w-xl text-sm leading-6 text-[#75647B]">
+            <p
+              className={cn(
+                revealVariant("blur-in"),
+                "mt-2 max-w-xl text-sm leading-6 text-[#75647B]"
+              )}
+              style={{ animationDelay: "200ms" }}
+            >
               Explore the initiatives supporting children, families, and
               communities.
             </p>
           </div>
 
-          <div className="flex w-fit items-center gap-3 rounded-xl border border-[#EADDED] bg-white px-4 py-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#FCE7F3]/60 text-[#9200A8]">
+          <div
+            className={cn(
+              revealVariant("clip-up"),
+              "about-ring-pulse flex w-fit items-center gap-3 rounded-xl border border-[#EADDED] bg-white px-4 py-3 shadow-sm"
+            )}
+            style={{ animationDelay: "280ms" }}
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#7100A8] to-[#E90078] text-white shadow-sm">
               <HeartHandshake className="h-[18px] w-[18px]" />
             </div>
-
             <div>
               <p className="text-xl font-extrabold leading-none text-[#35123F]">
                 {String(totalCount).padStart(2, "0")}
@@ -186,25 +271,49 @@ export function WorksList({
         <div className="space-y-7 sm:space-y-9">
           {works.map((work, index) => {
             const hasImage = Boolean(work.featuredImage);
+            const enterClass = CARD_ENTERS[index % CARD_ENTERS.length];
+            const enterActive = `${enterClass}-active`;
+            const cardDelay = 100 + index * 90;
+            const theme = CARD_THEMES[index % CARD_THEMES.length];
 
             return (
               <article
                 key={work.id}
                 id={work.slug}
-                className="group relative scroll-mt-24 overflow-hidden rounded-[24px] border border-[#EADDED] bg-white transition-all duration-300 hover:border-[#C00083]/40 hover:shadow-[0_16px_45px_rgba(113,0,168,0.08)] sm:rounded-[28px]"
+                className={cn(
+                  enterClass,
+                  isInView && enterActive,
+                  "motion-card-tilt home-card-hover group relative scroll-mt-24 overflow-hidden rounded-[24px] border shadow-[0_10px_36px_rgba(113,0,168,0.08)] hover:shadow-[0_18px_50px_rgba(113,0,168,0.14)] sm:rounded-[28px]",
+                  theme.border
+                )}
+                style={{ animationDelay: `${cardDelay}ms` }}
               >
-                {/* Brand accent */}
-                <div className="h-[3px] w-full bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078]" />
+                <div
+                  className={cn(
+                    "help-accent-bar h-2 w-full bg-gradient-to-r",
+                    theme.bar
+                  )}
+                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_350px]">
-                  {/* Main content */}
-                  <div className="min-w-0 p-5 sm:p-7 lg:p-9">
+                  <div
+                    className={cn("relative min-w-0 p-5 sm:p-7 lg:p-9", theme.main)}
+                  >
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -right-16 top-0 h-40 w-40 rounded-full bg-[#9200A8]/10 blur-3xl"
+                    />
                     {/* Category and status */}
                     <div className="mb-6 flex flex-wrap items-center gap-2.5">
                       {work.badge && <Badge variant="warm">{work.badge}</Badge>}
 
                       {work.category && (
-                        <span className="inline-flex items-center rounded-lg border border-[#EADDED] bg-[#FAF5FF] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.09em] text-[#75647B]">
+                        <span
+                          className={cn(
+                            "inline-flex items-center rounded-lg border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.09em]",
+                            theme.chip
+                          )}
+                        >
                           {work.category}
                         </span>
                       )}
@@ -219,7 +328,7 @@ export function WorksList({
 
                     {/* Title */}
                     <div className="flex items-start gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#EADDED] bg-[#FCE7F3]/60 text-[#9200A8] transition-all duration-300 group-hover:border-[#C00083]/30 group-hover:bg-[#FCE7F3] sm:h-[54px] sm:w-[54px]">
+                      <div className="help-icon-pop flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#EADDED] bg-gradient-to-br from-[#FCE7F3] to-[#FAF5FF] text-[#9200A8] transition-all duration-300 group-hover:border-[#C00083]/30 group-hover:from-[#9200A8] group-hover:to-[#7100A8] group-hover:text-white sm:h-[54px] sm:w-[54px]">
                         <WorkIcon
                           name={work.iconName}
                           className="h-[22px] w-[22px] sm:h-6 sm:w-6"
@@ -244,7 +353,7 @@ export function WorksList({
 
                     {/* Deliverables */}
                     {work.features && work.features.length > 0 && (
-                      <div className="mt-8 border-t border-[#EADDED] pt-6">
+                      <div className="mt-8 border-t border-[#9200A8]/15 pt-6">
                         <div className="mb-4 flex items-center gap-2.5">
                           <div className="h-5 w-1 rounded-full bg-gradient-to-b from-[#7100A8] to-[#E90078]" />
 
@@ -263,7 +372,12 @@ export function WorksList({
                               key={`${work.id}-feature-${featureIndex}`}
                               className="flex items-start gap-3"
                             >
-                              <span className="mt-0.5 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full bg-[#FCE7F3] text-[#9200A8]">
+                              <span
+                                className={cn(
+                                  "mt-0.5 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full shadow-sm",
+                                  theme.check
+                                )}
+                              >
                                 <Check className="h-3 w-3" strokeWidth={2.5} />
                               </span>
 
@@ -278,14 +392,23 @@ export function WorksList({
                   </div>
 
                   {/* Supporting panel */}
-                  <aside className="flex min-w-0 flex-col border-t border-[#EADDED] bg-white p-5 sm:p-7 lg:border-l lg:border-t-0 lg:p-6 xl:p-7">
+                  <aside
+                    className={cn(
+                      "relative flex min-w-0 flex-col border-t border-[#9200A8]/15 p-5 sm:p-7 lg:border-l lg:border-t-0 lg:p-6 xl:p-7",
+                      theme.aside
+                    )}
+                  >
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(233,0,120,0.12),transparent_55%)]"
+                    />
                     {hasImage && work.featuredImage ? (
                       <div className="relative mb-5 aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#FAF5FF]">
                         <Image
                           src={work.featuredImage}
                           alt={work.title}
                           fill
-                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                          className="home-img-zoom object-cover"
                           sizes="(max-width: 1023px) 100vw, 350px"
                           unoptimized={work.featuredImage.startsWith("http")}
                         />
@@ -308,7 +431,12 @@ export function WorksList({
 
                     {/* Beneficiaries */}
                     {work.beneficiaries && (
-                      <div className="rounded-2xl border border-[#EADDED] bg-white p-4 sm:p-5">
+                      <div
+                        className={cn(
+                          "relative rounded-2xl border p-4 shadow-sm sm:p-5",
+                          theme.beneficiary
+                        )}
+                      >
                         <div className="flex items-center gap-2">
                           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FCE7F3] text-[#9200A8]">
                             <Users className="h-4 w-4" />

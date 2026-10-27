@@ -88,7 +88,7 @@ export function AdminDonationDashboard({
   data: DonationDashboardAnalytics;
   part?: "stats" | "charts" | "all";
 }) {
-  const { summary, comparison, monthlyTrend, statusBreakdown, topCauses, recentDonations } =
+  const { summary, comparison, monthlyTrend, statusBreakdown, recentDonations } =
     data;
 
   const monthCompareChart = [
@@ -335,47 +335,7 @@ export function AdminDonationDashboard({
           </CardContent>
         </Card>
 
-        <Card className="admin-panel border-[#EADDED]/90 bg-white shadow-sm xl:col-span-4">
-          <CardHeader className="border-b border-[#EADDED]/70 pb-3">
-            <CardTitle className="text-base font-bold text-[#35123F]">
-              Top causes (6 months)
-            </CardTitle>
-            <CardDescription className="text-xs text-[#75647B]">
-              Paid amount by cause title
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-4">
-            {topCauses.length === 0 ? (
-              <p className="py-10 text-center text-sm text-[#75647B]">No paid donations in range.</p>
-            ) : (
-              <div className="h-[240px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={topCauses}
-                    layout="vertical"
-                    margin={{ top: 4, right: 12, left: 4, bottom: 4 }}
-                  >
-                    <CartesianGrid stroke="#F3E8FF" strokeDasharray="4 4" />
-                    <XAxis type="number" tick={{ fontSize: 10, fill: "#75647B" }} />
-                    <YAxis
-                      type="category"
-                      dataKey="causeTitle"
-                      width={100}
-                      tick={{ fontSize: 10, fill: "#75647B" }}
-                    />
-                    <Tooltip
-                      contentStyle={tooltipStyle}
-                      formatter={(value) => [`₹${formatInr(Number(value))}`, "Raised"]}
-                    />
-                    <Bar dataKey="amountInr" name="Raised (₹)" fill="#7100A8" radius={[0, 4, 4, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="admin-panel border-[#EADDED]/90 bg-white shadow-sm xl:col-span-4">
+        <Card className="admin-panel border-[#EADDED]/90 bg-white shadow-sm xl:col-span-8">
           <CardHeader className="border-b border-[#EADDED]/70 pb-3">
             <CardTitle className="text-base font-bold text-[#35123F]">
               Recent donations
@@ -396,9 +356,15 @@ export function AdminDonationDashboard({
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="truncate font-medium text-[#35123F]">{row.causeTitle}</p>
+                      <p className="truncate font-medium text-[#35123F]">
+                        {row.donorLabel}
+                      </p>
                       <p className="text-[11px] text-[#75647B]">
-                        {row.donorLabel} · {row.referenceId}
+                        {row.referenceId} ·{" "}
+                        {new Date(row.createdAt).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                        })}
                       </p>
                     </div>
                     <div className="shrink-0 text-right">

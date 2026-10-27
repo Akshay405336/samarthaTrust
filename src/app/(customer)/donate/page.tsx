@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Support Samartha Trust | We Believe in Abilities",
     description:
-      "Join us in transforming lives. Choose a cause to support or contribute to our general community welfare initiatives.",
+      "Join us in transforming lives with a secure one-time contribution to our community welfare initiatives.",
     url: "/donate",
     siteName: "Samartha Trust",
     locale: "en_IN",
@@ -30,8 +30,14 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
   const fresh = resolvedParams?.fresh;
 
   return (
-    <Suspense fallback={<DonationLoading />}>
-      <DonationPageContent key={fresh ? `fresh-${fresh}` : "donate-root"} />
-    </Suspense>
+    <main className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-[#FFFBEB]/35 via-[#FDF8FF] to-[#FCE7F3]/40">
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-30"
+      />
+      <Suspense fallback={<DonationLoading />}>
+        <DonationPageContent key={fresh ? `fresh-${fresh}` : "donate-root"} />
+      </Suspense>
+    </main>
   );
 }

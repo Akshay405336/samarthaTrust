@@ -1,82 +1,140 @@
+"use client";
+
+import * as React from "react";
 import Link from "next/link";
 import { Camera, Sparkles, HeartHandshake, ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
+import { useScrollInView } from "@/hooks/use-scroll-in-view";
+import { cn } from "@/lib/utils";
+
+const TAGS = [
+  { label: "Field moments", gradient: "from-[#7100A8] to-[#6366F1]" },
+  { label: "Community", gradient: "from-[#9200A8] to-[#E90078]" },
+  { label: "Celebrations", gradient: "from-[#EC4899] to-[#C026D3]" },
+] as const;
 
 export function GalleryHero() {
-  return (
-    <section className="relative isolate overflow-hidden bg-white">
-      {/* Subtle background accents */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-16 -top-20 -z-10 h-64 w-64 rounded-full bg-[#E90078]/10 blur-3xl"
-      />
+  const { ref, isInView, revealVariant } = useScrollInView<HTMLElement>({
+    threshold: 0.08,
+  });
 
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+  const active = mounted || isInView;
+
+  return (
+    <section
+      ref={ref}
+      className="relative isolate overflow-hidden bg-gradient-to-br from-[#EDE9FE]/40 via-[#FDF8FF] to-[#FCE7F3]/50"
+    >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-24 -left-16 -z-10 h-52 w-52 rounded-full bg-[#9200A8]/[0.05] blur-3xl"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-55"
+      />
+      <div
+        aria-hidden="true"
+        className="help-orb pointer-events-none absolute -right-20 -top-16 -z-10 h-72 w-72 rounded-full bg-[#E90078]/20 blur-3xl"
+        style={{ "--help-orb-duration": "17s" } as React.CSSProperties}
+      />
+      <div
+        aria-hidden="true"
+        className="help-orb pointer-events-none absolute -bottom-20 -left-16 -z-10 h-60 w-60 rounded-full bg-[#6366F1]/15 blur-3xl"
+        style={
+          { "--help-orb-duration": "19s", "--help-orb-delay": "500ms" } as React.CSSProperties
+        }
       />
 
       <Container>
-        <div className="customer-page-top mx-auto max-w-4xl pb-8 text-center sm:pb-10 lg:pb-12">
-          {/* Eyebrow */}
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white px-3.5 py-1.5 shadow-2xs">
-            <Camera className="h-3.5 w-3.5 text-[#9200A8]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#75647B] sm:text-[11px]">
-              Moments & Milestones
+        <div className="customer-page-top relative mx-auto max-w-4xl pb-8 text-center sm:pb-10 lg:pb-12">
+          <div
+            className={cn(
+              revealVariant("scale-in"),
+              "mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white/90 px-3.5 py-1.5 shadow-sm backdrop-blur-sm"
+            )}
+          >
+            <Camera className="h-3.5 w-3.5 text-[#9200A8] motion-safe:animate-pulse" />
+            <span className="bg-gradient-to-r from-[#7100A8] to-[#E90078] bg-clip-text text-[10px] font-bold uppercase tracking-[0.16em] text-transparent sm:text-[11px]">
+              Moments &amp; Milestones
             </span>
             <Sparkles className="h-3 w-3 text-[#E90078]" />
           </div>
 
-          {/* Heading with brand gradient & underline */}
           <h1 className="text-[clamp(2.1rem,4.5vw,3.5rem)] font-extrabold leading-[1.12] tracking-[-0.045em] text-[#35123F]">
-            Capturing Hope,{" "}
-            <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
-                Inspiring Change
+            <span
+              className={cn(
+                "help-heading-drop block",
+                active && "help-heading-drop-active"
+              )}
+              style={{ animationDelay: "80ms" }}
+            >
+              Capturing Hope,
+            </span>
+            <span
+              className={cn(
+                "help-heading-drop mt-1 block",
+                active && "help-heading-drop-active"
+              )}
+              style={{ animationDelay: "200ms" }}
+            >
+              <span className="relative inline-block">
+                <span className="works-highlight help-lasting-shimmer bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
+                  Inspiring Change
+                </span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 300 10"
+                  fill="none"
+                  className="absolute -bottom-1 left-0 h-2 w-full"
+                >
+                  <defs>
+                    <linearGradient
+                      id="gallery-underline"
+                      x1="0"
+                      y1="0"
+                      x2="300"
+                      y2="0"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#7100A8" />
+                      <stop offset=".48" stopColor="#9200A8" />
+                      <stop offset="1" stopColor="#E90078" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M3 7C75 1 220 1 297 6"
+                    stroke="url(#gallery-underline)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    className={cn(active && "our-works-underline-draw")}
+                  />
+                </svg>
               </span>
-
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 300 10"
-                fill="none"
-                className="absolute -bottom-1 left-0 h-2 w-full"
-              >
-                <defs>
-                  <linearGradient
-                    id="gallery-underline"
-                    x1="0"
-                    y1="0"
-                    x2="300"
-                    y2="0"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#7100A8" />
-                    <stop offset=".48" stopColor="#9200A8" />
-                    <stop offset="1" stopColor="#E90078" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M3 7C75 1 220 1 297 6"
-                  stroke="url(#gallery-underline)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-              </svg>
             </span>
           </h1>
 
-          {/* Description */}
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-[#75647B] sm:text-[15px] sm:leading-7">
-            A visual chronicle of our grassroots initiatives, community celebrations,
-            educational drives, and medical outreach across Karnataka and beyond.
+          <p
+            className={cn(
+              "motion-blur-in mx-auto mt-5 max-w-2xl text-sm leading-6 text-[#75647B] sm:text-[15px] sm:leading-7",
+              active && "motion-active"
+            )}
+            style={{ animationDelay: "380ms" }}
+          >
+            A visual chronicle of our grassroots initiatives, community
+            celebrations, educational drives, and medical outreach across
+            Karnataka and beyond.
           </p>
 
-          {/* Quick CTA */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div
+            className={cn(
+              revealVariant("fade-up"),
+              "mt-6 flex flex-wrap items-center justify-center gap-3"
+            )}
+            style={{ animationDelay: "480ms" }}
+          >
             <Button
               asChild
-              className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] font-semibold text-white shadow-md hover:brightness-110"
+              className="help-btn-gradient bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] font-semibold text-white shadow-md hover:brightness-110"
             >
               <Link href="/our-works" className="flex items-center gap-2">
                 <span>Explore Our Works</span>
@@ -87,13 +145,37 @@ export function GalleryHero() {
             <Button
               asChild
               variant="outline"
-              className="border-[#EADDED] text-[#35123F] hover:bg-[#FAF5FF]"
+              className="border-[#EADDED] bg-white/90 text-[#35123F] hover:border-[#9200A8] hover:bg-[#FAF5FF]"
             >
               <Link href="/donate" className="flex items-center gap-2">
                 <HeartHandshake className="h-4 w-4 text-[#C00083]" />
                 <span>Support Our Causes</span>
               </Link>
             </Button>
+          </div>
+
+          <div
+            className={cn(
+              revealVariant("clip-up"),
+              "mt-7 flex flex-wrap items-center justify-center gap-3 border-t border-[#EADDED] pt-5"
+            )}
+            style={{ animationDelay: "560ms" }}
+          >
+            {TAGS.map((tag, index) => (
+              <span
+                key={tag.label}
+                className={cn(
+                  "help-color-tile inline-flex items-center gap-2 rounded-full bg-gradient-to-r px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm",
+                  tag.gradient
+                )}
+                style={
+                  { "--help-tile-delay": `${index * 130}ms` } as React.CSSProperties
+                }
+              >
+                <Camera className="h-3 w-3 opacity-90" />
+                {tag.label}
+              </span>
+            ))}
           </div>
         </div>
       </Container>

@@ -6,8 +6,6 @@ import { ArrowLeft, ArrowRight, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DonationHero } from "./donation-hero";
 import { DonationProgress } from "./donation-progress";
-import { DonationFrequencySelector } from "./donation-frequency-selector";
-import { DonationCauseSelector } from "./donation-cause-selector";
 import { DonationAmountSelector } from "./donation-amount-selector";
 import { DonationDonorForm } from "./donation-donor-form";
 import { DonationSummary } from "./donation-summary";
@@ -15,7 +13,11 @@ import { DonationReview } from "./donation-review";
 import { DonationPaymentHandoff } from "./donation-payment-handoff";
 import { DonationTrustSection } from "./donation-trust-section";
 import { DonationFAQ } from "./donation-faq";
-import { DEFAULT_AMOUNT, DONATION_CAUSES } from "./donation-constants";
+import {
+  DEFAULT_AMOUNT,
+  DEFAULT_DONATION_CAUSE_ID,
+  getDonationCauseTitle,
+} from "./donation-constants";
 import {
   validateStep1,
   validateStep2,
@@ -25,7 +27,6 @@ import {
 import type {
   DonationState,
   DonationStep,
-  DonationFrequency,
   DonorDetails,
   PaymentHandoffPayload,
   RazorpayOrderResponse,
@@ -85,7 +86,7 @@ export function DonationPageContent() {
   const [state, setState] = React.useState<DonationState>({
     step: 1,
     frequency: "one-time",
-    causeId: "general",
+    causeId: DEFAULT_DONATION_CAUSE_ID,
     amount: DEFAULT_AMOUNT,
     customAmountInput: "",
     isCustomAmount: false,
@@ -113,22 +114,6 @@ export function DonationPageContent() {
   };
 
   // Step 1 Handlers
-  const handleFrequencyChange = (frequency: DonationFrequency) => {
-    setState((prev) => ({
-      ...prev,
-      frequency,
-      validationErrors: { ...prev.validationErrors, frequency: "" },
-    }));
-  };
-
-  const handleCauseSelect = (causeId: string) => {
-    setState((prev) => ({
-      ...prev,
-      causeId,
-      validationErrors: { ...prev.validationErrors, causeId: "" },
-    }));
-  };
-
   const handlePresetSelect = (preset: number) => {
     setState((prev) => ({
       ...prev,
@@ -182,7 +167,7 @@ export function DonationPageContent() {
 
   const handleNextFromStep1 = () => {
     setGeneralError(null);
-    const errors = validateStep1(state.frequency, state.causeId, state.amount);
+    const errors = validateStep1(state.amount, state.frequency);
     if (Object.keys(errors).length > 0) {
       setState((prev) => ({ ...prev, validationErrors: errors }));
       return;
@@ -228,8 +213,7 @@ export function DonationPageContent() {
     setState((prev) => ({ ...prev, isSubmitting: true }));
     setSubmittingText("Creating Secure Payment Order...");
 
-    const selectedCause =
-      DONATION_CAUSES.find((c) => c.id === state.causeId) || DONATION_CAUSES[0];
+    const causeTitle = getDonationCauseTitle(state.causeId);
 
     try {
       // 1. Call server to create donation record and Razorpay order
@@ -276,7 +260,7 @@ export function DonationPageContent() {
         currency: "INR",
         frequency: "one-time",
         causeId: state.causeId,
-        causeTitle: selectedCause.title,
+        causeTitle,
         donor: {
           fullName: state.donor.fullName,
           email: state.donor.email,
@@ -339,7 +323,7 @@ export function DonationPageContent() {
         amount: orderData.amount,
         currency: orderData.currency,
         name: "Samartha Trust",
-        description: `Donation: ${selectedCause.title}`,
+        description: `Donation: ${causeTitle}`,
         image: "/logo.png",
         order_id: orderData.orderId,
         prefill: {
@@ -349,7 +333,7 @@ export function DonationPageContent() {
         },
         notes: {
           donationReference: orderData.donationReference,
-          causeId: selectedCause.id,
+          causeId: DEFAULT_DONATION_CAUSE_ID,
         },
         theme: {
           color: "#9200A8",
@@ -467,16 +451,18 @@ export function DonationPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF5FF]">
-      {/* Hero Banner */}
+    <div className="relative min-h-screen">
       <DonationHero />
 
-      {/* Main Wizard Area */}
       <main
         ref={wizardContainerRef}
         id="donation-experience"
-        className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+        className="relative mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8"
       >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-4 top-0 bottom-0 -z-10 rounded-3xl bg-gradient-to-br from-[#EDE9FE]/35 via-white/50 to-[#FCE7F3]/40 sm:-inset-x-8"
+        />
         {/* Step Stepper */}
         <DonationProgress
           currentStep={state.step}
@@ -499,24 +485,12 @@ export function DonationPageContent() {
         )}
 
         {/* Form Body and Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           {/* Main Step Content */}
-          <div className="lg:col-span-8 bg-white rounded-2xl p-5 sm:p-8 border border-[#EADDED] shadow-sm">
-            {/* Step 1: Cause & Amount */}
+          <div className="min-w-0 lg:col-span-8 lg:col-start-1 rounded-2xl border border-[#EADDED]/80 bg-gradient-to-br from-white via-[#FDF8FF]/90 to-[#FCE7F3]/25 p-5 shadow-md sm:p-8">
+            {/* Step 1: Amount */}
             {state.step === 1 && (
               <div className="space-y-7">
-                <DonationFrequencySelector
-                  frequency={state.frequency}
-                  onChange={handleFrequencyChange}
-                  error={state.validationErrors.frequency}
-                />
-
-                <DonationCauseSelector
-                  selectedCauseId={state.causeId}
-                  onSelectCause={handleCauseSelect}
-                  error={state.validationErrors.causeId}
-                />
-
                 <DonationAmountSelector
                   amount={state.amount}
                   customAmountInput={state.customAmountInput}
@@ -611,11 +585,13 @@ export function DonationPageContent() {
           </div>
 
           {/* Sticky Summary Sidebar on Desktop */}
-          <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-4">
-            <DonationSummary
-              state={state}
-              onEditStep={(step) => goToStep(step)}
-            />
+          <div className="min-w-0 lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:self-start">
+            <div className="lg:sticky lg:top-[calc(var(--customer-header-height)+1.25rem)] lg:max-h-[calc(100svh-var(--customer-header-height)-2rem)] lg:overflow-y-auto lg:overscroll-contain">
+              <DonationSummary
+                state={state}
+                onEditStep={(step) => goToStep(step)}
+              />
+            </div>
           </div>
         </div>
       </main>

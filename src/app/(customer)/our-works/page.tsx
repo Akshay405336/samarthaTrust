@@ -59,7 +59,11 @@ async function OurWorksDirectory({
 
 export default function OurWorksPage({ searchParams }: OurWorksPageProps) {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-[#FDF8FF] via-[#FAF5FF] to-[#FCE7F3]/35">
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-50"
+      />
       <OurWorksHero />
       <React.Suspense fallback={<WorksListSkeleton />}>
         <OurWorksDirectory searchParams={searchParams} />

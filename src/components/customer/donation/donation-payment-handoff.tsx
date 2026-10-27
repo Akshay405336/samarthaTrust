@@ -85,18 +85,6 @@ export function DonationPaymentHandoff({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
           <div>
-            <span className="text-[#75647B] block text-xs">Target Cause:</span>
-            <span className="font-bold text-[#35123F]">
-              {payload.causeTitle}
-            </span>
-          </div>
-
-          <div>
-            <span className="text-[#75647B] block text-xs">Donation Type:</span>
-            <span className="font-bold text-[#35123F]">One-Time Gift</span>
-          </div>
-
-          <div>
             <span className="text-[#75647B] block text-xs">Amount:</span>
             <span className="text-lg font-black text-[#9200A8]">
               {formatINR(payload.amount)}

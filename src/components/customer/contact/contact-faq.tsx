@@ -5,6 +5,7 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { cn } from "@/lib/utils";
 import { CONTACT_FAQS } from "./contact-constants";
+import { useScrollInView } from "@/hooks/use-scroll-in-view";
 
 export function ContactFAQ() {
   // Support independent multi-expand in grid so both columns can have expanded items
@@ -24,10 +25,38 @@ export function ContactFAQ() {
     });
   };
 
+  const { ref, isInView, revealVariant } = useScrollInView<HTMLElement>({
+    threshold: 0.05,
+  });
+
+  const FAQ_THEMES = [
+    "border-[#C4B5FD]/35 bg-gradient-to-br from-[#FAF5FF]/95 to-white",
+    "border-[#99F6E4]/40 bg-gradient-to-br from-[#F0FDFA]/90 to-white",
+    "border-[#FBCFE8]/45 bg-gradient-to-br from-[#FDF2F8]/90 to-white",
+    "border-[#FCD34D]/35 bg-gradient-to-br from-[#FFFBEB]/85 to-white",
+  ] as const;
+
   return (
-    <section className="bg-white py-14 sm:py-20 border-t border-[#EADDED]">
-      <Container>
-        <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
+    <section
+      ref={ref}
+      className="relative overflow-hidden border-t border-[#EADDED]/80 py-14 sm:py-20"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-[#FDF8FF] via-[#FAF5FF] to-[#EDE9FE]/35"
+      />
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-30"
+      />
+
+      <Container className="relative">
+        <div
+          className={cn(
+            revealVariant("blur-in"),
+            "mx-auto mb-10 max-w-3xl text-center sm:mb-12"
+          )}
+        >
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[#EADDED] bg-[#FCE7F3]/60 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#9200A8] mb-3 shadow-2xs">
             <HelpCircle className="h-3.5 w-3.5" />
             <span>Common Queries</span>
@@ -53,11 +82,14 @@ export function ContactFAQ() {
               <div
                 key={faq.question}
                 className={cn(
-                  "rounded-2xl border transition-all duration-200 overflow-hidden bg-white",
+                  "motion-fade-up overflow-hidden rounded-2xl border transition-all duration-200",
+                  FAQ_THEMES[index % FAQ_THEMES.length],
+                  isInView && "motion-active",
                   isOpen
-                    ? "border-[#9200A8]/50 shadow-xs"
-                    : "border-[#EADDED] hover:border-[#9200A8]/30 hover:bg-[#FAF5FF]"
+                    ? "border-[#9200A8]/50 shadow-md ring-1 ring-[#9200A8]/10"
+                    : "hover:border-[#9200A8]/30 hover:shadow-sm"
                 )}
+                style={{ animationDelay: `${(index % 4) * 70 + 100}ms` }}
               >
                 <button
                   type="button"

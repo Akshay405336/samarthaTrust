@@ -18,5 +18,13 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  return <ContactPageContent />;
+  return (
+    <main className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-[#F0FDFA] via-[#FDF8FF] to-[#FFF7ED]/45">
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-35"
+      />
+      <ContactPageContent />
+    </main>
+  );
 }

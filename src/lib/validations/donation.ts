@@ -2,10 +2,8 @@ import { z } from "zod";
 import {
   MIN_AMOUNT,
   MAX_AMOUNT,
-  DONATION_CAUSES,
+  DEFAULT_DONATION_CAUSE_ID,
 } from "@/components/customer/donation/donation-constants";
-
-const validCauseIds = DONATION_CAUSES.map((c) => c.id) as [string, ...string[]];
 
 const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
@@ -27,9 +25,7 @@ export const createDonationOrderSchema = z.object({
   frequency: z.literal("one-time", {
     error: "Only one-time donations are supported",
   }),
-  causeId: z.enum(validCauseIds, {
-    error: "Please select a valid designated cause",
-  }),
+  causeId: z.literal(DEFAULT_DONATION_CAUSE_ID).default(DEFAULT_DONATION_CAUSE_ID),
   donor: z.object({
     fullName: z
       .string({

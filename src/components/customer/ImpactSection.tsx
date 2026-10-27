@@ -222,10 +222,10 @@ export function ImpactSection() {
 
           <p
             className={cn(
-              "impact-reveal mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]",
-              entranceActive && "impact-reveal-active"
+              "motion-blur-in mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]",
+              entranceActive && "motion-active"
             )}
-            style={{ animationDelay: "120ms" }}
+            style={{ animationDelay: "200ms" }}
           >
             Every child supported, every meal served, and every safe space
             created brings us closer to a brighter and more inclusive future.
@@ -244,7 +244,7 @@ export function ImpactSection() {
               <article
                 key={stat.label}
                 className={cn(
-                  "impact-reveal group relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 sm:p-6",
+                  "impact-reveal home-card-hover group relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border p-5 sm:p-6",
                   isFeatured
                     ? "border-[#9200A8] bg-gradient-to-br from-[#7100A8] via-[#9200A8] to-[#E90078] shadow-[0_12px_30px_rgba(113,0,168,0.16)] hover:shadow-[0_16px_36px_rgba(113,0,168,0.24)]"
                     : "border-[#EADDED] bg-white/95 shadow-[0_6px_24px_rgba(53,18,63,0.035)] hover:border-[#9200A8]/40 hover:shadow-[0_12px_30px_rgba(53,18,63,0.07)]",

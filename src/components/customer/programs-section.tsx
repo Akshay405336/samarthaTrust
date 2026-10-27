@@ -48,7 +48,7 @@ function BackgroundProgramCard({
   return (
     <article
       className={cn(
-        "group relative min-w-0 overflow-hidden rounded-[22px] border border-[#EADDED] shadow-[0_8px_24px_rgba(53,18,63,0.08)] transition-transform duration-300 hover:-translate-y-0.5",
+        "home-card-hover group relative min-w-0 overflow-hidden rounded-[22px] border border-[#EADDED] shadow-[0_8px_24px_rgba(53,18,63,0.08)]",
         minHeightClass,
         className
       )}
@@ -60,7 +60,7 @@ function BackgroundProgramCard({
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
         className={cn(
-          "object-cover transition-transform duration-700 group-hover:scale-[1.05]",
+          "home-img-zoom object-cover",
           imagePosition
         )}
       />
@@ -214,17 +214,28 @@ export function ProgramsSection() {
             Futures
           </h2>
 
-          <p
-            className={cn(
-              reveal(120),
-              "mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#75647B] sm:text-base"
-            )}
-            style={{ animationDelay: "120ms" }}
-          >
-            Our programs focus on education, child welfare, inclusion and
-            community development, creating opportunities for every child to
-            grow with dignity and confidence.
-          </p>
+          <div className="mx-auto mt-4 max-w-2xl space-y-2 text-[15px] leading-7 text-[#75647B] sm:text-base">
+            <p
+              className={cn(
+                "help-programs-line",
+                entranceActive && "help-programs-line-active"
+              )}
+              style={{ animationDelay: "140ms" }}
+            >
+              Our programs focus on education, child welfare, inclusion and
+              community development.
+            </p>
+            <p
+              className={cn(
+                "help-programs-line",
+                entranceActive && "help-programs-line-active"
+              )}
+              style={{ animationDelay: "280ms" }}
+            >
+              We create opportunities for every child to grow with dignity and
+              confidence.
+            </p>
+          </div>
         </div>
 
         {/* Asymmetric 4-card grid */}
@@ -233,7 +244,7 @@ export function ProgramsSection() {
           <article
             className={cn(
               reveal(CARD_BASE_DELAY_MS),
-              "group relative min-h-[420px] overflow-hidden rounded-[22px] shadow-[0_14px_40px_rgba(113,0,168,0.14)] transition-transform duration-300 hover:-translate-y-0.5 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:min-h-[520px]"
+              "home-card-hover group relative min-h-[420px] overflow-hidden rounded-[22px] shadow-[0_14px_40px_rgba(113,0,168,0.14)] lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:min-h-[520px]"
             )}
             style={{ animationDelay: `${CARD_BASE_DELAY_MS}ms` }}
           >
@@ -242,7 +253,7 @@ export function ProgramsSection() {
               alt="Schoolchildren smiling in a rural setting"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-[58%_42%] transition-transform duration-700 group-hover:scale-[1.04]"
+              className="home-img-zoom object-cover object-[58%_42%]"
             />
             <div
               aria-hidden="true"

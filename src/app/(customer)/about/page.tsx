@@ -1,6 +1,10 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { AboutBanner } from "@/components/customer/about-us/about-banner";
+import {
+  getAboutBannerBgUrl,
+  getAssetUrl,
+} from "@/lib/utils/asset-version";
 import { AboutHeroSection } from "@/components/customer/about-us/about-hero-section";
 import { VisionMissionSection } from "@/components/customer/about-us/vision-mission-section";
 import {
@@ -53,9 +57,19 @@ async function AboutTeamSection() {
 }
 
 export default function AboutPage() {
+  const bgImageSrc = getAboutBannerBgUrl();
+  const foregroundImageSrc = getAssetUrl("/images/about/Joyful-Sibling.png");
+
   return (
-    <main className="min-h-screen bg-white">
-      <AboutBanner />
+    <main className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-white via-[#FDF8FF]/50 to-white">
+      <div
+        aria-hidden="true"
+        className="about-page-grid pointer-events-none absolute inset-0 opacity-30"
+      />
+      <AboutBanner
+        bgImageSrc={bgImageSrc}
+        foregroundImageSrc={foregroundImageSrc}
+      />
 
       <AboutHeroSection />
 

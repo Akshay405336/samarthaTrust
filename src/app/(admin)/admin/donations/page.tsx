@@ -437,7 +437,6 @@ export default function AdminDonationsPage() {
                 <tr>
                   <th className="py-3.5 px-4 font-bold">Reference / Date</th>
                   <th className="py-3.5 px-4 font-bold">Donor</th>
-                  <th className="py-3.5 px-4 font-bold">Purpose</th>
                   <th className="py-3.5 px-4 font-bold">Amount</th>
                   <th className="py-3.5 px-4 font-bold">Status</th>
                   <th className="py-3.5 px-4 font-bold">Payment Details</th>
@@ -476,15 +475,6 @@ export default function AdminDonationsPage() {
                       </div>
                       <span className="text-[11px] text-[#75647B] block">
                         {d.donorEmail} · {d.donorPhone}
-                      </span>
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <span className="font-semibold text-[#35123F] block">
-                        {d.causeTitle}
-                      </span>
-                      <span className="text-[10px] uppercase tracking-wider text-[#75647B]">
-                        One-Time Gift
                       </span>
                     </td>
 

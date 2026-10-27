@@ -114,7 +114,6 @@ export async function getDonationDashboardAnalytics() {
         id: true,
         amount: true,
         status: true,
-        causeTitle: true,
         createdAt: true,
         capturedAt: true,
         referenceId: true,
@@ -130,7 +129,6 @@ export async function getDonationDashboardAnalytics() {
         referenceId: true,
         amount: true,
         status: true,
-        causeTitle: true,
         createdAt: true,
         donorName: true,
         isAnonymous: true,
@@ -169,20 +167,6 @@ export async function getDonationDashboardAnalytics() {
     { name: "Failed", value: failedCount, fill: "#DC2626" },
   ].filter((row) => row.value > 0);
 
-  const causeMap = new Map<string, { amountInr: number; count: number }>();
-  for (const d of donationsInRange) {
-    if (d.status !== "PAID") continue;
-    const prev = causeMap.get(d.causeTitle) ?? { amountInr: 0, count: 0 };
-    prev.amountInr += d.amount / 100;
-    prev.count += 1;
-    causeMap.set(d.causeTitle, prev);
-  }
-
-  const topCauses = [...causeMap.entries()]
-    .map(([causeTitle, stats]) => ({ causeTitle, ...stats }))
-    .sort((a, b) => b.amountInr - a.amountInr)
-    .slice(0, 6);
-
   const thisMonthLabel = monthLabel(monthKey(thisMonth.start));
   const lastMonthLabel = monthLabel(monthKey(lastMonth.start));
 
@@ -207,13 +191,11 @@ export async function getDonationDashboardAnalytics() {
     },
     monthlyTrend,
     statusBreakdown,
-    topCauses,
     recentDonations: recentDonations.map((d) => ({
       id: d.id,
       referenceId: d.referenceId,
       amountInr: d.amount / 100,
       status: d.status,
-      causeTitle: d.causeTitle,
       createdAt: d.createdAt.toISOString(),
       donorLabel: d.isAnonymous ? "Anonymous donor" : d.donorName,
     })),

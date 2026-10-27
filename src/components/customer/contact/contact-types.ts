@@ -24,8 +24,11 @@ export interface ContactInfoCardProps {
   icon: LucideIcon;
   actionText?: string;
   external?: boolean;
+  accent?: "teal" | "violet" | "rose";
 }
 
 export interface ContactBranchCardProps {
   branch: BranchLocation;
+  index?: number;
+  animate?: boolean;
 }

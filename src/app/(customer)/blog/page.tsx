@@ -21,7 +21,11 @@ interface BlogPageProps {
 
 export default function BlogPage({ searchParams }: BlogPageProps) {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-[#FDF8FF] via-[#FAF5FF] to-[#FCE7F3]/35">
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-45"
+      />
       <BlogHero />
 
       <Suspense fallback={<BlogListSkeleton />}>

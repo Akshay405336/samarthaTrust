@@ -53,7 +53,11 @@ async function GalleryDirectory({
 
 export default function GalleryPage({ searchParams }: GalleryPageProps) {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-[#FDF8FF] via-[#FAF5FF] to-[#FCE7F3]/35">
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-45"
+      />
       <GalleryHero />
       <React.Suspense fallback={<GallerySkeleton />}>
         <GalleryDirectory searchParams={searchParams} />

@@ -1,4 +1,4 @@
-import { MIN_AMOUNT, MAX_AMOUNT, DONATION_CAUSES } from "./donation-constants";
+import { MIN_AMOUNT, MAX_AMOUNT } from "./donation-constants";
 import type { DonorDetails, DonationFrequency } from "./donation-types";
 
 /**
@@ -24,22 +24,16 @@ export function formatNumberINR(amount: number): string {
 }
 
 /**
- * Validate Step 1 (Donation cause, frequency, and amount)
+ * Validate Step 1 (one-time amount only; cause is fixed to general support)
  */
 export function validateStep1(
-  frequency: DonationFrequency,
-  causeId: string,
-  amount: number
+  amount: number,
+  frequency: DonationFrequency = "one-time"
 ): Record<string, string> {
   const errors: Record<string, string> = {};
 
   if (frequency !== "one-time") {
     errors.frequency = "Only one-time contributions are supported.";
-  }
-
-  const validCause = DONATION_CAUSES.some((c) => c.id === causeId);
-  if (!causeId || !validCause) {
-    errors.causeId = "Please select a valid cause to support.";
   }
 
   if (isNaN(amount) || amount < MIN_AMOUNT) {
@@ -85,14 +79,12 @@ export function validateStep2(donor: DonorDetails): Record<string, string> {
     errors.phone = "Please enter a valid 10-digit mobile or telephone number.";
   }
 
-  // PAN is optional, but if provided, it must conform to Indian Income Tax PAN format
   const trimmedPan = donor.panNumber.trim().toUpperCase();
   if (trimmedPan.length > 0 && !PAN_REGEX.test(trimmedPan)) {
     errors.panNumber =
       "Please enter a valid 10-character Indian PAN (e.g. ABCDE1234F).";
   }
 
-  // Pincode is optional, but if provided, must be valid 6-digit Indian PIN
   const trimmedPincode = donor.pincode.trim();
   if (trimmedPincode.length > 0 && !PINCODE_REGEX.test(trimmedPincode)) {
     errors.pincode = "Please enter a valid 6-digit postal code.";

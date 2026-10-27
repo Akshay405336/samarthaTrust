@@ -186,7 +186,10 @@ describe("Asset Versioning Utility (getAssetUrl & getAboutBannerBgUrl)", () => {
   it("verifies AboutBanner component uses getAboutBannerBgUrl with object-cover and object-center", async () => {
     const { AboutBanner } =
       await import("@/components/customer/about-us/about-banner");
-    const jsx = AboutBanner();
+    const jsx = AboutBanner({
+      bgImageSrc: "/images/about/about-banner-bg.png?v=test",
+      foregroundImageSrc: "/images/about/Joyful-Sibling.png?v=test",
+    });
     expect(jsx).not.toBeNull();
     const children = React.Children.toArray(jsx.props.children);
     const imageChild = children.find(
@@ -198,8 +201,8 @@ describe("Asset Versioning Utility (getAssetUrl & getAboutBannerBgUrl)", () => {
     );
 
     expect(imageChild).toBeDefined();
-    expect(imageChild!.props.src).toMatch(
-      /^\/images\/about\/about-banner-bg\.png\?v=[a-z0-9]+$/
+    expect(imageChild!.props.src).toBe(
+      "/images/about/about-banner-bg.png?v=test"
     );
     expect(imageChild!.props.className).toContain("object-cover");
     expect(imageChild!.props.className).toContain("object-center");

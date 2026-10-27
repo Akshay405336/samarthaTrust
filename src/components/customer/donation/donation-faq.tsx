@@ -1,28 +1,60 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, HelpCircle } from "lucide-react";
+
+import { Container } from "@/components/shared/container";
 import { cn } from "@/lib/utils";
 import { DONATION_FAQS } from "./donation-constants";
+import { useScrollInView } from "@/hooks/use-scroll-in-view";
+
+const FAQ_THEMES = [
+  "border-[#FBCFE8]/50 bg-gradient-to-br from-[#FDF2F8]/95 to-white",
+  "border-[#FCD34D]/40 bg-gradient-to-br from-[#FFFBEB]/85 to-white",
+  "border-[#C4B5FD]/40 bg-gradient-to-br from-[#FAF5FF]/95 to-white",
+  "border-[#99F6E4]/40 bg-gradient-to-br from-[#F0FDFA]/90 to-white",
+] as const;
 
 export function DonationFAQ() {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+
+  const { ref, isInView, revealVariant } = useScrollInView<HTMLElement>({
+    threshold: 0.05,
+  });
 
   const toggle = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-white border-t border-[#EADDED]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#9200A8]">
+    <section
+      ref={ref}
+      className="relative overflow-hidden border-t border-[#EADDED]/80 py-12 sm:py-16"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-br from-[#FCE7F3]/25 via-[#FDF8FF] to-[#EDE9FE]/35"
+      />
+      <div
+        aria-hidden="true"
+        className="works-grid-bg pointer-events-none absolute inset-0 opacity-25"
+      />
+
+      <Container className="relative max-w-4xl">
+        <div
+          className={cn(
+            revealVariant("blur-in"),
+            "mx-auto mb-10 max-w-xl text-center sm:mb-12"
+          )}
+        >
+          <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-[#FBCFE8]/60 bg-white/85 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#BE185D] shadow-xs">
+            <HelpCircle className="h-3.5 w-3.5" />
             Common Inquiries
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#35123F] mt-2">
+          </div>
+          <h2 className="mt-2 text-2xl font-bold text-[#35123F] sm:text-3xl">
             Frequently Asked Questions
           </h2>
-          <p className="text-xs sm:text-sm text-[#75647B] mt-2 leading-relaxed">
+          <p className="mt-2 text-xs leading-relaxed text-[#75647B] sm:text-sm">
             Everything you need to know about contributing to Samartha Trust.
           </p>
         </div>
@@ -36,7 +68,15 @@ export function DonationFAQ() {
             return (
               <div
                 key={faq.question}
-                className="rounded-2xl border border-[#EADDED] bg-white overflow-hidden transition-colors"
+                className={cn(
+                  "motion-fade-up overflow-hidden rounded-2xl border transition-all duration-200",
+                  FAQ_THEMES[index % FAQ_THEMES.length],
+                  isInView && "motion-active",
+                  isOpen
+                    ? "border-[#9200A8]/50 shadow-md ring-1 ring-[#9200A8]/10"
+                    : "hover:border-[#9200A8]/25 hover:shadow-sm"
+                )}
+                style={{ animationDelay: `${(index % 4) * 70 + 100}ms` }}
               >
                 <button
                   type="button"
@@ -44,16 +84,22 @@ export function DonationFAQ() {
                   aria-expanded={isOpen}
                   aria-controls={contentId}
                   onClick={() => toggle(index)}
-                  className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-bold text-sm sm:text-base text-[#35123F] hover:bg-[#FAF5FF] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8]"
+                  className="flex w-full cursor-pointer items-center justify-between p-4 text-left text-sm font-bold text-[#35123F] transition-colors hover:bg-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9200A8] sm:p-5 sm:text-base"
                 >
                   <span className="pr-4">{faq.question}</span>
                   <div
                     className={cn(
-                      "w-7 h-7 rounded-full bg-[#FAF5FF] flex items-center justify-center shrink-0 transition-transform duration-200",
-                      isOpen && "rotate-180 bg-[#FCE7F3] text-[#9200A8]"
+                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#EADDED]/70 bg-white/80 transition-transform duration-200",
+                      isOpen &&
+                        "rotate-180 border-[#9200A8] bg-[#9200A8] text-white"
                     )}
                   >
-                    <ChevronDown className="w-4 h-4 text-[#75647B]" />
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 transition-colors",
+                        isOpen ? "text-white" : "text-[#75647B]"
+                      )}
+                    />
                   </div>
                 </button>
 
@@ -62,7 +108,7 @@ export function DonationFAQ() {
                     id={contentId}
                     role="region"
                     aria-labelledby={buttonId}
-                    className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-[#75647B] leading-relaxed border-t border-[#EADDED] pt-3 animate-in fade-in-50 duration-200"
+                    className="animate-in fade-in-50 border-t border-[#EADDED]/70 px-4 pb-5 pt-3 text-xs leading-relaxed text-[#75647B] duration-200 sm:px-5 sm:pb-6 sm:text-sm"
                   >
                     {faq.answer}
                   </div>
@@ -71,7 +117,7 @@ export function DonationFAQ() {
             );
           })}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
