@@ -3,6 +3,7 @@ import * as React from "react";
 import { HeroSection } from "@/components/customer/hero-section";
 import { AboutSection } from "@/components/customer/about-section";
 import { ImpactSection } from "@/components/customer/ImpactSection";
+import { ProgramsSection } from "@/components/customer/programs-section";
 import { HowYouCanHelpSection } from "@/components/customer/HowYouCanHelpSection";
 import { LifeTransformedSection } from "@/components/customer/life-transformed-section";
 import { TransparencySection } from "@/components/customer/transparency-section";
@@ -19,6 +20,8 @@ export default function HomePage() {
 
       {/* Impact */}
       <ImpactSection />
+
+      <ProgramsSection />
 
       {/* Ways to Help */}
       <HowYouCanHelpSection />

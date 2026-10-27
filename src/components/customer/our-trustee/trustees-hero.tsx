@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export function TrusteesHero() {
   return (
-    <section className="relative isolate m-0 w-full overflow-hidden bg-white py-8 sm:py-10 lg:py-12">
+    <section className="customer-page-top relative isolate m-0 w-full overflow-hidden bg-white pb-8 sm:pb-10 lg:pb-12">
       {/* Soft warm glow, matching the homepage */}
       <div
         aria-hidden="true"

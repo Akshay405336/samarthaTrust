@@ -23,7 +23,7 @@ export function CustomerHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="absolute inset-x-0 top-0 z-50 w-full border-b border-white/10 bg-black/35 text-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] backdrop-blur-[3px]">
+    <header className="fixed inset-x-0 top-0 z-50 w-full border-b border-white/10 bg-black/35 text-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] backdrop-blur-[3px]">
       <Container className="flex h-[64px] items-center justify-between gap-3 sm:h-[70px] lg:h-[78px]">
         {/* Logo and motto */}
         <Link

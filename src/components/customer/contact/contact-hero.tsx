@@ -17,7 +17,7 @@ export function ContactHero() {
       />
 
       <Container>
-        <div className="mx-auto max-w-3xl py-12 text-center sm:py-16 lg:py-20">
+        <div className="customer-page-top mx-auto max-w-3xl pb-12 text-center sm:pb-16 lg:pb-20">
           {/* Badge */}
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-[#FCE7F3]/60 px-3.5 py-1.5 shadow-2xs">
             <span className="flex h-2 w-2 rounded-full bg-[#9200A8] animate-pulse" />

@@ -20,7 +20,7 @@ export function PageHeader({
   return (
     <div
       className={cn(
-        "relative overflow-hidden bg-white border-b border-[#EADDED] py-12 sm:py-16",
+        "customer-page-top relative overflow-hidden border-b border-[#EADDED] bg-white pb-12 sm:pb-16",
         className
       )}
     >

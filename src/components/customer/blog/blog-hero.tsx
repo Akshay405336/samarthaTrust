@@ -17,7 +17,7 @@ export function BlogHero() {
       />
 
       <Container>
-        <div className="mx-auto max-w-4xl py-8 text-center sm:py-10 lg:py-12">
+        <div className="customer-page-top mx-auto max-w-4xl pb-8 text-center sm:pb-10 lg:pb-12">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white px-3.5 py-1.5">
             <BookOpen className="h-3.5 w-3.5 text-[#9200A8]" />
 

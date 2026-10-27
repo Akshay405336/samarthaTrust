@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, Users, Sprout } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { AnimatedGradientText } from "@/components/shared/animated-gradient-text";
 
 export function HeroSection() {
   return (
@@ -32,7 +33,7 @@ export function HeroSection() {
       />
 
       {/* Hero content */}
-      <div className="relative z-10 mx-auto flex min-h-[620px] w-full max-w-[1720px] items-center px-5 pb-8 pt-24 sm:min-h-[660px] sm:px-8 sm:pb-9 sm:pt-36 lg:min-h-[min(740px,100svh)] lg:px-14 lg:pb-8 lg:pt-36 xl:px-20">
+      <div className="customer-page-top relative z-10 mx-auto flex min-h-[620px] w-full max-w-[1720px] items-center px-5 pb-8 sm:min-h-[660px] sm:px-8 sm:pb-9 lg:min-h-[min(740px,100svh)] lg:px-14 lg:pb-8 xl:px-20">
         <div className="w-full max-w-[740px]">
           {/* Animated tagline */}
           <p className="hero-fade-up hero-delay-1 mb-4 text-[10px] font-semibold tracking-[0.1em] text-white sm:mb-5 sm:text-[11px] sm:tracking-[0.14em] lg:text-xs">
@@ -42,14 +43,12 @@ export function HeroSection() {
           </p>
 
           {/* Animated heading */}
-          <h1 className="hero-fade-up hero-delay-2 text-[clamp(2rem,3.8vw,4.2rem)] font-extrabold leading-[1.04] tracking-[-0.045em] text-white">
-            <span className="block">Together for a</span>
+          <h1 className="text-[clamp(2rem,3.8vw,4.2rem)] font-extrabold leading-[1.04] tracking-[-0.045em] text-white">
+            <span className="hero-fade-up hero-delay-2 block">Together for a</span>
 
             <span className="mt-1 block">
               <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-[#7100A8] via-[#9200A8] to-[#E90078] bg-clip-text text-transparent">
-                  Brighter
-                </span>
+                <AnimatedGradientText text="Brighter" startDelayMs={980} />
 
                 <svg
                   className="absolute -bottom-2 left-0 h-2 w-full overflow-visible"
@@ -79,7 +78,7 @@ export function HeroSection() {
                   </defs>
                 </svg>
               </span>{" "}
-              Tomorrow
+              <span className="hero-fade-up hero-delay-tomorrow">Tomorrow</span>
             </span>
           </h1>
 

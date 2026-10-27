@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { AboutBanner } from "@/components/customer/about-us/about-banner";
 import { AboutHeroSection } from "@/components/customer/about-us/about-hero-section";
 import { VisionMissionSection } from "@/components/customer/about-us/vision-mission-section";
-import { ProgramsSection } from "@/components/customer/about-us/programs-section";
 import {
   TeamSection,
   TeamSectionSkeleton,
@@ -61,8 +60,6 @@ export default function AboutPage() {
       <AboutHeroSection />
 
       <VisionMissionSection />
-
-      <ProgramsSection />
 
       <React.Suspense fallback={<TeamSectionSkeleton />}>
         <AboutTeamSection />

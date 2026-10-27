@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lora } from "next/font/google";
+
+import { EnquiryPopup } from "@/components/shared/enquiry-popup";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -53,6 +56,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans bg-white text-foreground antialiased selection:bg-[#FCE7F3] selection:text-[#9200A8]">
         {children}
+        <EnquiryPopup />
       </body>
     </html>
   );

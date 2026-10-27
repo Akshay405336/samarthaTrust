@@ -1,12 +1,30 @@
+"use client";
 
-import { Heart, GraduationCap, Utensils, Sprout, HandHeart, Users, BookOpen } from "lucide-react";
+import * as React from "react";
+import {
+  Heart,
+  GraduationCap,
+  Utensils,
+  Sprout,
+  HandHeart,
+  Users,
+  BookOpen,
+} from "lucide-react";
+
 import { Container } from "@/components/shared/container";
+import { cn } from "@/lib/utils";
+
+const COUNTER_DURATION_MS = 1750;
+const CARD_STAGGER_MS = 140;
+const CARD_BASE_DELAY_MS = 200;
+const FOOTER_DELAY_MS = 780;
 
 const impactStats = [
   {
     value: "72+",
     label: "Children Supported",
-    description: "Helping children access care, education, and a brighter future.",
+    description:
+      "Helping children access care, education, and a brighter future.",
     icon: Heart,
   },
   {
@@ -24,14 +42,122 @@ const impactStats = [
   {
     value: "5+",
     label: "Years of Community Care",
-    description: "Building inclusive communities through compassion and action.",
+    description:
+      "Building inclusive communities through compassion and action.",
     icon: Sprout,
   },
-];
+] as const;
+
+type ParsedStat = {
+  target: number;
+  suffix: string;
+};
+
+function parseStatValue(value: string): ParsedStat {
+  const match = value.match(/^(\d+)(.*)$/);
+  if (!match) {
+    return { target: 0, suffix: value };
+  }
+  return { target: Number.parseInt(match[1], 10), suffix: match[2] };
+}
+
+function formatStatValue(current: number, sourceValue: string): string {
+  const { target, suffix } = parseStatValue(sourceValue);
+  const clamped = Math.min(Math.max(current, 0), target);
+  return `${clamped}${suffix}`;
+}
+
+function zeroDisplayValues() {
+  return impactStats.map((stat) => formatStatValue(0, stat.value));
+}
 
 export function ImpactSection() {
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const rafRef = React.useRef<number | null>(null);
+  const [isInView, setIsInView] = React.useState(false);
+  const [entranceActive, setEntranceActive] = React.useState(false);
+  const [counterDisplays, setCounterDisplays] =
+    React.useState<string[]>(zeroDisplayValues);
+  const [reduceMotion, setReduceMotion] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  React.useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible =
+          entry.isIntersecting && entry.intersectionRatio >= 0.25;
+        setIsInView(visible);
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  React.useEffect(() => {
+    const cancelCounter = () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+
+    if (!isInView) {
+      cancelCounter();
+      setEntranceActive(false);
+      setCounterDisplays(zeroDisplayValues());
+      return;
+    }
+
+    setEntranceActive(true);
+
+    if (reduceMotion) {
+      setCounterDisplays(impactStats.map((stat) => stat.value));
+      return cancelCounter;
+    }
+
+    const parsed = impactStats.map((stat) => parseStatValue(stat.value));
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / COUNTER_DURATION_MS, 1);
+      const eased = 1 - (1 - progress) ** 3;
+
+      setCounterDisplays(
+        parsed.map((item, index) => {
+          const current = Math.round(item.target * eased);
+          return formatStatValue(current, impactStats[index].value);
+        })
+      );
+
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        rafRef.current = null;
+        setCounterDisplays(impactStats.map((stat) => stat.value));
+      }
+    };
+
+    setCounterDisplays(zeroDisplayValues());
+    rafRef.current = requestAnimationFrame(tick);
+
+    return cancelCounter;
+  }, [isInView, reduceMotion]);
+
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="impact-heading"
       className="relative isolate overflow-hidden bg-white py-10 sm:py-12 lg:py-14"
     >
@@ -66,7 +192,13 @@ export function ImpactSection() {
       <Container className="relative z-10">
         {/* Section heading */}
         <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white/90 px-4 py-2">
+          <div
+            className={cn(
+              "impact-reveal mb-4 inline-flex items-center gap-2 rounded-full border border-[#EADDED] bg-white/90 px-4 py-2",
+              entranceActive && "impact-reveal-active"
+            )}
+            style={{ animationDelay: "0ms" }}
+          >
             <Heart
               className="h-4 w-4 fill-[#E90078] text-[#E90078]"
               aria-hidden="true"
@@ -79,12 +211,22 @@ export function ImpactSection() {
 
           <h2
             id="impact-heading"
-            className="text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#35123F]"
+            className={cn(
+              "impact-reveal text-[clamp(2rem,3vw,3rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-[#35123F]",
+              entranceActive && "impact-reveal-active"
+            )}
+            style={{ animationDelay: "60ms" }}
           >
             Our Impact, <span className="text-brand-gradient">Our Promise</span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]">
+          <p
+            className={cn(
+              "impact-reveal mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#75647B] sm:text-base lg:text-[17px]",
+              entranceActive && "impact-reveal-active"
+            )}
+            style={{ animationDelay: "120ms" }}
+          >
             Every child supported, every meal served, and every safe space
             created brings us closer to a brighter and more inclusive future.
           </p>
@@ -95,15 +237,20 @@ export function ImpactSection() {
           {impactStats.map((stat, index) => {
             const Icon = stat.icon;
             const isFeatured = index === 2;
+            const cardDelay = CARD_BASE_DELAY_MS + index * CARD_STAGGER_MS;
+            const iconDelay = cardDelay + 90;
 
             return (
               <article
                 key={stat.label}
-                className={`group relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 sm:p-6 ${
+                className={cn(
+                  "impact-reveal group relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 sm:p-6",
                   isFeatured
                     ? "border-[#9200A8] bg-gradient-to-br from-[#7100A8] via-[#9200A8] to-[#E90078] shadow-[0_12px_30px_rgba(113,0,168,0.16)] hover:shadow-[0_16px_36px_rgba(113,0,168,0.24)]"
-                    : "border-[#EADDED] bg-white/95 shadow-[0_6px_24px_rgba(53,18,63,0.035)] hover:border-[#9200A8]/40 hover:shadow-[0_12px_30px_rgba(53,18,63,0.07)]"
-                }`}
+                    : "border-[#EADDED] bg-white/95 shadow-[0_6px_24px_rgba(53,18,63,0.035)] hover:border-[#9200A8]/40 hover:shadow-[0_12px_30px_rgba(53,18,63,0.07)]",
+                  entranceActive && "impact-reveal-active"
+                )}
+                style={{ animationDelay: `${cardDelay}ms` }}
               >
                 {/* Top accent */}
                 <div
@@ -116,20 +263,21 @@ export function ImpactSection() {
 
                 <div className="flex items-center justify-between">
                   <div
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${
+                    className={cn(
+                      "impact-icon-reveal flex h-11 w-11 items-center justify-center rounded-xl",
                       isFeatured
                         ? "bg-white/15 text-white ring-1 ring-white/20"
-                        : "bg-[#FCE7F3]/70 text-[#9200A8]"
-                    }`}
+                        : "bg-[#FCE7F3]/70 text-[#9200A8]",
+                      entranceActive && "impact-icon-reveal-active"
+                    )}
+                    style={{ animationDelay: `${iconDelay}ms` }}
                   >
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
 
                   <span
                     className={`text-xs font-medium tracking-widest ${
-                      isFeatured
-                        ? "text-white/60"
-                        : "text-[#75647B]/50"
+                      isFeatured ? "text-white/60" : "text-[#75647B]/50"
                     }`}
                   >
                     0{index + 1}
@@ -141,7 +289,7 @@ export function ImpactSection() {
                     isFeatured ? "text-white" : "text-[#9200A8]"
                   }`}
                 >
-                  {stat.value}
+                  {counterDisplays[index]}
                 </p>
 
                 <h3
@@ -165,7 +313,13 @@ export function ImpactSection() {
         </div>
 
         {/* Closing message */}
-        <div className="mt-7 flex flex-col items-center justify-between gap-4 rounded-2xl border border-[#EADDED] bg-white/90 p-5 text-center sm:flex-row sm:px-7 sm:text-left">
+        <div
+          className={cn(
+            "impact-reveal mt-7 flex flex-col items-center justify-between gap-4 rounded-2xl border border-[#EADDED] bg-white/90 p-5 text-center sm:flex-row sm:px-7 sm:text-left",
+            entranceActive && "impact-reveal-active"
+          )}
+          style={{ animationDelay: `${FOOTER_DELAY_MS}ms` }}
+        >
           <div>
             <h3 className="text-base font-semibold text-[#35123F] sm:text-lg">
               Together, we can do more.

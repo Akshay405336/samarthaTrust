@@ -24,8 +24,8 @@ export function AboutBanner() {
       {/* Dark overlay */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-[#10251f]/75" />
 
-      <Container className="relative z-10">
-        <div className="grid min-h-[400px] items-center gap-8 py-10 sm:min-h-[440px] sm:py-12 lg:min-h-[480px] lg:grid-cols-[0.8fr_1.2fr] lg:gap-10 lg:py-12">
+      <Container className="customer-page-top relative z-10">
+        <div className="grid min-h-[400px] items-center gap-8 pb-10 sm:min-h-[440px] sm:pb-12 lg:min-h-[480px] lg:grid-cols-[0.8fr_1.2fr] lg:gap-10 lg:pb-12">
           {/* Left: heart-framed image */}
           <div className="relative mx-auto flex w-full max-w-[320px] items-center justify-center sm:max-w-[350px] lg:mx-0">
             <div className="relative aspect-square w-full">
